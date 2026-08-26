@@ -1,42 +1,57 @@
-# Basar AI - Implementation Plan
+# TRENDY AI - Implementation Plan
 
-**Version**: 1.5.0
-**Date**: 2026-02-08
-**Status**: Approved
-**Constitution**: v1.0.0
+**Version**: 1.5.0**Date**: 2026-02-08**Status**: Approved**Constitution**: v1.0.0
 
 ---
 
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
-2. [Key Decisions](#key-decisions)
-3. [Architecture Overview](#architecture-overview)
-4. [Database Schema](#database-schema)
-5. [Platform Presets](#platform-presets)
-6. [Brand Kit Interview](#brand-kit-interview)
-7. [API Endpoints](#api-endpoints)
-8. [Generation Pipeline](#generation-pipeline)
-9. [Hard Delete Implementation](#hard-delete-implementation)
-10. [Frontend Structure](#frontend-structure)
-11. [Build Order](#build-order)
-12. [Dockerization](#dockerization)
-13. [Environment Variables](#environment-variables)
-14. [Verification Checklist](#verification-checklist)
-15. [Files to Create](#files-to-create)
+
+1. [Key Decisions](#key-decisions)
+
+1. [Architecture Overview](#architecture-overview)
+
+1. [Database Schema](#database-schema)
+
+1. [Platform Presets](#platform-presets)
+
+1. [Brand Kit Interview](#brand-kit-interview)
+
+1. [API Endpoints](#api-endpoints)
+
+1. [Generation Pipeline](#generation-pipeline)
+
+1. [Hard Delete Implementation](#hard-delete-implementation)
+
+1. [Frontend Structure](#frontend-structure)
+
+1. [Build Order](#build-order)
+
+1. [Dockerization](#dockerization)
+
+1. [Environment Variables](#environment-variables)
+
+1. [Verification Checklist](#verification-checklist)
+
+1. [Files to Create](#files-to-create)
 
 ---
 
 ## Executive Summary
 
-Basar AI is a multi-brand SaaS for generating social images. Users create brands, complete a brand kit interview, add their own API keys (BYOK model), and generate images for various social platforms.
+TRENDY AI is a multi-brand SaaS for generating social images. Users create brands, complete a brand kit interview, add their own API keys (BYOK model), and generate images for various social platforms.
 
 ### Core Product Rules
 
 - **Tenancy**: Brand-based (every resource belongs to exactly one brand)
+
 - **Ownership**: One user owns brands; no sharing; owner role only
+
 - **Billing**: None in MVP; users provide their own API keys (BYOK)
+
 - **Output**: PNG format only
+
 - **Providers**: OpenAI and Gemini (official endpoints only)
 
 ---
@@ -44,7 +59,7 @@ Basar AI is a multi-brand SaaS for generating social images. Users create brands
 ## Key Decisions
 
 | Decision | Choice | Rationale |
-|----------|--------|-----------|
+| --- | --- | --- |
 | Preset structure | Single `platform_preset` field | Simplifies schema; format is always PNG |
 | Platforms | Instagram, Facebook, Twitter/X, LinkedIn, TikTok, YouTube | Covers major social networks |
 | Logo usage | Per-generation choice | Flexibility: none / prompt / watermark / both |
@@ -102,7 +117,7 @@ Basar AI is a multi-brand SaaS for generating social images. Users create brands
 ### Technology Stack
 
 | Layer | Technology |
-|-------|------------|
+| --- | --- |
 | Frontend | Next.js 14 (App Router) |
 | Backend | FastAPI (Python) |
 | Auth | Supabase Auth |
@@ -119,8 +134,11 @@ Basar AI is a multi-brand SaaS for generating social images. Users create brands
 ### Schema Principles
 
 - Use strict types/enums for domain fields (`provider`, `logo_mode`, `status`, `platform_preset`)
+
 - Keep mutable records auditable (`created_at`, `updated_at`, status + failure fields)
+
 - Enforce ownership and tenant isolation at both API and DB layers (RLS + server checks)
+
 - Support operational workflows from day 1 (key rotation, failed generation records)
 
 ### Core Types and Helpers
@@ -158,7 +176,6 @@ AS $$
   SELECT COALESCE(bool_and(v ~* '^#[0-9A-F]{6}$'), TRUE)
   FROM unnest(color_values) AS t(v);
 $$;
-
 ```
 
 ### Tables
@@ -173,7 +190,7 @@ CREATE TABLE profiles (
   ),
   avatar_url TEXT CHECK (
     avatar_url IS NULL OR avatar_url ~ '^https?://.+'
-  ),
+   ),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -410,6 +427,7 @@ CREATE POLICY generations_owner_all ON generations FOR ALL
 ### Storage
 
 - **Bucket**: `brand-assets` (public)
+
 - **Paths**:
   - `brands/{brandId}/logo.{ext}` - Brand logo
   - `brands/{brandId}/generations/{generationId}.png` - Generated image (`status = succeeded` only)
@@ -498,7 +516,7 @@ export const PRESET_TO_ASPECT_RATIO: Record<PlatformPreset, string> = {
 ### Questions (6 Standard Set)
 
 | # | Field | Question | Type | Required |
-|---|-------|----------|------|----------|
+| --- | --- | --- | --- | --- |
 | 1 | `name` | What is your brand name? (stored in `brands.name`) | text | Yes |
 | 2 | `tagline` | What is your brand's tagline or slogan? | text | No |
 | 3 | `tone` | What tone should your content have? | select | Yes |
@@ -509,9 +527,13 @@ export const PRESET_TO_ASPECT_RATIO: Record<PlatformPreset, string> = {
 ### Tone Options
 
 - `formal` - Professional and business-like
+
 - `casual` - Relaxed and conversational
+
 - `playful` - Fun and lighthearted
+
 - `professional` - Expert and authoritative
+
 - `friendly` - Warm and approachable
 
 ### Summary Derivation Template
@@ -539,7 +561,9 @@ not_started → in_progress → complete
 ```
 
 - `not_started`: No answers saved yet
+
 - `in_progress`: Some answers saved, not all required fields complete
+
 - `complete`: All required fields have values
 
 ---
@@ -571,17 +595,18 @@ Authorization: Bearer <supabase_access_token>
 #### Health
 
 | Method | Path | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | GET | `/health` | Health check (no auth) |
 
 #### Account/Profile
 
 | Method | Path | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | GET | `/me` | Get current user profile |
 | PATCH | `/me` | Update current user profile |
 
 **Update Profile Request**:
+
 ```json
 {
   "full_name": "Jane Doe",
@@ -590,6 +615,7 @@ Authorization: Bearer <supabase_access_token>
 ```
 
 **Profile Response**:
+
 ```json
 {
   "user_id": "uuid",
@@ -604,15 +630,16 @@ Authorization: Bearer <supabase_access_token>
 #### Brands
 
 | Method | Path | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | GET | `/brands` | List user's brands |
 | POST | `/brands` | Create a new brand |
 | GET | `/brands/{id}` | Get brand details |
-| DELETE | `/brands/{id}` | Hard delete brand (cascades) |
+| DELETE | `/brands/{id}` | Hard delete brand (cascades ) |
 | POST | `/brands/{id}/logo` | Upload brand logo |
 | DELETE | `/brands/{id}/logo` | Delete brand logo |
 
 **Create Brand Request**:
+
 ```json
 {
   "name": "My Brand"
@@ -620,6 +647,7 @@ Authorization: Bearer <supabase_access_token>
 ```
 
 **Brand Response**:
+
 ```json
 {
   "id": "uuid",
@@ -633,11 +661,12 @@ Authorization: Bearer <supabase_access_token>
 #### Brand Kit
 
 | Method | Path | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | GET | `/brands/{id}/kit` | Get brand kit |
 | PUT | `/brands/{id}/kit` | Upsert brand kit answers |
 
 **Upsert Kit Request**:
+
 ```json
 {
   "name": "My Brand",
@@ -652,6 +681,7 @@ Authorization: Bearer <supabase_access_token>
 ```
 
 **Kit Response**:
+
 ```json
 {
   "brand_id": "uuid",
@@ -673,14 +703,15 @@ Authorization: Bearer <supabase_access_token>
 #### Provider Keys
 
 | Method | Path | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | GET | `/brands/{id}/keys` | List keys for brand |
 | POST | `/brands/{id}/keys` | Add a provider key |
-| PATCH | `/brands/{id}/keys/{keyId}/activate` | Activate key (deactivates prior active key for provider) |
+| PATCH | `/brands/{id}/keys/{keyId}/activate` | Activate key (deactivates prior active key for provider ) |
 | POST | `/brands/{id}/keys/{keyId}/validate` | Validate a key |
 | DELETE | `/brands/{id}/keys/{keyId}` | Delete a key |
 
 **Add Key Request**:
+
 ```json
 {
   "provider": "openai",
@@ -691,6 +722,7 @@ Authorization: Bearer <supabase_access_token>
 ```
 
 **Key Response** (key value never returned):
+
 ```json
 {
   "id": "uuid",
@@ -706,6 +738,7 @@ Authorization: Bearer <supabase_access_token>
 ```
 
 **Validate Response**:
+
 ```json
 {
   "valid": true,
@@ -718,13 +751,14 @@ Authorization: Bearer <supabase_access_token>
 #### Generations
 
 | Method | Path | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | POST | `/brands/{id}/generate` | Generate an image |
 | GET | `/brands/{id}/generations` | List generations |
 | GET | `/brands/{id}/generations/{genId}` | Get generation details |
 | DELETE | `/brands/{id}/generations/{genId}` | Hard delete generation |
 
 **Generate Request**:
+
 ```json
 {
   "prompt": "A modern office space with natural lighting",
@@ -736,6 +770,7 @@ Authorization: Bearer <supabase_access_token>
 ```
 
 **Generate Response**:
+
 ```json
 {
   "id": "uuid",
@@ -755,15 +790,19 @@ Authorization: Bearer <supabase_access_token>
 ```
 
 **List Generations Query Params**:
-- `page` (default: 1)
+
+- `page` (default: 1 )
+
 - `per_page` (default: 20, max: 100)
+
 - `provider` (optional filter: `openai` | `gemini`)
+
 - `status` (optional filter: `pending` | `processing` | `succeeded` | `failed`)
 
 #### Admin (Operator Only)
 
 | Method | Path | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | GET | `/admin/brands` | List all brands with counts |
 | GET | `/admin/stats` | Basic usage statistics |
 
@@ -941,7 +980,7 @@ async def openai_generate(
     model: str = 'gpt-image-2'
 ) -> ProviderResult:
     """Generate image using OpenAI API."""
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient( ) as client:
         response = await client.post(
             'https://api.openai.com/v1/images/generations',
             headers={'Authorization': f'Bearer {api_key}'},
@@ -953,7 +992,7 @@ async def openai_generate(
                 'n': 1
             },
             timeout=120.0
-        )
+         )
         response.raise_for_status()
         data = response.json()
         return ProviderResult(
@@ -964,14 +1003,16 @@ async def openai_generate(
 
 #### Gemini (Nano Banana Pro) via Google Gen AI SDK
 
-**Endpoint**: `https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent`
-**Auth**: `x-goog-api-key: <GEMINI_API_KEY>`
-**Python SDK**: `google-genai` (import as `from google import genai`)
+**Endpoint**: `https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent`**Auth**: `x-goog-api-key: <GEMINI_API_KEY>`**Python SDK**: `google-genai` (import as `from google import genai` )
 
 **Gemini Image Generation Constraints**:
+
 - Uses `aspect_ratio` (e.g., `'1:1'`, `'16:9'`, `'9:16'`) instead of explicit width/height
+
 - Uses `image_size`: `'1K'`, `'2K'`, or `'4K'` for Nano Banana Pro
+
 - Returns fixed resolutions based on aspect_ratio + image_size combination
+
 - Post-processing required to achieve exact preset dimensions
 
 ```python
@@ -1295,27 +1336,41 @@ frontend/
 #### Generator Form
 
 - Provider selector (OpenAI / Gemini)
+
 - Model selector (based on provider)
+
 - Platform preset selector (grouped by platform)
+
 - Prompt textarea
+
 - Logo mode selector (none / prompt / watermark / both)
+
 - Generate button
+
 - Result preview with download
 
 #### Brand Kit Wizard
 
 - Step indicator (1-6)
+
 - Form for current step
+
 - Previous / Next / Skip buttons
+
 - Auto-save on step completion
+
 - Completion summary
 
 #### History List
 
 - Card grid with thumbnails
+
 - Provider and platform badges
+
 - Date display
+
 - Click to view full image
+
 - Delete button with confirmation
 
 ---
@@ -1325,7 +1380,7 @@ frontend/
 ### Phase 1: Foundation
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 1.1 | Create repo structure (`frontend/`, `backend/`, `supabase/`) |
 | 1.2 | Initialize Supabase project |
 | 1.3 | Create DB extensions, enum types, helper functions |
@@ -1349,11 +1404,11 @@ frontend/
 ### Phase 2: Dockerization
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 2.1 | Create root `Dockerfile` to build frontend + backend into one runtime image |
 | 2.2 | Add root `.dockerignore` (optimize build context) |
 | 2.3 | Add container entrypoint script to start FastAPI + Next.js and handle signals |
-| 2.4 | Wire internal networking (`NEXT_PUBLIC_API_URL`/server-side API base to `http://127.0.0.1:8000`) |
+| 2.4 | Wire internal networking (`NEXT_PUBLIC_API_URL`/server-side API base to `http://127.0.0.1:8000` ) |
 | 2.5 | Expose one public port (Next.js) and keep backend internal-only |
 | 2.6 | Add healthcheck strategy for both processes (readiness check via exposed app route + backend health route) |
 | 2.7 | Validate single-image run locally (`docker build` + `docker run`) with auth + API health |
@@ -1364,7 +1419,7 @@ frontend/
 ### Phase 3: Brand CRUD
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 3.1 | API: List brands endpoint |
 | 3.2 | API: Create brand endpoint |
 | 3.3 | API: Get brand endpoint |
@@ -1382,7 +1437,7 @@ frontend/
 ### Phase 4: Provider Keys
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 4.1 | API: List keys endpoint |
 | 4.2 | API: Add key endpoint (Vault integration) |
 | 4.3 | API: Activate key endpoint (deactivate old active key atomically) |
@@ -1399,7 +1454,7 @@ frontend/
 ### Phase 5: Brand Kit
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 5.1 | API: Get kit endpoint |
 | 5.2 | API: Upsert kit endpoint |
 | 5.3 | API: Summary derivation logic |
@@ -1418,7 +1473,7 @@ frontend/
 ### Phase 6: Generation
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 6.1 | API: Generation pipeline skeleton |
 | 6.2 | API: Insert `pending` generation rows and transition status lifecycle |
 | 6.3 | API: OpenAI integration |
@@ -1439,7 +1494,7 @@ frontend/
 ### Phase 7: History
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 7.1 | API: List generations endpoint (pagination, provider/status filters) |
 | 7.2 | API: Get generation endpoint |
 | 7.3 | API: Delete generation endpoint (hard delete) |
@@ -1456,7 +1511,7 @@ frontend/
 > **Scope update (2026-06-19)**: Phase 8 now covers the operator admin area only. The polish work (former tasks 8.5–8.7) has moved to the separate **UI/UX revamp** phase. Spec: `specs/009-admin-dashboard/`.
 
 | Task | Description |
-|------|-------------|
+| --- | --- |
 | 8.1 | API: Admin brands endpoint (`GET /admin/brands` — all brands + per-brand counts) |
 | 8.2 | API: Admin stats endpoint (`GET /admin/stats` — aggregate usage counts only, no cost/token tracking) |
 | 8.3 | API: Admin gate (email allowlist) — already implemented via `get_current_admin_user` + `ADMIN_EMAILS` |
@@ -1474,17 +1529,25 @@ frontend/
 ### Deliverables
 
 - `Dockerfile` (single deployable image for Bunny Magic)
+
 - `.dockerignore`
+
 - `scripts/container-entrypoint.sh`
+
 - `docs/docker.md`
 
 ### Container Requirements
 
 - Use pinned base image tags and multi-stage build.
+
 - Run as non-root user in runtime stage.
+
 - Keep a single public port (Next.js); FastAPI listens internally only.
+
 - Start/stop both processes cleanly from one entrypoint.
+
 - Include healthchecks that verify both frontend and backend.
+
 - Keep secrets in env files or host environment; do not bake secrets into images.
 
 ---
@@ -1498,14 +1561,14 @@ frontend/
 NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 
-# Browser -> Next.js (same-origin API route/rewrite)
+# Browser -> Next.js (same-origin API route/rewrite )
 NEXT_PUBLIC_API_URL=/api
 
 # Next.js server -> internal FastAPI inside same container
 NEXT_SERVER_API_URL=http://127.0.0.1:8000
 ```
 
-### Backend (`backend/.env`)
+### Backend (`backend/.env` )
 
 ```bash
 # Supabase
@@ -1526,52 +1589,83 @@ PORT=8000
 ### Production Notes
 
 - `SUPABASE_SECRET_KEY` must only be used server-side
+
 - Never expose the secret key to frontend
+
 - `ADMIN_EMAILS` controls operator access
 
 ---
 
 ## Verification Checklist
 
-### Definition of Done (per feature)
+### Definition of Done (per feature )
 
 - [ ] Works for brand with 0 brand kit answers
+
 - [ ] Works for brand with complete brand kit
+
 - [ ] Works with OpenAI provider
+
 - [ ] Works with Gemini provider
+
 - [ ] User can fetch and update own profile (`GET /me`, `PATCH /me`)
+
 - [ ] RLS policies tested (query as different user fails)
+
 - [ ] Generation lifecycle tested (`pending` → `processing` → `succeeded|failed`)
+
 - [ ] Hard delete verified (DB rows AND storage assets removed)
 
 ### Data Integrity Verification
 
 - [ ] `provider_keys`: max one active key per `(brand_id, provider)`
+
 - [ ] `profiles`: one row per `user_id`; `full_name` length validation enforced
+
 - [ ] `brand_kits`: `complete` status cannot be saved without required fields
+
 - [ ] `generations`: `succeeded` rows require `image_path`, failed rows require `error_code`
+
 - [ ] `updated_at` trigger updates timestamps on every row update
+
 - [ ] Indexes support hottest queries:
-  - [ ] Brands by owner
-  - [ ] Active provider key lookup by brand/provider
-  - [ ] Generation history by brand and created date
-  - [ ] Generation filters by provider/status
+
+   - [ ] Brands by owner
+
+   - [ ] Active provider key lookup by brand/provider
+
+   - [ ] Generation history by brand and created date
+
+   - [ ] Generation filters by provider/status
 
 ### Security Verification
 
 - [ ] Provider keys never appear in:
-  - [ ] API responses
-  - [ ] Frontend state
-  - [ ] Browser network tab
-  - [ ] Server logs
+
+   - [ ] API responses
+
+   - [ ] Frontend state
+
+   - [ ] Browser network tab
+
+   - [ ] Server logs
+
 - [ ] Brand isolation:
-  - [ ] User A cannot access User B's profile
-  - [ ] User A cannot access User B's brands
-  - [ ] User A cannot access User B's generations
-  - [ ] User A cannot access User B's keys
+
+   - [ ] User A cannot access User B's profile
+
+   - [ ] User A cannot access User B's brands
+
+   - [ ] User A cannot access User B's generations
+
+   - [ ] User A cannot access User B's keys
+
 - [ ] Server-side validation:
-  - [ ] Brand ID verified for all operations
-  - [ ] User cannot forge brand ownership
+
+   - [ ] Brand ID verified for all operations
+
+   - [ ] User cannot forge brand ownership
+
 - [ ] Public URLs are shareable. Brand isolation is enforced at DB and API layers. Storage privacy is deferred.
 
 ### RLS Test Cases
@@ -1690,14 +1784,14 @@ supabase/
 ### OpenAI Image Models
 
 | Model | Description |
-|-------|-------------|
+| --- | --- |
 | `gpt-image-2` | Latest image generation model (default) |
 | `gpt-image-1` | Previous generation (fallback) |
 
 ### Gemini Image Models
 
 | Model | Description |
-|-------|-------------|
+| --- | --- |
 | `gemini-3-pro-image-preview` | Nano Banana Pro - highest quality (default) |
 
 ### Gemini Aspect Ratios and Sizes
@@ -1705,7 +1799,7 @@ supabase/
 Gemini image generation uses `aspect_ratio` and `image_size` instead of explicit dimensions:
 
 | Aspect Ratio | Supported |
-|--------------|-----------|
+| --- | --- |
 | `1:1` | Square |
 | `16:9` | Landscape |
 | `9:16` | Portrait |
@@ -1713,7 +1807,7 @@ Gemini image generation uses `aspect_ratio` and `image_size` instead of explicit
 | `3:4` | Standard portrait |
 
 | Image Size | Resolution Range |
-|------------|------------------|
+| --- | --- |
 | `1K` | ~1024px on longest edge (default for MVP) |
 | `2K` | ~2048px on longest edge |
 | `4K` | ~4096px on longest edge |
