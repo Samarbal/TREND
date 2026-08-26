@@ -25,8 +25,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Basar",
-  description: "A brand studio for platform-ready images",
+  title: "TRENDY AI",
+  description: "Arabic-first brand studio for platform-ready visual content",
 };
 
 export default function RootLayout({

@@ -18,7 +18,7 @@ export function StepAvoidWords({ answers, onChange }: StepProps) {
         before="Anything to "
         emphasis="avoid"
         after="?"
-        helper="Optional. Words or themes Basar should stay away from."
+        helper="Optional. Words or themes TRENDY AI should stay away from."
       />
       <div className="space-y-2">
         <Label htmlFor="kit-avoid">Avoid</Label>

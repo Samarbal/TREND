@@ -25,7 +25,7 @@ export function StepTagline({ answers, onChange, brandName }: StepProps) {
         before="What's "
         emphasis={`${brandName}'s`}
         after=" tagline?"
-        helper="Optional. A short line Basar can weave into the image brief."
+        helper="Optional. A short line TRENDY AI can weave into the image brief."
       />
       <div className="space-y-2">
         <Label htmlFor="kit-tagline">Tagline</Label>

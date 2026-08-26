@@ -27,7 +27,7 @@ export function StepTone({ answers, onChange }: StepProps) {
         before="How should it "
         emphasis="sound"
         after="?"
-        helper="Pick the voice Basar should paint in."
+        helper="Pick the voice TRENDY AI should paint in."
       />
       <div className="flex flex-wrap gap-3">
         {TONE_OPTIONS.map((option) => (

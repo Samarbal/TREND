@@ -3,7 +3,7 @@
 import type { CSSProperties } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { BASAR_ACCENT, onBrandTextColor, normalizeHex } from '@/components/brand/brand-workspace'
+import { TRENDY_AI_ACCENT, onBrandTextColor, normalizeHex } from '@/components/brand/brand-workspace'
 
 interface BrandDotProps {
   color?: string | null
@@ -23,7 +23,7 @@ export function BrandDot({
   className,
 }: BrandDotProps) {
   const normalized = normalizeHex(color ?? '')
-  const fill = normalized ? `#${normalized}` : BASAR_ACCENT
+  const fill = normalized ? `#${normalized}` : TRENDY_AI_ACCENT
   return (
     <span
       className={cn(

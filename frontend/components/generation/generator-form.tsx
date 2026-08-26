@@ -110,7 +110,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         <div className="shrink-0">
           <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">Generate</h1>
           <p className="mt-1 text-[14px] text-muted-foreground">
-            Describe the image. Basar paints it in {brandName}&apos;s voice.
+            Describe the image. TRENDY AI paints it in {brandName}&apos;s voice.
           </p>
         </div>
         <div className="shrink-0">

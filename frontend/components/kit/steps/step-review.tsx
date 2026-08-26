@@ -38,7 +38,7 @@ export function StepReview({
         before="Ready to "
         emphasis="save"
         after="?"
-        helper={`${brandName} — a short interview so Basar can paint in its voice.`}
+        helper={`${brandName} — a short interview so TRENDY AI can paint in its voice.`}
       />
 
       <div className="overflow-hidden rounded-lg border border-border">
