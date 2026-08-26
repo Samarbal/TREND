@@ -55,7 +55,7 @@ export default function LoginPage() {
           Walk into <em className="text-[#6FB2C0]">your own studio.</em>
         </>
       }
-      subcopy="Basar remembers your brand — kit, colors, tone — and hands back platform-ready images."
+      subcopy="TRENDY AI remembers your brand — kit, colors, tone — and hands back platform-ready images."
       features={[
         { icon: Palette, label: 'Your kit, colors, and tone — remembered' },
         { icon: ImagePlus, label: 'Every image, sized for the platform' },

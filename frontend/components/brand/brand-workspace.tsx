@@ -11,15 +11,16 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 
-/** Basar's own default accent (petrol) when a brand has no kit color yet. */
-export const BASAR_ACCENT = '#1E6E82'
+/** TRENDY AI's own default accent (burgandy) when a brand has no kit color yet. */
+export const TRENDY_AI_ACCENT = '#9F1D20'
+
 
 /**
  * Readable text color for a solid `--brand` fill, by WCAG relative luminance.
  */
 export function onBrandTextColor(hex: string): string {
   const c = normalizeHex(hex)
-  if (!c) return '#FFFFFF'
+  if (!c) return 'TRENDY_DEFAULT_ACCENT'
   const toLinear = (v: number) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4))
   const r = toLinear(parseInt(c.slice(0, 2), 16) / 255)
   const g = toLinear(parseInt(c.slice(2, 4), 16) / 255)
@@ -61,7 +62,7 @@ export function BrandWorkspace({
   syncRoot = true,
 }: BrandWorkspaceProps) {
   const normalized = normalizeHex(color ?? '')
-  const brand = normalized ? `#${normalized}` : BASAR_ACCENT
+  const brand = normalized ? `#${normalized}` : TRENDY_AI_ACCENT
   const onBrand = onBrandTextColor(brand)
 
   useEffect(() => {

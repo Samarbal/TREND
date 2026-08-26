@@ -19,7 +19,7 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
         }}
       >
         <p className="flex items-baseline gap-3 text-[#F8FAFC]">
-          <span className="font-display text-[40px] leading-none">Basar</span>
+          <span className="font-display text-[40px] leading-none">TRENDY AI</span>
           <span className="font-display text-[30px] leading-none text-[#6FB2C0]">بَصَر</span>
         </p>
         <h1 className="max-w-[15ch] font-display text-[45px] leading-[1.1] text-[#F8FAFC]">

@@ -96,7 +96,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <PanelLeft className="h-4 w-4" />
           </button>
-          <span className="font-display text-[22px] leading-none">Basar</span>
+          <span className="font-display text-[22px] leading-none">TRENDY AI</span>
         </header>
         <main className="min-w-0 flex-1 overflow-y-auto px-4 py-5 md:px-[30px] md:py-6">
           {children}

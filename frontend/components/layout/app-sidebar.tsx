@@ -62,7 +62,7 @@ export function AppSidebar({
   return (
     <aside className="flex h-full w-[248px] shrink-0 flex-col overflow-y-auto border-r border-border bg-background px-3 py-4">
       <Link href="/brands" className="mb-6 flex items-center gap-2 px-1 no-underline">
-        <span className="font-display text-[27px] leading-none tracking-tight">Basar</span>
+        <span className="font-display text-[27px] leading-none tracking-tight">TRENDY AI</span>
         <span
           className="inline-block h-2 w-2 -translate-y-[3px] rounded-full bg-brand"
           aria-hidden

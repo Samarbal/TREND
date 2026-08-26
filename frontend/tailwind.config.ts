@@ -81,15 +81,15 @@ const config: Config = {
         lift: 'cubic-bezier(0.34, 1.28, 0.64, 1)',
       },
       keyframes: {
-        'basar-shimmer': { from: { transform: 'translateX(-100%)' }, to: { transform: 'translateX(100%)' } },
-        'basar-reveal': {
+        'trendy-shimmer': { from: { transform: 'translateX(-100%)' }, to: { transform: 'translateX(100%)' } },
+        'trendy-reveal': {
           from: { opacity: '0', transform: 'scale(.985) translateY(6px)' },
           to: { opacity: '1', transform: 'none' },
         },
       },
       animation: {
-        'basar-shimmer': 'basar-shimmer 1.35s cubic-bezier(0.65,0,0.35,1) infinite',
-        'basar-reveal': 'basar-reveal 640ms cubic-bezier(0.34,1.28,0.64,1) both',
+        'trendy-shimmer': 'trendy-shimmer 1.35s cubic-bezier(0.65,0,0.35,1) infinite',
+        'trendy-reveal': 'trendy-reveal 640ms cubic-bezier(0.34,1.28,0.64,1) both',
       },
     },
   },

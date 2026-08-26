@@ -16,7 +16,7 @@ export function StepName({ brandName }: StepProps) {
         before="This is "
         emphasis={brandName}
         after="."
-        helper="The name you registered. Continue to tell Basar how it should look and sound."
+        helper="The name you registered. Continue to tell TRENDY AI how it should look and sound."
       />
       <p className="text-[16px] font-semibold">{brandName}</p>
     </div>

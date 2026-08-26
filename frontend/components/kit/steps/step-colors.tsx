@@ -2,7 +2,7 @@
 
 import { Sparkles } from 'lucide-react'
 import { BrandDot } from '@/components/brand/brand-dot'
-import { BrandWorkspace, BASAR_ACCENT, formatHex, normalizeHex, onBrandTextColor } from '@/components/brand/brand-workspace'
+import { BrandWorkspace, TRENDY_AI_ACCENT, formatHex, normalizeHex, onBrandTextColor } from '@/components/brand/brand-workspace'
 import { ColorSlot } from '@/components/kit/color-slot'
 import { KitQuestion } from '@/components/kit/kit-question'
 import { Button } from '@/components/ui/button'
@@ -22,7 +22,7 @@ const CURATED = [
 
 export function StepColors({ answers, onChange }: StepProps) {
   const colors = answers.colors
-  const primary = colors[0] && normalizeHex(colors[0]) ? formatHex(colors[0]) : BASAR_ACCENT
+  const primary = colors[0] && normalizeHex(colors[0]) ? formatHex(colors[0]) : TRENDY_AI_ACCENT
 
   const handleColorChange = (index: number, hex: string) => {
     const updated = [...colors]
@@ -55,7 +55,7 @@ export function StepColors({ answers, onChange }: StepProps) {
         before="Your "
         emphasis="colors"
         after="."
-        helper="Up to three. The first one is the accent Basar wears in this workspace."
+        helper="Up to three. The first one is the accent TRENDY AI wears in this workspace."
       />
       <div className="grid gap-6 lg:grid-cols-[1fr_244px]">
         <div className="space-y-2">

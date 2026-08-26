@@ -128,7 +128,7 @@ export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
           <KitStatusBadge status={isDirty ? 'in_progress' : savedStatus} />
         </div>
         <p className="mt-1 text-[14px] text-muted-foreground">
-          A short interview so Basar can paint in {brandName}&apos;s voice.
+          A short interview so TRENDY AI can paint in {brandName}&apos;s voice.
         </p>
       </div>
 
@@ -159,7 +159,7 @@ export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
         })}
       </ol>
 
-      <div key={step} className="min-h-[300px] animate-[basar-reveal_250ms_ease-out]">
+      <div key={step} className="min-h-[300px] animate-[TRENDY AI-reveal_250ms_ease-out]">
         {step === 0 && <StepName answers={answers} onChange={handleChange} brandName={brandName} />}
         {step === 1 && <StepTagline answers={answers} onChange={handleChange} brandName={brandName} />}
         {step === 2 && <StepTone answers={answers} onChange={handleChange} brandName={brandName} />}
