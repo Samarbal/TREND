@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}
+    
+    container_name: basarai-app
+    
+    ports:
+      - "${APP_PORT:-3001}:3000"
+      - "${BACKEND_PORT:-8001}:8000"
+    
+    environment:
+      # Backend config
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SECRET_KEY: ${SUPABASE_SECRET_KEY}
+      STORAGE_BUCKET: ${STORAGE_BUCKET:-brand-assets}
+      ADMIN_EMAILS: ${ADMIN_EMAILS}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      
+      # Server config
+      HOST: 0.0.0.0
+      PORT: 8000
+      BACKEND_HOST: 0.0.0.0
+      BACKEND_PORT: 8000
+      FRONTEND_PORT: 3000
+      
+      # Python config
+      PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
+    
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import os,urllib.request,sys;bp=os.environ.get('BACKEND_PORT','8000');fp=os.environ.get('FRONTEND_PORT','3000');r1=urllib.request.urlopen(f'http://localhost:{bp}/health');r2=urllib.request.urlopen(f'http://localhost:{fp}');sys.exit(0 if r1.status==200 and r2.status==200 else 1)"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+    
+    restart: unless-stopped
+    
+    # Optional: Uncomment for development with hot-reload
+    # volumes:
+    #   - ./backend/app:/app/backend/app
+    #   - ./frontend/app:/app/frontend/app
+    #   - ./frontend/components:/app/frontend/components
+    #   - ./frontend/lib:/app/frontend/lib
+    #   - ./frontend/hooks:/app/frontend/hooks
