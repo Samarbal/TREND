@@ -29,7 +29,7 @@ export function CanvasStage({
       className="flex min-h-[460px] w-full items-center justify-center rounded-xl p-6"
       style={{
         background:
-          'radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--brand) 5%, transparent), transparent 60%), hsl(var(--surface-sunken))',
+          'radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--brand) 5%, transparent), transparent 60%), #F2EAD3)',
       }}
     >
       <div

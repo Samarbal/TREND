@@ -54,11 +54,11 @@ export default function SignUpPage() {
 
   const hero = success ? (
     <>
-      Your studio is <em className="text-[#6FB2C0]">almost open.</em>
+      Your studio is <em className="text-brand-accent">almost open.</em>
     </>
   ) : (
     <>
-      Give your brand <em className="text-[#6FB2C0]">vision.</em>
+      Give your brand <em className="text-brand-accent">vision.</em>
     </>
   )
 

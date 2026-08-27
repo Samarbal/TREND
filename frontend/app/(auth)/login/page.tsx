@@ -52,7 +52,7 @@ export default function LoginPage() {
     <AuthShell
       hero={
         <>
-          Walk into <em className="text-[#6FB2C0]">your own studio.</em>
+          Walk into <em className="text-brand-accent">your own studio.</em>
         </>
       }
       subcopy="TRENDY AI remembers your brand — kit, colors, tone — and hands back platform-ready images."
