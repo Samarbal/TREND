@@ -15,8 +15,8 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(
-    title="Basar AI API",
-    description="API for Basar AI - Brand Management Platform",
+    title="TRENDY  AI API",
+    description="API for TRENDY  AI - Brand Management Platform",
     version="0.1.0",
     lifespan=lifespan,
 )
@@ -82,7 +82,7 @@ async def request_validation_exception_handler(
 @app.get("/")
 async def root():
     return {
-        "message": "Basar AI API",
+        "message": "TRENDY AI API",
         "version": "0.1.0",
         "status": "running",
     }
