@@ -36,7 +36,7 @@ export function PresetFrame({ preset, platform, selected, disabled, onSelect }: 
         <span
           className={cn(
             'rounded-[4px] border-[1.5px]',
-            selected ? 'border-brand bg-brand-weak' : 'border-[#CBD5E1] bg-surface-sunken',
+            selected ? 'border-brand bg-brand-weak' : 'border-[#1A1A1A] bg-surface-sunken',
           )}
           style={{ width: frameW, height: frameH }}
         />

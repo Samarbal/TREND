@@ -43,6 +43,13 @@ const config: Config = {
           ring: 'var(--brand-ring)',
           foreground: 'var(--on-brand)',
         },
+        // Landing page theme tokens copied from trendy-nextjs.
+        'brand-bg': '#F2EAD3',
+        'brand-headline': '#1A1A1A',
+        'brand-primary': '#8B1E1B',
+        'brand-accent': '#C49A55',
+        'brand-ink': '#2d2a26',
+        'brand-cream': '#f9f6f0',
 
         chart: {
           '1': 'hsl(var(--chart-1))', '2': 'hsl(var(--chart-2))', '3': 'hsl(var(--chart-3))',
@@ -52,6 +59,8 @@ const config: Config = {
       fontFamily: {
         display: ['var(--font-display)', 'ui-serif', 'Georgia', 'serif'],
         sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        ruqaa: ['"Aref Ruqaa"', 'serif'],
+        readex: ['"Readex Pro"', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'ui-monospace', 'Menlo', 'monospace'],
       },
       fontSize: {
@@ -65,6 +74,8 @@ const config: Config = {
         xl: 'calc(var(--radius) + 8px)',     // 20px — canvas stage
       },
       boxShadow: {
+        card: '0 20px 40px -10px rgba(26, 26, 26, 0.08)',
+        vintage: '0 10px 30px -5px rgba(26, 26, 26, 0.1)',
         xs: '0 1px 2px rgba(15, 23, 42, 0.05)',
         sm: '0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04)',
         md: '0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -3px rgba(15, 23, 42, 0.05)',
