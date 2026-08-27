@@ -2,8 +2,8 @@ SHELL := /bin/bash
 
 .PHONY: build up down logs restart shell health clean dev dev-backend dev-frontend lint test
 
-IMAGE_NAME ?= basarai
-CONTAINER_NAME ?= basarai-app
+IMAGE_NAME ?= TRENDY AI
+CONTAINER_NAME ?= TRENDY AI-app
 APP_PORT ?= 3001
 
 # Docker

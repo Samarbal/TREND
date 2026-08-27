@@ -1,6 +1,6 @@
 # Docker Deployment Guide
 
-This guide covers building, running, and deploying the Basar AI container image.
+This guide covers building, running, and deploying the TRENDY AI container image.
 
 ## Overview
 
@@ -23,7 +23,7 @@ The container exposes port 3000 (frontend). The backend runs internally on local
 docker build \
   --build-arg NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co \
   --build-arg NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_... \
-  -t basarai:latest .
+  -t TRENDY AI:latest .
 ```
 
 ### Build Arguments
@@ -39,11 +39,11 @@ docker build \
 
 ```bash
 docker run -d \
-  --name basarai \
+  --name TRENDY AI \
   -p 3001:3000 \
   -e SUPABASE_URL=https://your-project.supabase.co \
   -e SUPABASE_SECRET_KEY=sb_secret_... \
-  basarai:latest
+  TRENDY AI:latest
 ```
 
 The application is available at `http://localhost:3001`.
@@ -66,10 +66,10 @@ The application is available at `http://localhost:3001`.
 
 ```bash
 # Check health status
-docker inspect --format='{{.State.Health.Status}}' basarai
+docker inspect --format='{{.State.Health.Status}}' TRENDY AI
 
 # View detailed health check logs
-docker inspect --format='{{json .State.Health}}' basarai | jq
+docker inspect --format='{{json .State.Health}}' TRENDY AI | jq
 ```
 
 ### Test Backend Internally
@@ -77,7 +77,7 @@ docker inspect --format='{{json .State.Health}}' basarai | jq
 The backend is not accessible from outside the container. Test from inside:
 
 ```bash
-docker exec basarai python3 -c \
+docker exec TRENDY AI python3 -c \
   "import urllib.request; print(urllib.request.urlopen('http://localhost:8000/health').read().decode())"
 ```
 
@@ -87,21 +87,21 @@ Expected output: `{"status":"healthy","timestamp":"..."}`
 
 ```bash
 # All logs (both services interleaved)
-docker logs -f basarai
+docker logs -f TRENDY AI
 
 # Recent logs
 
-docker logs --tail 50 basarai
+docker logs --tail 50 TRENDY AI
 ```
 
 ## Stop
 
 ```bash
 # Graceful shutdown (sends SIGTERM)
-docker stop basarai
+docker stop TRENDY AI
 
 # Remove stopped container
-docker rm basarai
+docker rm TRENDY AI
 ```
 
 Graceful shutdown completes within 10 seconds. Both services receive termination signals and clean up properly.
@@ -112,10 +112,10 @@ Graceful shutdown completes within 10 seconds. Both services receive termination
 
 ```bash
 # Tag for your registry
-docker tag basarai:latest your-registry.com/basarai:latest
+docker tag TRENDY AI:latest your-registry.com/TRENDY AI:latest
 
 # Push
-docker push your-registry.com/basarai:latest
+docker push your-registry.com/TRENDY AI:latest
 ```
 
 ### 2. Configure on Bunny Magic
@@ -175,8 +175,8 @@ Bunny Magic handles HTTPS termination. The container serves HTTP only.
 **Cause**: Health check failing for backend or frontend.
 
 **Solution**:
-1. Check logs: `docker logs basarai`
-2. Verify backend health internally: `docker exec basarai python3 -c "..."`
+1. Check logs: `docker logs TRENDY AI`
+2. Verify backend health internally: `docker exec TRENDY AI python3 -c "..."`
 3. Check frontend responds: `curl http://localhost:3000`
 4. Both services must return HTTP 200 for healthy status
 
