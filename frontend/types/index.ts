@@ -120,12 +120,23 @@ export type PlatformPreset =
   | 'youtube_thumbnail'
   | 'youtube_banner'
 
+export type {
+  CampaignGoal,
+  ContentType,
+  GenerationBrief,
+  TargetAudienceBrief,
+  VoiceTone,
+} from './generation'
+
+import type { GenerationBrief } from './generation'
+
 export interface GenerateRequest {
-  prompt: string
+  brief: GenerationBrief
   provider: Provider
   platform_preset: PlatformPreset
   logo_mode: LogoMode
 }
+
 
 export interface GenerationResponse {
   id: string

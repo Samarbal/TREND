@@ -1,0 +1,62 @@
+export const CAMPAIGN_GOALS = [
+    { value: 'brand_awareness', label: 'Increase brand awareness' },
+    { value: 'product_launch', label: 'Launch a product or service' },
+    { value: 'product_showcase', label: 'Showcase a product or service' },
+    { value: 'promotion_offer', label: 'Promote an offer or discount' },
+    { value: 'sales_conversion', label: 'Increase sales' },
+    { value: 'lead_generation', label: 'Generate leads' },
+    { value: 'engagement', label: 'Increase engagement' },
+    { value: 'education', label: 'Educate the audience' },
+    { value: 'announcement', label: 'Announce news or an update' },
+    { value: 'event_registration', label: 'Promote an event' },
+    { value: 'seasonal_campaign', label: 'Run a seasonal campaign' },
+    { value: 'social_proof', label: 'Showcase trust and customer experience' },
+    { value: 'custom', label: 'Other goal' },
+] as const
+
+export const CONTENT_TYPES = [
+    { value: 'product_showcase', label: 'Product showcase' },
+    { value: 'service_showcase', label: 'Service showcase' },
+    { value: 'promotional_ad', label: 'Promotional ad' },
+    { value: 'announcement', label: 'Announcement or news' },
+    { value: 'educational', label: 'Educational content' },
+    { value: 'testimonial', label: 'Customer testimonial' },
+    { value: 'brand_story', label: 'Brand story' },
+    { value: 'event_promo', label: 'Event promotion' },
+    { value: 'seasonal_post', label: 'Seasonal post' },
+    { value: 'quote_or_tip', label: 'Quote or tip' },
+    { value: 'infographic', label: 'Infographic or visual explanation' },
+    { value: 'social_proof', label: 'Social proof or results' },
+    { value: 'custom', label: 'Other content type' },
+] as const
+
+export const VOICE_TONES = [
+    { value: 'friendly', label: 'Friendly' },
+    { value: 'professional', label: 'Professional' },
+    { value: 'playful', label: 'Playful' },
+    { value: 'bold', label: 'Bold' },
+    { value: 'elegant', label: 'Elegant and premium' },
+    { value: 'warm', label: 'Warm and human' },
+    { value: 'educational', label: 'Educational and clear' },
+    { value: 'inspirational', label: 'Inspirational' },
+    { value: 'minimal', label: 'Calm and minimal' },
+    { value: 'trustworthy', label: 'Trustworthy' },
+    { value: 'youthful', label: 'Youthful' },
+    { value: 'urgent', label: 'Urgent and action-oriented' },
+    { value: 'custom', label: 'Other tone' },
+] as const
+
+export const AUDIENCE_SEGMENTS = [
+    { value: 'general_consumers', label: 'General consumers' },
+    { value: 'small_business_owners', label: 'Small business owners' },
+    { value: 'entrepreneurs', label: 'Entrepreneurs' },
+    { value: 'marketers_creators', label: 'Marketers and content creators' },
+    { value: 'professionals', label: 'Professionals and employees' },
+    { value: 'students', label: 'Students' },
+    { value: 'online_shoppers', label: 'Online shoppers' },
+    { value: 'beauty_fashion_audience', label: 'Beauty and fashion audience' },
+    { value: 'food_hospitality_audience', label: 'Food and hospitality audience' },
+    { value: 'technology_users', label: 'Technology users' },
+    { value: 'local_community', label: 'Local community' },
+    { value: 'custom', label: 'Other audience' },
+] as const
