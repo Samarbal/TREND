@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { type LucideIcon } from 'lucide-react'
+import Image from 'next/image'
 
 interface AuthShellProps {
   hero: ReactNode
@@ -18,11 +19,22 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
             'radial-gradient(130% 90% at 80% 100%, rgba(120, 35, 30, .45), transparent 45%), linear-gradient(135deg, #312B20 0%, #1A1A1A 62%, #241416 100%)',
         }}
       >
-
-        <p className="flex items-baseline gap-3 text-[#F8FAFC]">
-          <span className="font-display text-[40px] leading-none">TRENDY AI</span>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/trendy_logo.png"
+            alt="TRENDY AI"
+            width={54}
+            height={54}
+            className="h-12 w-12 object-contain"
+          />
+          <span className="font-display text-[30px] leading-none text-brand-accent">
+            Trendy
+          </span>
           <span className="font-display text-[30px] leading-none text-brand-accent"> ترندي </span>
-        </p>
+
+        </div>
+
+
         <h1 className="max-w-[15ch] font-display text-[45px] leading-[1.1] text-[#F8FAFC]">
           {hero}
         </h1>

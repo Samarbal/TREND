@@ -4,6 +4,7 @@ import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
+
 const display = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
@@ -27,6 +28,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "TRENDY AI",
   description: "Arabic-first brand studio for platform-ready visual content",
+  icons: {
+    icon: '/trendy_logo.png',
+  },
 };
 
 export default function RootLayout({

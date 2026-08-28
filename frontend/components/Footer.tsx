@@ -1,3 +1,4 @@
+import Image from 'next/image'
 const PRODUCT_LINKS = [
   { href: "#studio", label: "Content Studio" },
   { href: "#audiences", label: "Who is this for?" },
@@ -21,9 +22,13 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-brand-bg/10">
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 font-ruqaa text-2xl font-bold text-white mb-4">
-              <div className="w-9 h-9 rounded-lg bg-brand-bg flex items-center justify-center">
-                <span className="text-brand-primary font-ruqaa text-lg">T</span>
-              </div>
+              <Image
+                src="/trendy_logo.png"
+                alt="Trendy"
+                width={42}
+                height={42}
+                className="h-10 w-10 object-contain"
+              />
               Trendy
             </div>
             <p className="text-sm leading-relaxed max-w-xs">

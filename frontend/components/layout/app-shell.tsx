@@ -1,5 +1,5 @@
 'use client'
-
+import Image from 'next/image'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { PanelLeft } from 'lucide-react'
@@ -96,7 +96,19 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <PanelLeft className="h-4 w-4" />
           </button>
-          <span className="font-display text-[22px] leading-none">TRENDY AI</span>
+          <div className="flex items-center gap-2">
+            <Image
+              src="/trendy_logo.png"
+              alt="TRENDY AI"
+              width={30}
+              height={30}
+              className="h-7 w-7 object-contain"
+            />
+            <span className="font-display text-[22px] leading-none text-brand-headline">
+              TRENDY AI
+            </span>
+          </div>
+
         </header>
         <main className="min-w-0 flex-1 overflow-y-auto px-4 py-5 md:px-[30px] md:py-6">
           {children}

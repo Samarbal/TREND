@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from 'next/image'
 
 const NAV_LINKS = [
   { href: "#hero", label: "About us" },
@@ -15,11 +16,15 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-brand-bg/90 backdrop-blur-md border-b border-brand-accent/30">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3 font-ruqaa text-2xl font-bold text-brand-headline">
-          <div className="w-10 h-10 rounded-lg bg-brand-headline flex items-center justify-center shadow-md">
-            <span className="text-brand-accent font-ruqaa text-xl">T</span>
-          </div>
-          Trendy
+        <div className="flex items-center gap-2">
+          <Image
+            src="/trendy_logo.png"
+            alt="Trendy"
+            width={36}
+            height={36}
+            className="h-9 w-9 object-contain"
+          />
+          <span className="font-display text-[24px] font-semibold">Trendy</span>
         </div>
 
         <nav className="hidden md:flex gap-8 text-sm font-semibold text-brand-headline">

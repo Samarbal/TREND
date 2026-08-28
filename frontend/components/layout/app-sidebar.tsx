@@ -1,5 +1,5 @@
 'use client'
-
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
@@ -51,22 +51,28 @@ export function AppSidebar({
 
   const nav = workspaceId
     ? [
-        { href: `/${workspaceId}`, label: 'Generate', icon: Sparkles, match: 'exact' as const },
-        { href: `/${workspaceId}/history`, label: 'History', icon: History, match: 'prefix' as const },
-        { href: `/${workspaceId}/kit`, label: 'Brand Kit', icon: Palette, match: 'prefix' as const },
-        { href: `/${workspaceId}/keys`, label: 'Keys', icon: Key, match: 'prefix' as const },
-        { href: `/${workspaceId}/settings`, label: 'Settings', icon: Settings, match: 'prefix' as const },
-      ]
+      { href: `/${workspaceId}`, label: 'Generate', icon: Sparkles, match: 'exact' as const },
+      { href: `/${workspaceId}/history`, label: 'History', icon: History, match: 'prefix' as const },
+      { href: `/${workspaceId}/kit`, label: 'Brand Kit', icon: Palette, match: 'prefix' as const },
+      { href: `/${workspaceId}/keys`, label: 'Keys', icon: Key, match: 'prefix' as const },
+      { href: `/${workspaceId}/settings`, label: 'Settings', icon: Settings, match: 'prefix' as const },
+    ]
     : []
 
   return (
     <aside className="flex h-full w-[248px] shrink-0 flex-col overflow-y-auto border-r border-border bg-background px-3 py-4">
       <Link href="/brands" className="mb-6 flex items-center gap-2 px-1 no-underline">
-        <span className="font-display text-[27px] leading-none tracking-tight">TRENDY AI</span>
-        <span
-          className="inline-block h-2 w-2 -translate-y-[3px] rounded-full bg-brand"
-          aria-hidden
+        <Image
+          src="/trendy_logo.png"
+          alt="TRENDY AI"
+          width={38}
+          height={38}
+          className="h-9 w-9 object-contain"
         />
+        <span className="font-display text-[27px] leading-none tracking-tight text-brand-headline">
+          TRENDY AI
+        </span>
+
       </Link>
 
       <Eyebrow className="px-1">Workspace</Eyebrow>
