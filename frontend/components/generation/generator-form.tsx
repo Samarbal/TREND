@@ -13,7 +13,12 @@ import { Button } from '@/components/ui/button'
 import { downloadImageFile } from '@/lib/download'
 import { PLATFORM_PRESETS } from '@/lib/presets'
 import type { LogoMode, PlatformPreset, Provider } from '@/types'
-import { GenerationBriefForm } from '@/components/generation/generation-brief-form'
+import {
+  EMPTY_GENERATION_BRIEF,
+  GenerationBriefForm,
+  isGenerationBriefComplete,
+} from '@/components/generation/generation-brief-form'
+
 import type { GenerationBrief } from '@/types/generation'
 
 
@@ -25,7 +30,7 @@ interface GeneratorFormProps {
 }
 
 export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFormProps) {
-  const [brief, setBrief] = useState<GenerationBrief | null>(null)
+  const [brief, setBrief] = useState<GenerationBrief>(EMPTY_GENERATION_BRIEF)
   const [provider, setProvider] = useState<Provider>('openai')
   const [preset, setPreset] = useState<PlatformPreset>('instagram_post')
   const [logoMode, setLogoMode] = useState<LogoMode>('none')
@@ -58,7 +63,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
   const hasActiveKey =
     (provider === 'openai' && activeKeys.openaiActive) ||
     (provider === 'gemini' && activeKeys.geminiActive)
-  const generateDisabled = submitting || !brief || !hasActiveKey
+  const generateDisabled = submitting || !isGenerationBriefComplete(brief) || !hasActiveKey
 
   const presetInfo = PLATFORM_PRESETS[preset]
   const canvasStatus =
@@ -113,7 +118,8 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         </div>
         <div className="shrink-0">
           <GenerationBriefForm
-            onComplete={(completedBrief) => setBrief(completedBrief)}
+            value={brief}
+            onChange={setBrief}
             disabled={submitting}
           />
 
