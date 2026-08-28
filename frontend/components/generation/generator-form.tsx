@@ -6,7 +6,6 @@ import { useActiveKeys } from '@/hooks/use-active-keys'
 import { useGenerate } from '@/hooks/use-generate'
 import { LogoModeSelector } from '@/components/generation/logo-mode-selector'
 import { PresetSelector } from '@/components/generation/preset-selector'
-import { PromptInput } from '@/components/generation/prompt-input'
 import { ProviderSelector } from '@/components/generation/provider-selector'
 import { CanvasStage } from '@/components/generation/canvas-stage'
 import { ErrorMessage } from '@/components/generation/error-message'
@@ -14,6 +13,10 @@ import { Button } from '@/components/ui/button'
 import { downloadImageFile } from '@/lib/download'
 import { PLATFORM_PRESETS } from '@/lib/presets'
 import type { LogoMode, PlatformPreset, Provider } from '@/types'
+import { GenerationBriefForm } from '@/components/generation/generation-brief-form'
+import type { GenerationBrief } from '@/types/generation'
+
+
 
 interface GeneratorFormProps {
   brandId: string
@@ -22,7 +25,7 @@ interface GeneratorFormProps {
 }
 
 export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFormProps) {
-  const [prompt, setPrompt] = useState('')
+  const [brief, setBrief] = useState<GenerationBrief | null>(null)
   const [provider, setProvider] = useState<Provider>('openai')
   const [preset, setPreset] = useState<PlatformPreset>('instagram_post')
   const [logoMode, setLogoMode] = useState<LogoMode>('none')
@@ -51,16 +54,11 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
     setProviderInitialized(true)
   }, [keysLoading, activeKeys, providerInitialized])
 
-  const trimmedLen = prompt.trim().length
   const submitting = state.status === 'submitting'
   const hasActiveKey =
     (provider === 'openai' && activeKeys.openaiActive) ||
     (provider === 'gemini' && activeKeys.geminiActive)
-  const generateDisabled =
-    submitting ||
-    trimmedLen < 3 ||
-    trimmedLen > 4000 ||
-    !hasActiveKey
+  const generateDisabled = submitting || !brief || !hasActiveKey
 
   const presetInfo = PLATFORM_PRESETS[preset]
   const canvasStatus =
@@ -73,14 +71,14 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (generateDisabled) return
-    setDownloadError(null)
+    if (generateDisabled || !brief) return
     await generate({
-      prompt: prompt.trim(),
+      brief,
       provider,
       platform_preset: preset,
       logo_mode: logoMode,
     })
+
   }
 
   async function handleDownload() {
@@ -110,11 +108,15 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         <div className="shrink-0">
           <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">Generate</h1>
           <p className="mt-1 text-[14px] text-muted-foreground">
-            Describe the image. TRENDY AI paints it in {brandName}&apos;s voice.
+            Answer a few questions and TRENDY AI will create an image that matches {brandName}&apos;s identity.
           </p>
         </div>
         <div className="shrink-0">
-          <PromptInput value={prompt} onChange={setPrompt} disabled={submitting} />
+          <GenerationBriefForm
+            onComplete={(completedBrief) => setBrief(completedBrief)}
+            disabled={submitting}
+          />
+
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto pr-1">
           <PresetSelector value={preset} onChange={handlePresetChange} disabled={submitting} />

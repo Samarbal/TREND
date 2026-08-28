@@ -20,13 +20,16 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
         }}
       >
         <div className="flex items-center gap-3">
-          <Image
-            src="/trendy_logo.png"
-            alt="TRENDY AI"
-            width={54}
-            height={54}
-            className="h-12 w-12 object-contain"
-          />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4EBDD] p-2 shadow-sm">
+            <Image
+              src="/trendy_logo.png"
+              alt="TRENDY AI"
+              width={54}
+              height={54}
+              className="h-12 w-12 object-contain"
+            />
+          </div>
+
           <span className="font-display text-[30px] leading-none text-brand-accent">
             Trendy
           </span>
@@ -51,9 +54,22 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
           ))}
         </ul>
       </section>
-      <section className="auth-theme flex items-center justify-center bg-[#F2EAD3] px-4 py-12">
-        <div className="w-full max-w-[372px]">{children}</div>
+      <section className="auth-theme relative flex min-h-screen items-center justify-center overflow-hidden bg-[#F2EAD3] px-4 py-12">
+        <Image
+          src="/trendy_logo.png"
+          alt=""
+          fill
+          sizes="50vw"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-contain p-1 opacity-[0.12] mix-blend-multiply"
+
+        />
+
+        <div className="relative z-10 w-full max-w-[372px]">
+          {children}
+        </div>
       </section>
+
     </div>
   )
 }
