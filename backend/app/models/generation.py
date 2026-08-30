@@ -119,3 +119,133 @@ class GenerationDetailResponse(BaseModel):
     error_message: str | None
     created_at: datetime
     completed_at: datetime | None
+
+
+class CampaignGoalEnum(str, Enum):
+    brand_awareness = "brand_awareness"
+    product_launch = "product_launch"
+    product_showcase = "product_showcase"
+    promotion_offer = "promotion_offer"
+    sales_conversion = "sales_conversion"
+    lead_generation = "lead_generation"
+    engagement = "engagement"
+    education = "education"
+    announcement = "announcement"
+    event_registration = "event_registration"
+    seasonal_campaign = "seasonal_campaign"
+    social_proof = "social_proof"
+    custom = "custom"
+
+
+class ContentTypeEnum(str, Enum):
+    product_showcase = "product_showcase"
+    service_showcase = "service_showcase"
+    promotional_ad = "promotional_ad"
+    announcement = "announcement"
+    educational = "educational"
+    testimonial = "testimonial"
+    brand_story = "brand_story"
+    event_promo = "event_promo"
+    seasonal_post = "seasonal_post"
+    quote_or_tip = "quote_or_tip"
+    infographic = "infographic"
+    social_proof = "social_proof"
+    custom = "custom"
+
+
+class AudienceSegmentEnum(str, Enum):
+    general_consumers = "general_consumers"
+    small_business_owners = "small_business_owners"
+    entrepreneurs = "entrepreneurs"
+    marketers_creators = "marketers_creators"
+    professionals = "professionals"
+    students = "students"
+    online_shoppers = "online_shoppers"
+    beauty_fashion_audience = "beauty_fashion_audience"
+    food_hospitality_audience = "food_hospitality_audience"
+    technology_users = "technology_users"
+    local_community = "local_community"
+    custom = "custom"
+
+
+class AgeRangeEnum(str, Enum):
+    under_18 = "under_18"
+    age_18_24 = "18_24"
+    age_25_34 = "25_34"
+    age_35_44 = "35_44"
+    age_45_54 = "45_54"
+    age_55_plus = "55_plus"
+    mixed = "mixed"
+    unspecified = "unspecified"
+
+
+class GenderFocusEnum(str, Enum):
+    all = "all"
+    women = "women"
+    men = "men"
+    gender_inclusive = "gender_inclusive"
+    custom = "custom"
+    unspecified = "unspecified"
+
+
+class VoiceToneEnum(str, Enum):
+    friendly = "friendly"
+    professional = "professional"
+    playful = "playful"
+    bold = "bold"
+    elegant = "elegant"
+    warm = "warm"
+    educational = "educational"
+    inspirational = "inspirational"
+    minimal = "minimal"
+    trustworthy = "trustworthy"
+    youthful = "youthful"
+    urgent = "urgent"
+    custom = "custom"
+
+
+
+class TargetAudience(BaseModel):
+    segments: list[AudienceSegmentEnum] = Field(
+        default_factory=list,
+        max_length=2,
+    )
+    location: str | None = Field(default=None, max_length=100)
+    age_range: AgeRangeEnum | None = None
+    gender_focus: GenderFocusEnum | None = None
+    details: str | None = Field(default=None, max_length=1000)
+
+
+class GenerationBrief(BaseModel):
+    campaign_goal: CampaignGoalEnum
+    campaign_goal_custom: str | None = Field(default=None, max_length=300)
+    content_type: ContentTypeEnum
+    content_type_custom: str | None = Field(default=None, max_length=300)
+    target_audience: TargetAudience
+    core_idea: str = Field(..., min_length=3, max_length=1000)
+    voice_tone: VoiceToneEnum
+    voice_tone_custom: str | None = Field(default=None, max_length=300)
+    optional_notes: str | None = Field(default=None, max_length=2000)
+    text_to_include: str | None = Field(default=None, max_length=500)
+
+
+__all__ = [
+    "ProviderEnum",
+    "LogoModeEnum",
+    "GenerationStatusEnum",
+    "PlatformPresetEnum",
+    "GenerateRequest",
+    "GenerationResponse",
+    "GenerationHistoryStatusEnum",
+    "GenerationHistoryItem",
+    "GenerationHistoryPage",
+    "GenerationDetailResponse",
+    "CampaignGoalEnum",
+    "ContentTypeEnum",
+    "AudienceSegmentEnum",
+    "AgeRangeEnum",
+    "GenderFocusEnum",
+    "VoiceToneEnum",
+    "TargetAudience",
+    "GenerationBrief",
+]
