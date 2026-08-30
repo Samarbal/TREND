@@ -1,8 +1,9 @@
+# D:\Level4\Trend\backend\app\models\generation.py
+
 from datetime import datetime
 from enum import Enum
 from typing import Literal
-
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class ProviderEnum(str, Enum):
@@ -206,6 +207,44 @@ class VoiceToneEnum(str, Enum):
 
 
 class TargetAudience(BaseModel):
+    @field_validator("segments")
+    @classmethod
+    def validate_segments(
+        cls,
+        value: list[AudienceSegmentEnum],
+    ) -> list[AudienceSegmentEnum]:
+        if not value:
+            raise ValueError("segments must contain at least one audience segment")
+
+        if len(value) != len(set(value)):
+            raise ValueError("segments must not contain duplicates")
+
+        return value
+
+    @field_validator("location", "details", mode="before")
+    @classmethod
+    def normalize_audience_text(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not isinstance(value, str):
+            return value
+        value = value.strip()
+        return value or None
+
+    @model_validator(mode="after")
+    def validate_custom_audience(self) -> "TargetAudience":
+        has_custom_segment = AudienceSegmentEnum.custom in self.segments
+        has_custom_gender = self.gender_focus == GenderFocusEnum.custom
+
+        if (has_custom_segment or has_custom_gender) and (
+            self.details is None or len(self.details) < 3
+        ):
+            raise ValueError(
+                "details must contain at least 3 characters when a custom audience "
+                "segment or gender focus is selected"
+            )
+
+        return self
     segments: list[AudienceSegmentEnum] = Field(
         default_factory=list,
         max_length=2,
@@ -217,6 +256,43 @@ class TargetAudience(BaseModel):
 
 
 class GenerationBrief(BaseModel):
+    @field_validator(
+        "campaign_goal_custom",
+        "content_type_custom",
+        "voice_tone_custom",
+        "optional_notes",
+        "text_to_include",
+        mode="before",
+    )
+    @classmethod
+    def normalize_optional_text(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not isinstance(value, str):
+            return value
+        value = value.strip()
+        return value or None
+
+    @field_validator("core_idea", mode="before")
+    @classmethod
+    def normalize_core_idea(cls, value: str) -> str:
+        if not isinstance(value, str):
+            return value
+        return value.strip()
+
+    @field_validator(
+        "campaign_goal_custom",
+        "content_type_custom",
+        "voice_tone_custom",
+    )
+    @classmethod
+    def validate_custom_text_length(cls, value: str | None) -> str | None:
+        if value is not None and len(value) < 3:
+            raise ValueError("custom text must contain at least 3 characters")
+        return value
+
+
+
     campaign_goal: CampaignGoalEnum
     campaign_goal_custom: str | None = Field(default=None, max_length=300)
     content_type: ContentTypeEnum
@@ -227,6 +303,49 @@ class GenerationBrief(BaseModel):
     voice_tone_custom: str | None = Field(default=None, max_length=300)
     optional_notes: str | None = Field(default=None, max_length=2000)
     text_to_include: str | None = Field(default=None, max_length=500)
+
+
+    @model_validator(mode="after")
+    def validate_custom_fields(self) -> "GenerationBrief":
+        self._validate_custom_pair(
+            selected=self.campaign_goal,
+            custom_value=self.campaign_goal_custom,
+            custom_enum=CampaignGoalEnum.custom,
+            field_name="campaign_goal_custom",
+        )
+        self._validate_custom_pair(
+            selected=self.content_type,
+            custom_value=self.content_type_custom,
+            custom_enum=ContentTypeEnum.custom,
+            field_name="content_type_custom",
+        )
+        self._validate_custom_pair(
+            selected=self.voice_tone,
+            custom_value=self.voice_tone_custom,
+            custom_enum=VoiceToneEnum.custom,
+            field_name="voice_tone_custom",
+        )
+        return self
+
+    @staticmethod
+    def _validate_custom_pair(
+        *,
+        selected: object,
+        custom_value: str | None,
+        custom_enum: object,
+        field_name: str,
+    ) -> None:
+        is_custom = selected == custom_enum
+
+        if is_custom and custom_value is None:
+            raise ValueError(
+                f"{field_name} is required when the selected value is custom"
+            )
+
+        if not is_custom and custom_value is not None:
+            raise ValueError(
+                f"{field_name} must be null when the selected value is not custom"
+            )
 
 
 __all__ = [
