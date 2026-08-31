@@ -3,7 +3,18 @@ from app.services.prompt_composer import (
     PlatformContext,
     PLATFORM_NOTES,
     TONE_STYLE_MAP,
+    build_generation_prompt,
     compose_full_prompt,
+)
+from app.models.generation import (
+    AgeRangeEnum,
+    AudienceSegmentEnum,
+    CampaignGoalEnum,
+    ContentTypeEnum,
+    GenderFocusEnum,
+    GenerationBrief,
+    TargetAudience,
+    VoiceToneEnum,
 )
 from app.services.presets import PLATFORM_PRESETS
 
@@ -247,3 +258,111 @@ def test_logo_none_mode():
         brand_has_logo=True,
     )
     assert "LOGO" not in result
+
+
+# --- build_generation_prompt tests (Sprint 2 Structured Generation) ---
+
+SAMPLE_BRIEF = GenerationBrief(
+    campaign_goal=CampaignGoalEnum.product_launch,
+    content_type=ContentTypeEnum.product_showcase,
+    target_audience=TargetAudience(
+        segments=[AudienceSegmentEnum.small_business_owners],
+        location="Amman, Jordan",
+        age_range=AgeRangeEnum.age_25_34,
+        gender_focus=GenderFocusEnum.all,
+        details="Local café and bakery owners looking to upgrade their summer menu.",
+    ),
+    core_idea="إطلاق مشروب قهوة بارد جديد ومنعش لصباح صيفي مزدحم.",
+    voice_tone=VoiceToneEnum.friendly,
+    optional_notes="اترك مساحة في الأعلى لكتابة نص عربي واضح.",
+    text_to_include="خصم 20% لفترة محدودة",
+)
+
+
+def test_build_generation_prompt_section_ordering_full():
+    result = build_generation_prompt(
+        brief=SAMPLE_BRIEF,
+        brand_context=SAMPLE_BRAND,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="prompt",
+        brand_has_logo=True,
+    )
+    system_idx = result.index("You are a professional social media image designer.")
+    brief_idx = result.index("=== CAMPAIGN BRIEF ===")
+    brand_idx = result.index("=== BRAND IDENTITY ===")
+    composition_idx = result.index("=== COMPOSITION ===")
+    logo_idx = result.index("=== LOGO ===")
+    output_idx = result.index("=== OUTPUT RULES ===")
+
+    assert system_idx < brief_idx < brand_idx < composition_idx < logo_idx < output_idx
+
+
+def test_build_generation_prompt_maps_enums_to_readable_instructions():
+    result = build_generation_prompt(
+        brief=SAMPLE_BRIEF,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+    assert "Campaign Goal: Communicate a product or service launch." in result
+    assert "Content Type: Visual product showcase focusing on aesthetic product presentation." in result
+    assert "Tone & Style: Friendly, warm, and approachable." in result
+    assert "Demographic: small business owners" in result
+    assert "Location/Market: Amman, Jordan" in result
+    assert "Age group: 25–34 years old" in result
+    assert "Gender focus: all genders" in result
+    assert "Details: Local café and bakery owners looking to upgrade their summer menu." in result
+
+
+def test_build_generation_prompt_preserves_arabic_and_user_text():
+    result = build_generation_prompt(
+        brief=SAMPLE_BRIEF,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+    assert "Core Idea: إطلاق مشروب قهوة بارد جديد ومنعش لصباح صيفي مزدحم." in result
+    assert 'Text to Include: "خصم 20% لفترة محدودة"' in result
+    assert "Design Notes: اترك مساحة في الأعلى لكتابة نص عربي واضح." in result
+
+
+def test_build_generation_prompt_custom_fields():
+    custom_brief = GenerationBrief(
+        campaign_goal=CampaignGoalEnum.custom,
+        campaign_goal_custom="احتفال بالذكرى السنوية الخامسة",
+        content_type=ContentTypeEnum.custom,
+        content_type_custom="بطاقة شكر مخصصة للعملاء",
+        target_audience=TargetAudience(
+            segments=[AudienceSegmentEnum.custom],
+            details="عملاء المتجر الأوفياء في كافة الفروع.",
+        ),
+        core_idea="التعبير عن الامتنان للعملاء مع تقديم مفاجأة خاصة.",
+        voice_tone=VoiceToneEnum.custom,
+        voice_tone_custom="دافئ جدًا ومفعم بالتقدير",
+    )
+    result = build_generation_prompt(
+        brief=custom_brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+    assert "Campaign Goal: احتفال بالذكرى السنوية الخامسة" in result
+    assert "Content Type: بطاقة شكر مخصصة للعملاء" in result
+    assert "Tone & Style: دافئ جدًا ومفعم بالتقدير" in result
+    assert "Demographic: custom audience" in result
+    assert "Details: عملاء المتجر الأوفياء في كافة الفروع." in result
+
+
+def test_build_generation_prompt_output_rules_always_present():
+    result = build_generation_prompt(
+        brief=SAMPLE_BRIEF,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+    assert "=== OUTPUT RULES ===" in result
+    assert "Do NOT render section headers" in result
