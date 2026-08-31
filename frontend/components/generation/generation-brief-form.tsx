@@ -44,8 +44,10 @@ export function isGenerationBriefComplete(brief: GenerationBrief) {
 interface GenerationBriefFormProps {
     value: GenerationBrief
     onChange: (value: GenerationBrief) => void
+    onComplete: (brief: GenerationBrief) => void
     disabled?: boolean
 }
+
 
 const goals: { value: CampaignGoal; label: string }[] = [
     { value: 'brand_awareness', label: 'Increase brand awareness' },
@@ -87,8 +89,10 @@ const tones: { value: VoiceTone; label: string }[] = [
 export function GenerationBriefForm({
     value,
     onChange,
+    onComplete,
     disabled = false,
 }: GenerationBriefFormProps) {
+
     const [step, setStep] = useState(0)
     const [hasAttemptedNext, setHasAttemptedNext] = useState(false)
     const steps = ['Goal', 'Type', 'Audience', 'Idea', 'Style & notes', 'Summary']
@@ -383,12 +387,13 @@ export function GenerationBriefForm({
                 ) : (
                     <Button
                         type="button"
-                        onClick={() => onChange(value)}
+                        onClick={() => onComplete(value)}
                         disabled={disabled || !isGenerationBriefComplete(value)}
                     >
                         <Check className="h-4 w-4" />
                         Ready to generate
                     </Button>
+
                 )}
             </div>
         </div>
@@ -422,8 +427,8 @@ function ChoiceStep({
                         aria-pressed={value === option.value}
                         onClick={() => onChange(option.value)}
                         className={`rounded-lg border px-3 py-3 text-left text-[13px] transition-colors ${value === option.value
-                                ? 'border-brand bg-brand-weaker'
-                                : 'border-border bg-card hover:border-brand-border'
+                            ? 'border-brand bg-brand-weaker'
+                            : 'border-border bg-card hover:border-brand-border'
                             }`}
                     >
                         {option.label}

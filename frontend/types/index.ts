@@ -1,3 +1,7 @@
+import type { GenerationBrief } from './generation'
+
+export * from './generation'
+
 export interface Profile {
   user_id: string
   email: string
@@ -120,23 +124,12 @@ export type PlatformPreset =
   | 'youtube_thumbnail'
   | 'youtube_banner'
 
-export type {
-  CampaignGoal,
-  ContentType,
-  GenerationBrief,
-  TargetAudienceBrief,
-  VoiceTone,
-} from './generation'
-
-import type { GenerationBrief } from './generation'
-
 export interface GenerateRequest {
   brief: GenerationBrief
   provider: Provider
   platform_preset: PlatformPreset
   logo_mode: LogoMode
 }
-
 
 export interface GenerationResponse {
   id: string
