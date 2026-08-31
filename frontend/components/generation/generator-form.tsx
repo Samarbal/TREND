@@ -12,16 +12,9 @@ import { ErrorMessage } from '@/components/generation/error-message'
 import { Button } from '@/components/ui/button'
 import { downloadImageFile } from '@/lib/download'
 import { PLATFORM_PRESETS } from '@/lib/presets'
-import type { LogoMode, PlatformPreset, Provider } from '@/types'
-import {
-  EMPTY_GENERATION_BRIEF,
-  GenerationBriefForm,
-  isGenerationBriefComplete,
-} from '@/components/generation/generation-brief-form'
-
+import { EMPTY_GENERATION_BRIEF, GenerationBriefForm, } from '@/components/generation/generation-brief-form'
 import type { GenerationBrief } from '@/types/generation'
-
-
+import type { LogoMode, PlatformPreset, Provider } from '@/types'
 
 interface GeneratorFormProps {
   brandId: string
@@ -31,6 +24,7 @@ interface GeneratorFormProps {
 
 export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFormProps) {
   const [brief, setBrief] = useState<GenerationBrief>(EMPTY_GENERATION_BRIEF)
+  const [briefReviewed, setBriefReviewed] = useState(false)
   const [provider, setProvider] = useState<Provider>('openai')
   const [preset, setPreset] = useState<PlatformPreset>('instagram_post')
   const [logoMode, setLogoMode] = useState<LogoMode>('none')
@@ -47,6 +41,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
 
   useEffect(() => {
     if (keysLoading || providerInitialized) return
+
     if (activeKeys.openaiActive && !activeKeys.geminiActive) {
       setProvider('openai')
     } else if (!activeKeys.openaiActive && activeKeys.geminiActive) {
@@ -56,6 +51,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
     } else {
       setProvider('openai')
     }
+
     setProviderInitialized(true)
   }, [keysLoading, activeKeys, providerInitialized])
 
@@ -63,35 +59,45 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
   const hasActiveKey =
     (provider === 'openai' && activeKeys.openaiActive) ||
     (provider === 'gemini' && activeKeys.geminiActive)
-  const generateDisabled = submitting || !isGenerationBriefComplete(brief) || !hasActiveKey
+  const generateDisabled = submitting || !briefReviewed || !hasActiveKey
 
   const presetInfo = PLATFORM_PRESETS[preset]
   const canvasStatus =
     state.status === 'submitting' ? 'generating' : state.status === 'success' ? 'done' : 'empty'
+
+  function handleBriefChange(nextBrief: GenerationBrief) {
+    setBrief(nextBrief)
+    setBriefReviewed(false)
+  }
 
   function handlePresetChange(next: PlatformPreset) {
     if (state.status === 'success') reset()
     setPreset(next)
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (generateDisabled || !brief) return
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    if (generateDisabled) return
+
+    setDownloadError(null)
+
     await generate({
       brief,
       provider,
       platform_preset: preset,
       logo_mode: logoMode,
     })
-
   }
 
   async function handleDownload() {
     if (state.status !== 'success') return
+
     const { result } = state
     if (!result.image_url || !result.download_filename) return
+
     setDownloading(true)
     setDownloadError(null)
+
     try {
       await downloadImageFile(result.image_url, result.download_filename)
     } catch (err) {
@@ -116,18 +122,22 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
             Answer a few questions and TRENDY AI will create an image that matches {brandName}&apos;s identity.
           </p>
         </div>
-        <div className="shrink-0">
+
+        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
           <GenerationBriefForm
             value={brief}
-            onChange={setBrief}
+            onChange={handleBriefChange}
+            onComplete={(completedBrief) => {
+              setBrief(completedBrief)
+              setBriefReviewed(true)
+            }}
             disabled={submitting}
           />
+        </div>
 
-        </div>
-        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-          <PresetSelector value={preset} onChange={handlePresetChange} disabled={submitting} />
-        </div>
         <div className="shrink-0 space-y-3 border-t border-border-subtle pt-3">
+          <PresetSelector value={preset} onChange={handlePresetChange} disabled={submitting} />
+
           <div className="grid gap-3 sm:grid-cols-2">
             <ProviderSelector
               value={provider}
@@ -144,6 +154,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
               disabled={submitting}
             />
           </div>
+
           <Button type="submit" size="lg" className="w-full" disabled={generateDisabled}>
             {submitting ? (
               <>
@@ -157,6 +168,13 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
               </>
             )}
           </Button>
+
+          {!hasActiveKey && (
+            <p className="text-[12px] text-muted-foreground">
+              Add an active provider key before generating.
+            </p>
+          )}
+
           {state.status === 'error' && (
             <ErrorMessage code={state.code} message={state.message} brandId={brandId} />
           )}
@@ -171,6 +189,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
           imageUrl={result?.image_url}
           imageAlt={result?.prompt}
         />
+
         <div className="flex items-center justify-between gap-3">
           <p className="font-mono text-[12px] text-muted-foreground">
             {presetInfo.width} × {presetInfo.height} · {presetInfo.label} · {result?.provider ?? provider}
@@ -185,6 +204,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
             {downloading ? 'Downloading…' : 'Download'}
           </Button>
         </div>
+
         {downloadError && <p className="text-[12px] text-destructive">{downloadError}</p>}
       </div>
     </div>
