@@ -41,21 +41,7 @@ class PlatformPresetEnum(str, Enum):
     youtube_banner = "youtube_banner"
 
 
-class GenerateRequest(BaseModel):
-    prompt: str = Field(..., min_length=3, max_length=4000)
-    provider: ProviderEnum
-    platform_preset: PlatformPresetEnum
-    logo_mode: LogoModeEnum = LogoModeEnum.none
 
-    @field_validator("prompt")
-    @classmethod
-    def strip_prompt(cls, v: str) -> str:
-        v = v.strip()
-        if len(v) < 3:
-            raise ValueError("Prompt must be at least 3 characters after trimming")
-        if len(v) > 4000:
-            raise ValueError("Prompt must be at most 4000 characters after trimming")
-        return v
 
 
 class GenerationResponse(BaseModel):
@@ -346,6 +332,13 @@ class GenerationBrief(BaseModel):
             raise ValueError(
                 f"{field_name} must be null when the selected value is not custom"
             )
+
+
+class GenerateRequest(BaseModel):
+    brief: GenerationBrief
+    provider: ProviderEnum
+    platform_preset: PlatformPresetEnum
+    logo_mode: LogoModeEnum = LogoModeEnum.none
 
 
 __all__ = [

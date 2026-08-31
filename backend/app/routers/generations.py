@@ -302,7 +302,7 @@ async def generate_image(
         {
             "id": str(generation_id),
             "brand_id": str(brand_id),
-            "prompt": body.prompt,
+            "prompt": body.brief.core_idea,
             "provider": body.provider.value,
             "model": resolved_model,
             "platform_preset": body.platform_preset.value,
@@ -325,7 +325,7 @@ async def generate_image(
         ).execute()
 
         full_prompt = compose_full_prompt(
-            user_prompt=body.prompt,
+            user_prompt=body.brief.core_idea,
             brand_context=brand_context,
             platform=platform,
             logo_mode=body.logo_mode.value,
@@ -434,7 +434,7 @@ async def generate_image(
             )
             row = {
                 "id": str(generation_id),
-                "prompt": body.prompt,
+                "prompt": body.brief.core_idea,
                 "provider": body.provider.value,
                 "model": resolved_model,
                 "platform_preset": body.platform_preset.value,

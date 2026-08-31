@@ -85,25 +85,26 @@ def test_generation_brief_rejects_short_core_idea():
         GenerationBrief.model_validate(payload)
 
 
-def test_generate_request_strips_prompt_whitespace():
+def test_generate_request_accepts_valid_payload():
     request = GenerateRequest.model_validate(
         {
-            "prompt": "   Create a summer coffee advertisement   ",
+            "brief": VALID_BRIEF,
             "provider": "openai",
             "platform_preset": "instagram_post",
+            "logo_mode": "none",
         }
     )
 
-    assert request.prompt == "Create a summer coffee advertisement"
+    assert request.brief.campaign_goal is CampaignGoalEnum.product_launch
     assert request.provider is ProviderEnum.openai
     assert request.platform_preset is PlatformPresetEnum.instagram_post
+    assert request.logo_mode.value == "none"
 
 
-def test_generate_request_rejects_prompt_that_is_too_short_after_trimming():
+def test_generate_request_rejects_missing_brief():
     with pytest.raises(ValidationError):
         GenerateRequest.model_validate(
             {
-                "prompt": "  a ",
                 "provider": "openai",
                 "platform_preset": "instagram_post",
             }
