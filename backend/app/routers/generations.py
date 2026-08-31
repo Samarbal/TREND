@@ -31,7 +31,12 @@ from app.services.presets import (
     PRESET_TO_ASPECT_RATIO,
     build_download_filename,
 )
-from app.services.prompt_composer import BrandContext, build_platform_context, compose_full_prompt
+from app.services.prompt_composer import (
+    BrandContext,
+    build_generation_prompt,
+    build_platform_context,
+    compose_full_prompt,
+)
 from app.services.providers.base import ProviderError, ProviderResult
 from app.services.providers.gemini_image import gemini_generate
 from app.services.providers.openai_image import openai_generate
@@ -324,8 +329,8 @@ async def generate_image(
             "id", str(generation_id)
         ).execute()
 
-        full_prompt = compose_full_prompt(
-            user_prompt=body.brief.core_idea,
+        full_prompt = build_generation_prompt(
+            brief=body.brief,
             brand_context=brand_context,
             platform=platform,
             logo_mode=body.logo_mode.value,
