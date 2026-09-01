@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import type { GenerationBrief } from './generation'
-
-=======
->>>>>>> Stashed changes
 export * from './generation'
 
 export interface Profile {

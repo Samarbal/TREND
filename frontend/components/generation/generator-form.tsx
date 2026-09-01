@@ -14,19 +14,12 @@ import { ErrorMessage } from '@/components/generation/error-message'
 import { Button } from '@/components/ui/button'
 import { downloadImageFile } from '@/lib/download'
 import { PLATFORM_PRESETS } from '@/lib/presets'
-<<<<<<< Updated upstream
-import { EMPTY_GENERATION_BRIEF, GenerationBriefForm, } from '@/components/generation/generation-brief-form'
-import type { GenerationBrief } from '@/types/generation'
-import type { LogoMode, PlatformPreset, Provider } from '@/types'
-=======
 import type { LogoMode, PlatformPreset, Provider } from '@/types'
 import {
   EMPTY_GENERATION_BRIEF,
   GenerationBriefForm,
 } from '@/components/generation/generation-brief-form'
-
 import type { GenerationBrief } from '@/types/generation'
->>>>>>> Stashed changes
 
 interface GeneratorFormProps {
   brandId: string
@@ -77,10 +70,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
   const canvasStatus =
     state.status === 'submitting' ? 'generating' : state.status === 'success' ? 'done' : 'empty'
 
-<<<<<<< Updated upstream
-=======
-  // handleBriefChange function
->>>>>>> Stashed changes
+
   function handleBriefChange(nextBrief: GenerationBrief) {
     setBrief(nextBrief)
     setBriefReviewed(false)
@@ -139,11 +129,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
           </p>
         </div>
 
-<<<<<<< Updated upstream
-        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-=======
         <div>
->>>>>>> Stashed changes
           <GenerationBriefForm
             value={brief}
             onChange={handleBriefChange}
@@ -151,21 +137,14 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
               setBrief(completedBrief)
               setBriefReviewed(true)
             }}
-<<<<<<< Updated upstream
-=======
             platformPreset={preset}
             brandId={brandId}
             brandName={brandName}
->>>>>>> Stashed changes
             disabled={submitting}
           />
         </div>
 
-<<<<<<< Updated upstream
-        <div className="shrink-0 space-y-3 border-t border-border-subtle pt-3">
-=======
         <div className="space-y-3 border-t border-border-subtle pt-3">
->>>>>>> Stashed changes
           <PresetSelector value={preset} onChange={handlePresetChange} disabled={submitting} />
 
           <div className="grid gap-3 sm:grid-cols-2">

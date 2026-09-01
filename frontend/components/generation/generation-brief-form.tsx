@@ -48,12 +48,9 @@ interface GenerationBriefFormProps {
     value: GenerationBrief
     onChange: (value: GenerationBrief) => void
     onComplete: (brief: GenerationBrief) => void
-<<<<<<< Updated upstream
-=======
     platformPreset: PlatformPreset
     brandId: string
-    brandName: string          // added brandName prop
->>>>>>> Stashed changes
+    brandName: string
     disabled?: boolean
 }
 
@@ -99,12 +96,9 @@ export function GenerationBriefForm({
     value,
     onChange,
     onComplete,
-<<<<<<< Updated upstream
-=======
     platformPreset,
     brandId,
-    brandName,              // destructured brandName
->>>>>>> Stashed changes
+    brandName,
     disabled = false,
 }: GenerationBriefFormProps) {
 

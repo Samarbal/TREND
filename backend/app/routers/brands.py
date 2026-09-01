@@ -6,6 +6,7 @@ from uuid import UUID, uuid4
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from PIL import Image
 from postgrest.exceptions import APIError
+from pydantic import BaseModel
 
 from app.config import settings
 from app.core.auth import User, get_current_user
@@ -23,6 +24,11 @@ from app.models.brand import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/brands", tags=["brands"])
+
+
+class PreviewBriefRequest(BaseModel):
+    brief: dict
+    platform_preset: str
 
 
 def _error_response(status_code: int, code: str, message: str) -> HTTPException:
@@ -79,6 +85,65 @@ def _brand_response(row: dict, kit_status: str) -> BrandResponse:
         created_at=row["created_at"],
         updated_at=row["updated_at"],
     )
+
+
+def _platform_preview_note(platform_preset: str) -> str:
+    labels = {
+        "instagram_post": "Bold, scroll-stopping product storytelling for the feed.",
+        "instagram_story": "Quick visual moments designed for vertical story consumption.",
+        "instagram_reel_cover": "Clear, high-impact cover art for short-form video content.",
+        "facebook_post": "Broad, polished social content optimized for engagement.",
+        "facebook_cover": "Strong profile cover art with a clean brand-first look.",
+        "facebook_story": "Fast social storytelling with clear focal messaging.",
+        "twitter_post": "Punchy, concise creative built for social conversation.",
+        "twitter_header": "Wide-format brand hero designed for a professional profile header.",
+        "linkedin_post": "Professional and informative visual designed for business audiences.",
+        "linkedin_banner": "Premium branding layout for professional company positioning.",
+        "tiktok_video_cover": "Animated marketing energy with a vibrant, attention-grabbing focal point.",
+        "youtube_thumbnail": "High-contrast thumbnail art designed to spark curiosity instantly.",
+        "youtube_banner": "Wide-format visual identity for a trusted channel presence.",
+    }
+    return labels.get(platform_preset, "Creative direction tuned for the selected platform format.")
+
+
+@router.post("/{brand_id}/preview-brief")
+async def preview_brand_brief(
+    brand_id: UUID,
+    body: PreviewBriefRequest,
+    current_user: User = Depends(get_current_user),
+):
+    brand = _get_brand_or_404(brand_id, current_user.id)
+    brief = body.brief or {}
+    audience = brief.get("target_audience") or {}
+    segments = audience.get("segments") or []
+    target_audience = ", ".join(str(item) for item in segments if item)
+    if not target_audience:
+        target_audience = str(audience) if audience else "General audience"
+
+    creative_direction = {
+        "campaign_goal": str(brief.get("campaign_goal") or "brand_awareness"),
+        "content_type": str(brief.get("content_type") or "product_showcase"),
+        "target_audience": target_audience,
+        "core_idea": str(brief.get("core_idea") or "A compelling brand moment"),
+        "voice_tone": str(brief.get("voice_tone") or "friendly"),
+        "platform": {
+            "name": str(body.platform_preset),
+            "note": _platform_preview_note(str(body.platform_preset)),
+        },
+        "text_to_include": brief.get("text_to_include"),
+        "optional_notes": brief.get("optional_notes"),
+        "brand_identity": {
+            "tagline": None,
+            "tone": str(brief.get("voice_tone") or "friendly"),
+            "colors": [],
+            "avoid_words": None,
+        },
+    }
+
+    return {
+        "creative_direction": creative_direction,
+        "brand_name": brand["name"],
+    }
 
 
 @router.post("", response_model=BrandResponse, status_code=status.HTTP_201_CREATED)
