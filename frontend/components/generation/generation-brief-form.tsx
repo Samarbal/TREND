@@ -1,16 +1,19 @@
+//  D:\Level4\TREND\frontend\components\generation\generation-brief-form.tsx
+
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'                          //  added useEffect
 import { ArrowLeft, ArrowRight, Check, Pencil } from 'lucide-react'
+import { BriefCreativePreview } from '@/components/generation/brief-creative-preview'
+import { usePreviewBrief } from '@/hooks/use-preview-brief'
+import type { PlatformPreset } from '@/types'
 import { BriefAudienceStep } from '@/components/generation/brief-audience-step'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { validateGenerationBrief } from '@/lib/validation'
-import type {
-    BriefFieldErrors,
-} from '@/lib/validation'
+import type { BriefFieldErrors } from '@/lib/validation'
 import type {
     CampaignGoal,
     ContentType,
@@ -45,6 +48,12 @@ interface GenerationBriefFormProps {
     value: GenerationBrief
     onChange: (value: GenerationBrief) => void
     onComplete: (brief: GenerationBrief) => void
+<<<<<<< Updated upstream
+=======
+    platformPreset: PlatformPreset
+    brandId: string
+    brandName: string          // added brandName prop
+>>>>>>> Stashed changes
     disabled?: boolean
 }
 
@@ -90,6 +99,12 @@ export function GenerationBriefForm({
     value,
     onChange,
     onComplete,
+<<<<<<< Updated upstream
+=======
+    platformPreset,
+    brandId,
+    brandName,              // destructured brandName
+>>>>>>> Stashed changes
     disabled = false,
 }: GenerationBriefFormProps) {
 
@@ -99,12 +114,26 @@ export function GenerationBriefForm({
     const audience = value.target_audience
     const allErrors = validateGenerationBrief(value)
 
+    // call usePreviewBrief hook at TOP LEVEL (not inside any function)
+    const { preview, loading, error, fetchPreview } = usePreviewBrief(brandId)
+
+    const briefSerialized = JSON.stringify(value)
+
+    // useEffect at TOP LEVEL — fetches preview when user reaches Summary (step 5)
+    useEffect(() => {
+        if (step === 5 && platformPreset && isGenerationBriefComplete(value)) {
+            fetchPreview(value, platformPreset)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [step, platformPreset, briefSerialized, fetchPreview])
+
     const errors: BriefFieldErrors = hasAttemptedNext ? allErrors : {}
 
     function patch(next: Partial<GenerationBrief>) {
         onChange({ ...value, ...next })
     }
 
+    // restored clean getCurrentStepErrors() without useEffect inside it
     function getCurrentStepErrors(): BriefFieldErrors {
         if (step === 0) {
             return {
@@ -141,7 +170,7 @@ export function GenerationBriefForm({
             }
         }
 
-        return allErrors
+        return {}   // step 5 (Summary) has no validation errors to check
     }
 
     function nextStep() {
@@ -358,14 +387,23 @@ export function GenerationBriefForm({
                 </div>
             )}
 
+            {/* Step 5 now renders BriefCreativePreview + BriefSummary */}
             {step === 5 && (
-                <BriefSummary
-                    brief={value}
-                    onEdit={(targetStep) => {
-                        setHasAttemptedNext(false)
-                        setStep(targetStep)
-                    }}
-                />
+                <div className="space-y-4">
+                    <BriefCreativePreview
+                        preview={preview}
+                        loading={loading}
+                        error={error}
+                        brandName={brandName}
+                    />
+                    <BriefSummary
+                        brief={value}
+                        onEdit={(targetStep) => {
+                            setHasAttemptedNext(false)
+                            setStep(targetStep)
+                        }}
+                    />
+                </div>
             )}
 
             <div className="flex items-center justify-between border-t border-border-subtle pt-3">
