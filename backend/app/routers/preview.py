@@ -1,26 +1,20 @@
-<<<<<<< Updated upstream
-from fastapi import APIRouter, Depends, HTTPException
-from uuid import UUID
-
-from app.core.auth import User, get_current_user
-from app.core.supabase import get_service_client
-from app.models.generation import GenerationBrief
-from app.services.brief_preview import build_creative_direction
-
-router = APIRouter(prefix="/brands/{brand_id}", tags=["preview"])
-=======
 import logging
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import ValidationError
 
 from app.config import settings
 from app.core.auth import User, get_current_user
 from app.core.supabase import get_service_client
+from app.models.generation import GenerationBrief, PlatformPresetEnum
+from app.services.brief_preview import build_creative_direction
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/preview", tags=["preview"])
+# Keep the existing public paths explicit because this module exposes
+# both /brands/{brand_id}/preview-brief and /preview/* endpoints.
+router = APIRouter(tags=["preview"])
 
 
 def _error_response(status_code: int, code: str, message: str) -> HTTPException:
@@ -33,11 +27,11 @@ def _error_response(status_code: int, code: str, message: str) -> HTTPException:
 def _build_logo_url(logo_path: str | None) -> str | None:
     if not logo_path:
         return None
+
     return (
         f"{settings.SUPABASE_URL}/storage/v1/object/public/"
         f"{settings.STORAGE_BUCKET}/{logo_path}"
     )
->>>>>>> Stashed changes
 
 
 def _get_brand_or_404(brand_id: UUID, user_id: str) -> dict:
@@ -50,9 +44,10 @@ def _get_brand_or_404(brand_id: UUID, user_id: str) -> dict:
         .maybe_single()
         .execute()
     )
+
     if result is None or result.data is None:
-<<<<<<< Updated upstream
-        raise HTTPException(status_code=404, detail="Brand not found")
+        raise _error_response(404, "BRAND_NOT_FOUND", "Brand not found")
+
     return result.data
 
 
@@ -62,27 +57,17 @@ def _get_brand_kit_context(brand_id: UUID, brand_name: str) -> dict | None:
         client.table("brand_kits")
         .select("tagline, tone, audience, colors, avoid_words, status")
         .eq("brand_id", str(brand_id))
-=======
-        raise _error_response(404, "BRAND_NOT_FOUND", "Brand not found")
-    return result.data
-
-
-def _get_kit_status(brand_id: str) -> str:
-    client = get_service_client()
-    result = (
-        client.table("brand_kits")
-        .select("status")
-        .eq("brand_id", brand_id)
->>>>>>> Stashed changes
         .maybe_single()
         .execute()
     )
+
     if result is None or result.data is None:
-<<<<<<< Updated upstream
         return None
+
     row = result.data
     if row.get("status") != "complete":
         return None
+
     return {
         "name": brand_name,
         "tagline": row.get("tagline"),
@@ -93,65 +78,79 @@ def _get_kit_status(brand_id: str) -> str:
     }
 
 
-class PreviewBriefRequest:
-    """Request body for preview-brief endpoint."""
-    def __init__(self, brief: GenerationBrief, platform_preset: str):
-        self.brief = brief
-        self.platform_preset = platform_preset
+def _get_kit_status(brand_id: str) -> str:
+    client = get_service_client()
+    result = (
+        client.table("brand_kits")
+        .select("status")
+        .eq("brand_id", brand_id)
+        .maybe_single()
+        .execute()
+    )
+
+    if result is None or result.data is None:
+        return "not_started"
+
+    return result.data.get("status", "not_started")
 
 
-@router.post("/preview-brief")
+@router.post("/brands/{brand_id}/preview-brief")
 async def preview_brief(
     brand_id: UUID,
-    body: dict,  # We'll parse manually to avoid circular import issues
+    body: dict,
     current_user: User = Depends(get_current_user),
 ):
-    """Return creative direction translation of a generation brief."""
-    from app.models.generation import GenerationBrief, PlatformPresetEnum
-    
-    # Parse request body
+    """Return the creative-direction translation of a generation brief."""
     brief_data = body.get("brief")
     platform_preset = body.get("platform_preset")
-    
-    if not brief_data or not platform_preset:
-        raise HTTPException(status_code=400, detail="brief and platform_preset are required")
-    
-    # Validate brief
-    brief = GenerationBrief(**brief_data)
-    
-    # Validate platform preset
+
+    if not isinstance(brief_data, dict) or not platform_preset:
+        raise _error_response(
+            status.HTTP_400_BAD_REQUEST,
+            "INVALID_PAYLOAD",
+            "brief and platform_preset are required",
+        )
+
+    try:
+        brief = GenerationBrief(**brief_data)
+    except ValidationError as exc:
+        raise _error_response(
+            status.HTTP_400_BAD_REQUEST,
+            "VALIDATION_ERROR",
+            str(exc),
+        ) from exc
+
     try:
         PlatformPresetEnum(platform_preset)
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid platform_preset")
-    
-    # Fetch brand and kit
+    except ValueError as exc:
+        raise _error_response(
+            status.HTTP_400_BAD_REQUEST,
+            "INVALID_PLATFORM_PRESET",
+            "Invalid platform_preset",
+        ) from exc
+
     brand = _get_brand_or_404(brand_id, current_user.id)
     brand_context = _get_brand_kit_context(brand_id, brand["name"])
-    
-    # Build creative direction
+
     creative_direction = build_creative_direction(
         brief=brief,
         brand_name=brand["name"],
         platform_preset=platform_preset,
         brand_context=brand_context,
     )
-    
+
     return {
         "creative_direction": creative_direction,
         "brand_name": brand["name"],
     }
-=======
-        return "not_started"
-    return result.data.get("status", "not_started")
 
 
-@router.get("/health")
+@router.get("/preview/health")
 async def preview_health():
     return {"status": "ok", "service": "preview"}
 
 
-@router.get("/brands/{brand_id}")
+@router.get("/preview/brands/{brand_id}")
 async def get_brand_preview(
     brand_id: UUID,
     current_user: User = Depends(get_current_user),
@@ -190,7 +189,7 @@ async def get_brand_preview(
     }
 
 
-@router.get("/brands/{brand_id}/latest-generation")
+@router.get("/preview/brands/{brand_id}/latest-generation")
 async def get_latest_generation_preview(
     brand_id: UUID,
     current_user: User = Depends(get_current_user),
@@ -229,4 +228,3 @@ async def get_latest_generation_preview(
         "image_url": image_url,
         "created_at": row.get("created_at"),
     }
->>>>>>> Stashed changes
