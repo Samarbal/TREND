@@ -83,3 +83,28 @@ export interface GenerationBrief {
     /** Optional exact text to render inside the image. */
     text_to_include?: string | null
 }
+
+export interface CreativeDirection {
+    campaign_goal: string
+    content_type: string
+    target_audience: string
+    core_idea: string
+    voice_tone: string
+    platform: {
+        name: string
+        note: string
+    }
+    text_to_include?: string
+    optional_notes?: string
+    brand_identity?: {
+        tagline?: string
+        tone?: string
+        colors?: string[]
+        avoid_words?: string
+    }
+}
+
+export interface PreviewBriefResponse {
+    creative_direction: CreativeDirection
+    brand_name: string
+}
