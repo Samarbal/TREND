@@ -1,3 +1,5 @@
+// D:\Level4\TREND\frontend\components\generation\generator-form.tsx
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -12,9 +14,19 @@ import { ErrorMessage } from '@/components/generation/error-message'
 import { Button } from '@/components/ui/button'
 import { downloadImageFile } from '@/lib/download'
 import { PLATFORM_PRESETS } from '@/lib/presets'
+<<<<<<< Updated upstream
 import { EMPTY_GENERATION_BRIEF, GenerationBriefForm, } from '@/components/generation/generation-brief-form'
 import type { GenerationBrief } from '@/types/generation'
 import type { LogoMode, PlatformPreset, Provider } from '@/types'
+=======
+import type { LogoMode, PlatformPreset, Provider } from '@/types'
+import {
+  EMPTY_GENERATION_BRIEF,
+  GenerationBriefForm,
+} from '@/components/generation/generation-brief-form'
+
+import type { GenerationBrief } from '@/types/generation'
+>>>>>>> Stashed changes
 
 interface GeneratorFormProps {
   brandId: string
@@ -65,6 +77,10 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
   const canvasStatus =
     state.status === 'submitting' ? 'generating' : state.status === 'success' ? 'done' : 'empty'
 
+<<<<<<< Updated upstream
+=======
+  // handleBriefChange function
+>>>>>>> Stashed changes
   function handleBriefChange(nextBrief: GenerationBrief) {
     setBrief(nextBrief)
     setBriefReviewed(false)
@@ -111,19 +127,23 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
   const canDownload = Boolean(result?.image_url && result?.download_filename)
 
   return (
-    <div className="grid gap-[22px] xl:grid-cols-[minmax(360px,430px)_1fr] xl:items-start">
+    <div className="grid gap-[22px] xl:grid-cols-[minmax(380px,460px)_1fr] xl:items-start">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-[13px] xl:max-h-[calc(100dvh-3rem)]"
+        className="flex flex-col gap-4"
       >
-        <div className="shrink-0">
+        <div>
           <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">Generate</h1>
           <p className="mt-1 text-[14px] text-muted-foreground">
             Answer a few questions and TRENDY AI will create an image that matches {brandName}&apos;s identity.
           </p>
         </div>
 
+<<<<<<< Updated upstream
         <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+=======
+        <div>
+>>>>>>> Stashed changes
           <GenerationBriefForm
             value={brief}
             onChange={handleBriefChange}
@@ -131,11 +151,21 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
               setBrief(completedBrief)
               setBriefReviewed(true)
             }}
+<<<<<<< Updated upstream
+=======
+            platformPreset={preset}
+            brandId={brandId}
+            brandName={brandName}
+>>>>>>> Stashed changes
             disabled={submitting}
           />
         </div>
 
+<<<<<<< Updated upstream
         <div className="shrink-0 space-y-3 border-t border-border-subtle pt-3">
+=======
+        <div className="space-y-3 border-t border-border-subtle pt-3">
+>>>>>>> Stashed changes
           <PresetSelector value={preset} onChange={handlePresetChange} disabled={submitting} />
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -181,7 +211,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         </div>
       </form>
 
-      <div className="flex min-w-0 flex-col gap-3">
+      <div className="flex min-w-0 flex-col gap-3 xl:sticky xl:top-6">
         <CanvasStage
           status={canvasStatus}
           preset={presetInfo}
