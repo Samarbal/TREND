@@ -193,3 +193,8 @@ The release must also confirm that a user can complete the original Sprint 2 flo
 [1]: https://support.google.com/trends/answer/3076011?hl=en "Explore the searches that are Trending now — Google Trends Help"
 
 [2]: https://developers.google.com/search/blog/2025/07/trends-api "Introducing the Google Trends API (alpha) — Google Search Central Blog"
+
+
+## Board backlog
+
+The implementation-ready task breakdown, ownership split, dependencies, estimates, acceptance criteria, board columns, and exit criteria are maintained in [`docs/sprint-3-backlog.md`](./sprint-3-backlog.md).
