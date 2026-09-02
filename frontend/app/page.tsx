@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
+
     <>
       <Header />
       <Hero />
@@ -18,6 +19,7 @@ export default function Home() {
       <AudiencesSection />
       <CTASection />
       <Footer />
-    </>
+      </>
+  
   );
 }
