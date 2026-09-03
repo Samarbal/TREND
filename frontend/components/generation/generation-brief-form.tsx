@@ -1,9 +1,9 @@
-//  D:\Level4\TREND\frontend\components\generation\generation-brief-form.tsx
+
 
 'use client'
 
 import { useEffect, useState } from 'react'                          //  added useEffect
-import { ArrowLeft, ArrowRight, Check, Pencil } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { BriefCreativePreview } from '@/components/generation/brief-creative-preview'
 import { usePreviewBrief } from '@/hooks/use-preview-brief'
 import type { PlatformPreset } from '@/types'
@@ -381,23 +381,18 @@ export function GenerationBriefForm({
                 </div>
             )}
 
-            {/* Step 5 now renders BriefCreativePreview + BriefSummary */}
+            {/* Step 5 renders a single canonical BriefCreativePreview with inline edit affordances */}
             {step === 5 && (
-                <div className="space-y-4">
-                    <BriefCreativePreview
-                        preview={preview}
-                        loading={loading}
-                        error={error}
-                        brandName={brandName}
-                    />
-                    <BriefSummary
-                        brief={value}
-                        onEdit={(targetStep) => {
-                            setHasAttemptedNext(false)
-                            setStep(targetStep)
-                        }}
-                    />
-                </div>
+                <BriefCreativePreview
+                    preview={preview}
+                    loading={loading}
+                    error={error}
+                    brandName={brandName}
+                    onEdit={(targetStep) => {
+                        setHasAttemptedNext(false)
+                        setStep(targetStep)
+                    }}
+                />
             )}
 
             <div className="flex items-center justify-between border-t border-border-subtle pt-3">
@@ -506,75 +501,3 @@ function TextField({
     )
 }
 
-function BriefSummary({
-    brief,
-    onEdit,
-}: {
-    brief: GenerationBrief
-    onEdit: (step: number) => void
-}) {
-    const audience = brief.target_audience
-    const audienceValue = [
-        audience.segments.join(', '),
-        audience.location,
-        audience.age_range,
-        audience.gender_focus,
-        audience.details,
-    ]
-        .filter(Boolean)
-        .join(' · ')
-
-    return (
-        <div className="space-y-2 rounded-lg border border-border-subtle bg-card p-3 text-[12px]">
-            <div className="mb-3">
-                <h3 className="text-[16px] font-semibold text-foreground">
-                    Review your brief
-                </h3>
-                <p className="mt-1 text-[12px] text-muted-foreground">
-                    Edit any section before generating.
-                </p>
-            </div>
-
-            <SummaryRow label="Campaign goal" value={brief.campaign_goal_custom || brief.campaign_goal || 'Not completed'} onEdit={() => onEdit(0)} />
-            <SummaryRow label="Content type" value={brief.content_type_custom || brief.content_type || 'Not completed'} onEdit={() => onEdit(1)} />
-            <SummaryRow label="Target audience" value={audienceValue || 'Not completed'} onEdit={() => onEdit(2)} />
-            <SummaryRow label="Core idea" value={brief.core_idea || 'Not completed'} onEdit={() => onEdit(3)} />
-            <SummaryRow label="Voice and tone" value={brief.voice_tone_custom || brief.voice_tone || 'Not completed'} onEdit={() => onEdit(4)} />
-
-            {brief.optional_notes && (
-                <SummaryRow label="Additional notes" value={brief.optional_notes} onEdit={() => onEdit(4)} />
-            )}
-
-            {brief.text_to_include && (
-                <SummaryRow label="Text to include" value={brief.text_to_include} onEdit={() => onEdit(4)} />
-            )}
-        </div>
-    )
-}
-
-function SummaryRow({
-    label,
-    value,
-    onEdit,
-}: {
-    label: string
-    value: string
-    onEdit: () => void
-}) {
-    return (
-        <div className="flex items-start justify-between gap-3 border-b border-border-subtle pb-2 last:border-0">
-            <div className="min-w-0">
-                <p className="font-medium text-muted-foreground">{label}</p>
-                <p className="mt-1 break-words text-foreground">{value}</p>
-            </div>
-            <button
-                type="button"
-                onClick={onEdit}
-                className="shrink-0 text-brand-accent underline-offset-2 hover:underline"
-            >
-                <Pencil className="mr-1 inline-block h-3 w-3" />
-                Edit
-            </button>
-        </div>
-    )
-}
