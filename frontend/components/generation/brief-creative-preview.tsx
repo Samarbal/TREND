@@ -9,10 +9,10 @@ import {
     Lightbulb,
     Palette,
     Monitor,
-    Type,
     FileText,
     AlertCircle,
     Pencil,
+    RefreshCw,
 } from 'lucide-react'
 import {
     AUDIENCE_SEGMENTS,
@@ -28,6 +28,7 @@ interface BriefCreativePreviewProps {
     error: string | null
     brandName: string
     onEdit?: (step: number) => void
+    retryPreview?: () => void | Promise<void>
 }
 
 function labelFromOptions(
@@ -63,10 +64,20 @@ function formatPlatform(value: string | undefined) {
     return humanizeLabel(value).replace('Instagram ', 'Instagram ')
 }
 
-export function BriefCreativePreview({ preview, loading, error, brandName, onEdit }: BriefCreativePreviewProps) {
+export function BriefCreativePreview({
+    preview,
+    loading,
+    error,
+    brandName,
+    onEdit,
+    retryPreview,
+}: BriefCreativePreviewProps) {
     if (loading) {
         return (
-            <div className="flex items-center justify-center rounded-xl border border-brand/20 bg-brand-weaker/20 py-8 text-[13px] text-muted-foreground">
+            <div
+                data-testid="brief-creative-preview"
+                className="flex items-center justify-center rounded-xl border border-brand/20 bg-brand-weaker/20 py-8 text-[13px] text-muted-foreground"
+            >
                 <Sparkles className="mr-2 h-4 w-4 animate-pulse text-brand" />
                 Translating your brief into creative direction...
             </div>
@@ -75,9 +86,23 @@ export function BriefCreativePreview({ preview, loading, error, brandName, onEdi
 
     if (error) {
         return (
-            <div className="flex items-start gap-2 rounded-xl border border-destructive/20 bg-destructive/5 p-3 text-[12px] text-destructive">
+            <div
+                data-testid="brief-creative-preview"
+                className="flex items-start gap-2 rounded-xl border border-destructive/20 bg-destructive/5 p-3 text-[12px] text-destructive"
+                role="alert"
+            >
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-                {error}
+                <span className="flex-1">{error}</span>
+                {retryPreview && (
+                    <button
+                        type="button"
+                        onClick={retryPreview}
+                        className="inline-flex shrink-0 items-center gap-1.5 font-medium text-destructive underline-offset-2 hover:underline"
+                    >
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Retry
+                    </button>
+                )}
             </div>
         )
     }
@@ -91,7 +116,10 @@ export function BriefCreativePreview({ preview, loading, error, brandName, onEdi
     const platformName = formatPlatform(preview.platform?.name)
 
     return (
-        <div className="space-y-3 rounded-2xl border border-brand/20 bg-brand-weaker/30 p-4 shadow-[0_8px_24px_rgba(0,0,0,0.03)]">
+        <div
+            data-testid="brief-creative-preview"
+            className="space-y-3 rounded-2xl border border-brand/20 bg-brand-weaker/30 p-4 shadow-[0_8px_24px_rgba(0,0,0,0.03)]"
+        >
             <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand">
                     <Sparkles className="h-3.5 w-3.5" />

@@ -109,7 +109,7 @@ export function GenerationBriefForm({
     const allErrors = validateGenerationBrief(value)
 
     // call usePreviewBrief hook at TOP LEVEL (not inside any function)
-    const { preview, loading, error, fetchPreview } = usePreviewBrief(brandId)
+    const { preview, loading, error, fetchPreview, retryPreview } = usePreviewBrief(brandId)
 
     const briefSerialized = JSON.stringify(value)
 
@@ -386,9 +386,10 @@ export function GenerationBriefForm({
                 <BriefCreativePreview
                     preview={preview}
                     loading={loading}
-                    error={error}
-                    brandName={brandName}
-                    onEdit={(targetStep) => {
+                        error={error}
+                        brandName={brandName}
+                        retryPreview={retryPreview}
+                        onEdit={(targetStep) => {
                         setHasAttemptedNext(false)
                         setStep(targetStep)
                     }}
