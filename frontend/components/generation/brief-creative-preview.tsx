@@ -1,4 +1,4 @@
-// D:\Level4\TREND\frontend\components\generation\brief-creative-preview.tsx
+
 'use client'
 
 import type { ReactNode } from 'react'
@@ -12,6 +12,7 @@ import {
     Type,
     FileText,
     AlertCircle,
+    Pencil,
 } from 'lucide-react'
 import {
     AUDIENCE_SEGMENTS,
@@ -26,6 +27,7 @@ interface BriefCreativePreviewProps {
     loading: boolean
     error: string | null
     brandName: string
+    onEdit?: (step: number) => void
 }
 
 function labelFromOptions(
@@ -61,7 +63,7 @@ function formatPlatform(value: string | undefined) {
     return humanizeLabel(value).replace('Instagram ', 'Instagram ')
 }
 
-export function BriefCreativePreview({ preview, loading, error, brandName }: BriefCreativePreviewProps) {
+export function BriefCreativePreview({ preview, loading, error, brandName, onEdit }: BriefCreativePreviewProps) {
     if (loading) {
         return (
             <div className="flex items-center justify-center rounded-xl border border-brand/20 bg-brand-weaker/20 py-8 text-[13px] text-muted-foreground">
@@ -103,11 +105,11 @@ export function BriefCreativePreview({ preview, loading, error, brandName }: Bri
             </div>
 
             <div className="grid gap-2.5 md:grid-cols-2">
-                <DirectionCard icon={<Target className="h-3.5 w-3.5" />} label="Campaign goal" value={campaignGoal} />
-                <DirectionCard icon={<FileText className="h-3.5 w-3.5" />} label="Content type" value={contentType} />
-                <DirectionCard icon={<Users className="h-3.5 w-3.5" />} label="Target audience" value={targetAudience} />
-                <DirectionCard icon={<Lightbulb className="h-3.5 w-3.5" />} label="Core idea" value={preview.core_idea || 'Ideas are being refined'} />
-                <DirectionCard icon={<Palette className="h-3.5 w-3.5" />} label="Voice & tone" value={voiceTone} />
+                <DirectionCard icon={<Target className="h-3.5 w-3.5" />} label="Campaign goal" value={campaignGoal} onEdit={onEdit ? () => onEdit(0) : undefined} />
+                <DirectionCard icon={<FileText className="h-3.5 w-3.5" />} label="Content type" value={contentType} onEdit={onEdit ? () => onEdit(1) : undefined} />
+                <DirectionCard icon={<Users className="h-3.5 w-3.5" />} label="Target audience" value={targetAudience} onEdit={onEdit ? () => onEdit(2) : undefined} />
+                <DirectionCard icon={<Lightbulb className="h-3.5 w-3.5" />} label="Core idea" value={preview.core_idea || 'Ideas are being refined'} onEdit={onEdit ? () => onEdit(3) : undefined} />
+                <DirectionCard icon={<Palette className="h-3.5 w-3.5" />} label="Voice & tone" value={voiceTone} onEdit={onEdit ? () => onEdit(4) : undefined} />
                 <DirectionCard
                     icon={<Monitor className="h-3.5 w-3.5" />}
                     label="Platform"
@@ -124,10 +126,18 @@ export function BriefCreativePreview({ preview, loading, error, brandName }: Bri
 
                     <div className="space-y-2 text-[12px] text-foreground">
                         {preview.text_to_include && (
-                            <InfoLine label="Text to include" value={`"${preview.text_to_include}"`} />
+                            <InfoLine
+                                label="Text to include"
+                                value={`"${preview.text_to_include}"`}
+                                onEdit={onEdit ? () => onEdit(4) : undefined}
+                            />
                         )}
                         {preview.optional_notes && (
-                            <InfoLine label="Design notes" value={preview.optional_notes} />
+                            <InfoLine
+                                label="Design notes"
+                                value={preview.optional_notes}
+                                onEdit={onEdit ? () => onEdit(4) : undefined}
+                            />
                         )}
                         {preview.brand_identity && (
                             <>
@@ -166,17 +176,31 @@ function DirectionCard({
     label,
     value,
     detail,
+    onEdit,
 }: {
     icon: ReactNode
     label: string
     value: string
     detail?: string
+    onEdit?: () => void
 }) {
     return (
         <div className="rounded-xl border border-border-subtle bg-card/50 p-2.5">
-            <div className="mb-1 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                <span className="text-brand">{icon}</span>
-                {label}
+            <div className="mb-1 flex items-center justify-between gap-1.5">
+                <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                    <span className="text-brand">{icon}</span>
+                    {label}
+                </div>
+                {onEdit && (
+                    <button
+                        type="button"
+                        onClick={onEdit}
+                        className="shrink-0 text-brand-accent underline-offset-2 hover:underline"
+                        aria-label={`Edit ${label}`}
+                    >
+                        <Pencil className="h-3 w-3" />
+                    </button>
+                )}
             </div>
             <p className="text-[12px] font-medium text-foreground">{value}</p>
             {detail && <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{detail}</p>}
@@ -188,15 +212,29 @@ function InfoLine({
     label,
     value,
     tone = 'default',
+    onEdit,
 }: {
     label: string
     value: string
     tone?: 'default' | 'danger'
+    onEdit?: () => void
 }) {
     return (
-        <div className="flex items-start gap-2">
-            <span className="min-w-[72px] text-muted-foreground">{label}</span>
-            <span className={tone === 'danger' ? 'text-destructive' : 'text-foreground'}>{value}</span>
+        <div className="flex items-start justify-between gap-2">
+            <div className="flex items-start gap-2">
+                <span className="min-w-[72px] text-muted-foreground">{label}</span>
+                <span className={tone === 'danger' ? 'text-destructive' : 'text-foreground'}>{value}</span>
+            </div>
+            {onEdit && (
+                <button
+                    type="button"
+                    onClick={onEdit}
+                    className="shrink-0 text-brand-accent underline-offset-2 hover:underline"
+                    aria-label={`Edit ${label}`}
+                >
+                    <Pencil className="h-3 w-3" />
+                </button>
+            )}
         </div>
     )
 }
