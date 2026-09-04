@@ -30,6 +30,29 @@ class PreviewBriefRequest(BaseModel):
     brief: dict
     platform_preset: str
 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "brief": {
+                    "campaign_goal": "brand_awareness",
+                    "content_type": "product_showcase",
+                    "target_audience": {
+                        "segments": ["general_consumers"],
+                        "location": "Amman",
+                        "age_range": "25_34",
+                        "gender_focus": "all",
+                        "details": "Customers interested in premium products",
+                    },
+                    "core_idea": "Show the brand in a premium lifestyle setting",
+                    "voice_tone": "friendly",
+                    "optional_notes": "Clean and modern",
+                    "text_to_include": "Discover our collection",
+                },
+                "platform_preset": "instagram_post",
+            }
+        }
+    }
+
 
 def _error_response(status_code: int, code: str, message: str) -> HTTPException:
     return HTTPException(
