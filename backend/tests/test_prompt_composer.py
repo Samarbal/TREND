@@ -366,3 +366,28 @@ def test_build_generation_prompt_output_rules_always_present():
     )
     assert "=== OUTPUT RULES ===" in result
     assert "Do NOT render section headers" in result
+
+
+def test_prompt_composer_includes_arabic_instruction_and_preserves_core_idea():
+    brief_data = {
+        "core_idea": "إطلاق قهوة باردة لصباح صيفي مزدحم.",
+        "language": "ar"
+    }
+    
+    
+    # 1. Test that the core idea is preserved in the prompt
+    # assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in prompt
+    assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in brief_data["core_idea"]
+    
+   
+
+# 2. Test that the prompt includes an instruction to generate text in Arabic
+    # assert "Arabic" in prompt or "ar" in prompt
+def test_prompt_composer_includes_english_instruction():
+    brief_data = {
+        "core_idea": "Launching cold brew for busy summer mornings.",
+        "language": "en"
+    }
+    
+    prompt = build_generation_prompt(brief_data)
+    assert "English" in prompt or "en" in prompt

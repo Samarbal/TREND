@@ -187,3 +187,46 @@ async def test_generate_endpoint_logo_required_check(override_auth, mock_supabas
     assert response.status_code == 400
     res_data = response.json()
     assert res_data["error"]["code"] == "LOGO_REQUIRED"
+
+@pytest.mark.asyncio
+async def test_generate_endpoint_accepts_language_param(override_auth, mock_supabase, mock_helpers, monkeypatch):
+    """Test that the endpoint accepts the language parameter and sends a 200 response on success."""
+    from app.services.providers.base import ProviderResult
+    mock_result = ProviderResult(image_bytes=b"fake-image-bytes", request_id="req-123")
+    monkeypatch.setattr(generations, "openai_generate", AsyncMock(return_value=mock_result))
+    monkeypatch.setattr(generations, "resize_to_preset", lambda img, w, h: img)
+
+    client = TestClient(app)
+    brand_id = uuid4()
+    
+    # نمرر brief يحتوي على language="en"
+    payload_with_lang = {
+        "brief": {**VALID_BRIEF, "language": "en"},
+        "provider": "openai",
+        "platform_preset": "instagram_post",
+        "logo_mode": "none"
+    }
+    
+    response = client.post(f"/brands/{brand_id}/generate", json=payload_with_lang)
+    assert response.status_code == 200
+    res_data = response.json()
+    assert res_data["status"] == "succeeded"
+
+
+@pytest.mark.asyncio
+async def test_generate_endpoint_rejects_invalid_language(override_auth, mock_helpers):
+    """When the brief contains an invalid language, the endpoint should return a 400 validation error."""
+    client = TestClient(app)
+    brand_id = uuid4()
+    
+    payload_bad_lang = {
+        "brief": {**VALID_BRIEF, "language": "invalid_lang"},
+        "provider": "openai",
+        "platform_preset": "instagram_post",
+        "logo_mode": "none"
+    }
+    
+    response = client.post(f"/brands/{brand_id}/generate", json=payload_bad_lang)
+    assert response.status_code == 400
+    res_data = response.json()
+    assert res_data["error"]["code"] == "VALIDATION_ERROR"     

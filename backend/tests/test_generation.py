@@ -193,3 +193,35 @@ def test_generation_brief_strips_text_and_converts_empty_optional_to_none():
 
     assert brief.core_idea == "فكرة إطلاق واضحة"
     assert brief.optional_notes is None
+
+
+
+def test_generation_brief_defaults_language_to_arabic():
+    """When dont send language check if default language work or not  """
+    brief = GenerationBrief.model_validate(VALID_BRIEF)
+    assert brief.language == "ar"  
+
+
+def test_generation_brief_accepts_valid_languages():
+    """Test that the GenerationBrief model accepts valid language codes like 'ar' and 'en'."""
+    payload_ar = {**VALID_BRIEF, "language": "ar"}
+    brief_ar = GenerationBrief.model_validate(payload_ar)
+    assert brief_ar.language == "ar"
+
+    payload_en = {**VALID_BRIEF, "language": "en"}
+    brief_en = GenerationBrief.model_validate(payload_en)
+    assert brief_en.language == "en"
+
+
+def test_generation_brief_rejects_unsupported_language():
+    """Test that the GenerationBrief model raises a ValidationError for unsupported language codes like 'fr'."""
+    payload = {**VALID_BRIEF, "language": "fr"}
+    with pytest.raises(ValidationError):
+        GenerationBrief.model_validate(payload)
+
+
+def test_generation_brief_rejects_invalid_language_format():
+    """Test that the GenerationBrief model raises a ValidationError for invalid language code formats."""
+    payload = {**VALID_BRIEF, "language": "Arabic"}
+    with pytest.raises(ValidationError):
+        GenerationBrief.model_validate(payload)    

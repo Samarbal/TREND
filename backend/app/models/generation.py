@@ -10,6 +10,9 @@ class ProviderEnum(str, Enum):
     openai = "openai"
     gemini = "gemini"
 
+class TextLanguageEnum(str, Enum):
+    en = "en"
+    ar = "ar"
 
 class LogoModeEnum(str, Enum):
     none = "none"
@@ -242,6 +245,7 @@ class TargetAudience(BaseModel):
 
 
 class GenerationBrief(BaseModel):
+    language: TextLanguageEnum = TextLanguageEnum.en
     @field_validator(
         "campaign_goal_custom",
         "content_type_custom",
