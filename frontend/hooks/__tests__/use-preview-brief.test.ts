@@ -3,6 +3,8 @@ import { renderHook, waitFor, act } from '@testing-library/react'
 import { usePreviewBrief } from '@/hooks/use-preview-brief'
 import type { GenerationBrief } from '@/types/generation'
 
+// We mock the API layer (which itself talks to Supabase) so this test only
+// exercises usePreviewBrief's own logic: dedupe, retry, loading/error state.
 const apiRequestMock = vi.fn()
 vi.mock('@/lib/api', () => ({
     apiRequest: (...args: unknown[]) => apiRequestMock(...args),
@@ -70,6 +72,7 @@ describe('usePreviewBrief', () => {
             await result.current.fetchPreview(brief, 'instagram_post')
         })
         await act(async () => {
+            // Same brief + platform again (e.g. caused by an unrelated re-render)
             await result.current.fetchPreview(brief, 'instagram_post')
         })
 
@@ -127,14 +130,14 @@ describe('usePreviewBrief', () => {
         const { result } = renderHook(() => usePreviewBrief('brand-42'))
 
         await act(async () => {
-            await result.current.fetchPreview(brief, 'story_9x16')
+            await result.current.fetchPreview(brief, 'instagram_story')
         })
 
         expect(apiRequestMock).toHaveBeenCalledWith(
             '/brands/brand-42/preview-brief',
             expect.objectContaining({
                 method: 'POST',
-                body: JSON.stringify({ brief, platform_preset: 'story_9x16' }),
+                body: JSON.stringify({ brief, platform_preset: 'instagram_story' }),
             }),
         )
     })
