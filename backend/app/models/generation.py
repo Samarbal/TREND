@@ -194,7 +194,6 @@ class VoiceToneEnum(str, Enum):
     custom = "custom"
 
 
-
 class TargetAudience(BaseModel):
     @field_validator("segments")
     @classmethod
@@ -245,7 +244,7 @@ class TargetAudience(BaseModel):
 
 
 class GenerationBrief(BaseModel):
-    language: TextLanguageEnum = TextLanguageEnum.en
+    language: TextLanguageEnum = TextLanguageEnum.ar
     @field_validator(
         "campaign_goal_custom",
         "content_type_custom",
@@ -336,7 +335,10 @@ class GenerationBrief(BaseModel):
             raise ValueError(
                 f"{field_name} must be null when the selected value is not custom"
             )
-
+        
+class PreviewBriefRequest(BaseModel):
+    brief: GenerationBrief
+    platform_preset: PlatformPresetEnum
 
 class GenerateRequest(BaseModel):
     brief: GenerationBrief

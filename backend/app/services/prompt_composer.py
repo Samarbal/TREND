@@ -308,15 +308,15 @@ def build_generation_prompt(
         f"Campaign Goal: {_resolve_mapped_field(brief.campaign_goal, brief.campaign_goal_custom, CAMPAIGN_GOAL_MAP)}",
         f"Content Type: {_resolve_mapped_field(brief.content_type, brief.content_type_custom, CONTENT_TYPE_MAP)}",
         f"Target Audience: {format_target_audience(brief.target_audience)}",
-        f"Core Idea: {brief.core_idea}",
+        f"Core Idea; preserve exactly and do not translate: {brief.core_idea}",
         f"Tone & Style: {_resolve_mapped_field(brief.voice_tone, brief.voice_tone_custom, VOICE_TONE_MAP)}",
     ]
 
     language_instruction = _language_instruction(brief)
-
+   
 
     if brief.text_to_include:
-        brief_lines.append(f'Text to Include: "{brief.text_to_include}"')
+        brief_lines.append(f'Exact visible text to include; preserve exactly: "{brief.text_to_include}"')
 
     if brief.optional_notes:
         brief_lines.append(f"Design Notes: {brief.optional_notes}")

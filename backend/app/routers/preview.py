@@ -2,12 +2,12 @@ import logging
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import ValidationError
+
 
 from app.config import settings
 from app.core.auth import User, get_current_user
 from app.core.supabase import get_service_client
-from app.models.generation import GenerationBrief, PlatformPresetEnum
+from app.models.generation import PreviewBriefRequest
 from app.services.brief_preview import build_creative_direction
 
 logger = logging.getLogger(__name__)
@@ -97,37 +97,12 @@ def _get_kit_status(brand_id: str) -> str:
 @router.post("/brands/{brand_id}/preview-brief")
 async def preview_brief(
     brand_id: UUID,
-    body: dict,
+    body: PreviewBriefRequest,
     current_user: User = Depends(get_current_user),
 ):
-    """Return the creative-direction translation of a generation brief."""
-    brief_data = body.get("brief")
-    platform_preset = body.get("platform_preset")
-
-    if not isinstance(brief_data, dict) or not platform_preset:
-        raise _error_response(
-            status.HTTP_400_BAD_REQUEST,
-            "INVALID_PAYLOAD",
-            "brief and platform_preset are required",
-        )
-
-    try:
-        brief = GenerationBrief(**brief_data)
-    except ValidationError as exc:
-        raise _error_response(
-            status.HTTP_400_BAD_REQUEST,
-            "VALIDATION_ERROR",
-            str(exc),
-        ) from exc
-
-    try:
-        PlatformPresetEnum(platform_preset)
-    except ValueError as exc:
-        raise _error_response(
-            status.HTTP_400_BAD_REQUEST,
-            "INVALID_PLATFORM_PRESET",
-            "Invalid platform_preset",
-        ) from exc
+    """Return the creative direction for a structured generation brief."""
+    brief = body.brief
+    platform_preset = body.platform_preset.value
 
     brand = _get_brand_or_404(brand_id, current_user.id)
     brand_context = _get_brand_kit_context(brand_id, brand["name"])
@@ -142,7 +117,9 @@ async def preview_brief(
     return {
         "creative_direction": creative_direction,
         "brand_name": brand["name"],
+        "language": brief.language.value,
     }
+
 
 
 @router.get("/preview/health")
