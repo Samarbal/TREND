@@ -1,0 +1,32 @@
+{
+  "common": {
+    "next": "Next",
+    "back": "Back", "cancel": "Cancel",
+    "retry": "Retry"
+  },
+  "briefPreview": {
+    "loading": "Translating your brief into creative direction...",
+    "retry": "Retry",
+    "title": "Creative Direction",
+    "subtitle": "Here is how {brandName}'s brief will guide the AI:",
+    "campaignGoal": "Campaign goal",
+    "contentType": "Content type",
+    "targetAudience": "Target audience",
+    "coreIdea": "Core idea",
+    "coreIdeaFallback": "Ideas are being refined",
+    "voiceTone": "Voice & tone",
+    "platform": "Platform",
+    "brandIdentityApplied": "Brand identity applied",
+    "textToInclude": "Text to include",
+    "designNotes": "Design notes",
+    "tone": "Tone",
+    "colors": "Colors",
+    "avoid": "Avoid",
+    "notSelected": "Not selected",
+    "generalAudience": "General audience",
+    "selectedPlatform": "Selected platform",
+    "editLabel": "Edit {label}"
+  }
+}
+
+
