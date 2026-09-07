@@ -109,7 +109,19 @@ async def add_key(
         raise _error_response(502, "VAULT_ERROR", "Failed to store key securely") from e
 
     # Validate BEFORE touching active status so failures don't orphan the old key
-    is_valid, validation_error = await validate_provider_key(body.provider, body.key)
+    try:
+        is_valid, validation_error = await validate_provider_key(body.provider, body.key)
+    except Exception as e:
+        logger.exception("Provider key validation crashed for provider=%s", body.provider)
+        try:
+            delete_secret(vault_secret_id)
+        except Exception:
+            logger.warning("Failed to clean up vault secret %s after validation failure", vault_secret_id)
+        raise _error_response(
+            502,
+            "PROVIDER_VALIDATION_ERROR",
+            "The provider could not validate this key. Check the key, model access, and provider availability.",
+        ) from e
     now = datetime.now(timezone.utc).isoformat()
 
     deactivated_key_id = None
@@ -157,7 +169,12 @@ async def add_key(
             logger.warning("Failed to clean up vault secret %s after add_key failure", vault_secret_id)
         if "uq_provider_keys_one_active" in str(e):
             raise _error_response(409, "ACTIVE_KEY_CONFLICT", "Another key is already active for this provider") from e
-        raise
+        logger.exception("Failed to persist provider key for brand=%s provider=%s", brand_id, body.provider)
+        raise _error_response(
+            502,
+            "KEY_SAVE_ERROR",
+            "The key was validated but could not be saved securely. Check the Vault and database migrations.",
+        ) from e
     return _key_response(result.data[0])
 
 

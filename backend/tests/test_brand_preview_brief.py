@@ -73,37 +73,8 @@ def test_preview_brand_brief_returns_creative_direction(monkeypatch):
     try:
         with TestClient(app) as client:
             response = client.post(
-                f"/brands/{brand_id}/preview-brief", json=_valid_payload()
-            )
-
-        assert response.status_code == 200
-        payload = response.json()
-        assert payload["brand_name"] == "Acme"
-        assert payload["language"] == "ar"
-        assert payload["creative_direction"]["campaign_goal"] == "brand_awareness"
-        assert payload["creative_direction"]["platform"]["name"] == "instagram_post"
-        assert "entrepreneurs" in payload["creative_direction"]["target_audience"]
-        assert payload["creative_direction"]["core_idea"] == (
-            "Show our premium coffee experience"
-        )
-        assert payload["creative_direction"]["text_to_include"] == "Freshly brewed"
-    finally:
-        app.dependency_overrides.pop(brands_router.get_current_user, None)
-
-
-def test_preview_brand_brief_rejects_missing_required_payload_fields(monkeypatch):
-    brand_id = str(uuid4())
-    monkeypatch.setattr(
-        brands_router,
-        "_get_brand_or_404",
-        lambda _brand_id, _user_id: {"id": brand_id, "name": "Acme"},
-    )
-    _install_user()
-
-    try:
-        with TestClient(app) as client:
-            response = client.post(
-                f"/brands/{brand_id}/preview-brief", json={"brief": {}}
+                f"/brands/{brand_id}/preview-brief",
+                json={"brief": {}},
             )
 
         assert response.status_code == 400

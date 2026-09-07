@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { type LucideIcon } from 'lucide-react'
 import Image from 'next/image'
 
+
 interface AuthShellProps {
   hero: ReactNode
   subcopy: string
@@ -20,14 +21,18 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
         }}
       >
         <div className="flex items-center gap-3">
+      
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4EBDD] p-2 shadow-sm">
             <Image
               src="/trendy_logo.png"
               alt="TRENDY AI"
               width={54}
               height={54}
-              className="h-12 w-12 object-contain"
-            />
+              className="h-12 w-12 cursor-pointer object-contain"
+                onClick={() => {
+                window.location.href = '/'
+                          }}
+              />
           </div>
 
           <span className="font-display text-[30px] leading-none text-brand-accent">

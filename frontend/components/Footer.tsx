@@ -22,13 +22,15 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-brand-bg/10">
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 font-ruqaa text-2xl font-bold text-white mb-4">
-              <Image
-                src="/trendy_logo.png"
-                alt="Trendy"
-                width={42}
-                height={42}
-                className="h-10 w-10 object-contain"
-              />
+                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4EBDD] p-2 shadow-sm">
+                          <Image
+                            src="/trendy_logo.png"
+                            alt="TRENDY AI"
+                            width={54}
+                            height={54}
+                            className="h-12 w-12 object-contain"
+                          />
+                        </div>
               Trendy
             </div>
             <p className="text-sm leading-relaxed max-w-xs">
