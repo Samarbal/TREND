@@ -1,0 +1,31 @@
+{
+  "common": {
+    "next": "التالي",
+    "back": "رجوع",
+    "cancel": "إلغاء",
+    "retry": "إعادة المحاولة"
+  },
+  "briefPreview": {
+    "loading": "جاري تحويل البريف إلى توجيه إبداعي...",
+    "retry": "إعادة المحاولة",
+    "title": "التوجيه الإبداعي",
+    "subtitle": "هيك رح يوجّه بريف {brandName} الذكاء الاصطناعي:",
+    "campaignGoal": "هدف الحملة",
+    "contentType": "نوع المحتوى",
+    "targetAudience": "الجمهور المستهدف",
+    "coreIdea": "الفكرة الأساسية",
+    "coreIdeaFallback": "الأفكار قيد التطوير",
+    "voiceTone": "الأسلوب والنبرة",
+    "platform": "المنصة",
+    "brandIdentityApplied": "هوية البراند المطبّقة",
+    "textToInclude": "النص المطلوب تضمينه",
+    "designNotes": "ملاحظات التصميم",
+    "tone": "النبرة",
+    "colors": "الألوان",
+    "avoid": "تجنّب",
+    "notSelected": "غير محدد",
+    "generalAudience": "جمهور عام",
+    "selectedPlatform": "المنصة المحددة",
+    "editLabel": "تعديل {label}"
+  }
+}
