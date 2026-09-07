@@ -326,7 +326,7 @@ def test_build_generation_prompt_preserves_arabic_and_user_text():
         brand_has_logo=False,
     )
     assert "Core Idea: إطلاق مشروب قهوة بارد جديد ومنعش لصباح صيفي مزدحم." in result
-    assert 'Text to Include: "خصم 20% لفترة محدودة"' in result
+    assert 'Exact visible text to include; preserve exactly: "خصم 20% لفترة محدودة"' in result
     assert "Design Notes: اترك مساحة في الأعلى لكتابة نص عربي واضح." in result
 
 
@@ -371,20 +371,14 @@ def test_build_generation_prompt_output_rules_always_present():
 
 
 def test_prompt_composer_includes_arabic_instruction_and_preserves_core_idea():
-    brief_data = {
-        "core_idea": "إطلاق قهوة باردة لصباح صيفي مزدحم.",
-        "language": "ar"
-    }
-    
-    
-    # 1. Test that the core idea is preserved in the prompt
-    # assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in prompt
-    assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in brief_data["core_idea"]
-    
-   
+    result = build(language="ar")
 
-# 2. Test that the prompt includes an instruction to generate text in Arabic or english 
-    # assert in prompt or "ar" / "en" in prompt
+    assert "Write newly generated campaign copy in Arabic." in result
+    assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in result
+    assert "خصم 20% لفترة محدودة" in result
+    assert result.count("Write newly generated campaign copy in Arabic.") == 1
+
+
 def test_prompt_contains_english_language_instruction():
     result = build(language="en")
 
@@ -395,20 +389,6 @@ def test_prompt_contains_arabic_language_instruction():
     result = build(language="ar")
 
     assert "Write newly generated campaign copy in Arabic." in result
-
-def test_build_generation_prompt_preserves_arabic_and_user_text():
-    result = build_generation_prompt(
-        brief=SAMPLE_BRIEF,
-        brand_context=None,
-        platform=SAMPLE_PLATFORM,
-        logo_mode="none",
-        brand_has_logo=False,
-    )
-
-    assert "إطلاق مشروب قهوة بارد جديد ومنعش لصباح صيفي مزدحم." in result
-    assert "خصم 20% لفترة محدودة" in result
-
-
 
 def build(language=None, logo_mode="none", brand_has_logo=False):
     brief_data = dict(VALID_BRIEF)

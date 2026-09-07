@@ -308,7 +308,7 @@ def build_generation_prompt(
         f"Campaign Goal: {_resolve_mapped_field(brief.campaign_goal, brief.campaign_goal_custom, CAMPAIGN_GOAL_MAP)}",
         f"Content Type: {_resolve_mapped_field(brief.content_type, brief.content_type_custom, CONTENT_TYPE_MAP)}",
         f"Target Audience: {format_target_audience(brief.target_audience)}",
-        f"Core Idea; preserve exactly and do not translate: {brief.core_idea}",
+        f"Core Idea: {brief.core_idea}",
         f"Tone & Style: {_resolve_mapped_field(brief.voice_tone, brief.voice_tone_custom, VOICE_TONE_MAP)}",
     ]
 
@@ -379,7 +379,7 @@ def _value(value: object) -> str:
 
 
 def _language_instruction(brief: GenerationBrief) -> str:
-    language = _value(getattr(brief, "language", "en")) or "en"
+    language = _value(brief.language) or "ar"
     return LANGUAGE_INSTRUCTION_MAP[language]
 
 def _mapped(mapping: dict[str, str], value: object, custom: str | None = None) -> str:

@@ -193,7 +193,8 @@ async def test_generate_endpoint_accepts_language_param(override_auth, mock_supa
     """Test that the endpoint accepts the language parameter and sends a 200 response on success."""
     from app.services.providers.base import ProviderResult
     mock_result = ProviderResult(image_bytes=b"fake-image-bytes", request_id="req-123")
-    monkeypatch.setattr(generations, "openai_generate", AsyncMock(return_value=mock_result))
+    provider_mock = AsyncMock(return_value=mock_result)
+    monkeypatch.setattr(generations, "openai_generate", provider_mock)
     monkeypatch.setattr(generations, "resize_to_preset", lambda img, w, h: img)
 
     client = TestClient(app)
@@ -211,6 +212,10 @@ async def test_generate_endpoint_accepts_language_param(override_auth, mock_supa
     assert response.status_code == 200
     res_data = response.json()
     assert res_data["status"] == "succeeded"
+    sent_prompt = provider_mock.call_args.kwargs["prompt"]
+    assert "Write newly generated campaign copy in English." in sent_prompt
+    assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in sent_prompt
+    assert "خصم 20%" in sent_prompt
 
 
 @pytest.mark.asyncio

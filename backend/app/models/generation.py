@@ -349,6 +349,7 @@ class GenerateRequest(BaseModel):
 
 __all__ = [
     "ProviderEnum",
+    "TextLanguageEnum",
     "LogoModeEnum",
     "GenerationStatusEnum",
     "PlatformPresetEnum",
