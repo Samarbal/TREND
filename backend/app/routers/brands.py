@@ -20,38 +20,11 @@ from app.models.brand import (
     LogoUploadResponse,
     UpdateBrandRequest,
 )
+from app.models.generation import PreviewBriefRequest
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/brands", tags=["brands"])
-
-
-class PreviewBriefRequest(BaseModel):
-    brief: dict
-    platform_preset: str
-
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "brief": {
-                    "campaign_goal": "brand_awareness",
-                    "content_type": "product_showcase",
-                    "target_audience": {
-                        "segments": ["general_consumers"],
-                        "location": "Amman",
-                        "age_range": "25_34",
-                        "gender_focus": "all",
-                        "details": "Customers interested in premium products",
-                    },
-                    "core_idea": "Show the brand in a premium lifestyle setting",
-                    "voice_tone": "friendly",
-                    "optional_notes": "Clean and modern",
-                    "text_to_include": "Discover our collection",
-                },
-                "platform_preset": "instagram_post",
-            }
-        }
-    }
 
 
 def _error_response(status_code: int, code: str, message: str) -> HTTPException:
@@ -136,28 +109,31 @@ async def preview_brand_brief(
     current_user: User = Depends(get_current_user),
 ):
     brand = _get_brand_or_404(brand_id, current_user.id)
-    brief = body.brief or {}
-    audience = brief.get("target_audience") or {}
-    segments = audience.get("segments") or []
-    target_audience = ", ".join(str(item) for item in segments if item)
+    brief = body.brief
+    audience = brief.target_audience
+    target_audience = ", ".join(
+        str(item.value if hasattr(item, "value") else item)
+        for item in audience.segments
+        if item
+    )
     if not target_audience:
-        target_audience = str(audience) if audience else "General audience"
+        target_audience = "General audience"
 
     creative_direction = {
-        "campaign_goal": str(brief.get("campaign_goal") or "brand_awareness"),
-        "content_type": str(brief.get("content_type") or "product_showcase"),
+        "campaign_goal": brief.campaign_goal.value,
+        "content_type": brief.content_type.value,
         "target_audience": target_audience,
-        "core_idea": str(brief.get("core_idea") or "A compelling brand moment"),
-        "voice_tone": str(brief.get("voice_tone") or "friendly"),
+        "core_idea": brief.core_idea,
+        "voice_tone": brief.voice_tone.value,
         "platform": {
-            "name": str(body.platform_preset),
-            "note": _platform_preview_note(str(body.platform_preset)),
+            "name": body.platform_preset.value,
+            "note": _platform_preview_note(body.platform_preset.value),
         },
-        "text_to_include": brief.get("text_to_include"),
-        "optional_notes": brief.get("optional_notes"),
+        "text_to_include": brief.text_to_include,
+        "optional_notes": brief.optional_notes,
         "brand_identity": {
             "tagline": None,
-            "tone": str(brief.get("voice_tone") or "friendly"),
+            "tone": brief.voice_tone.value,
             "colors": [],
             "avoid_words": None,
         },
@@ -166,6 +142,7 @@ async def preview_brand_brief(
     return {
         "creative_direction": creative_direction,
         "brand_name": brand["name"],
+        "language": brief.language.value,
     }
 
 

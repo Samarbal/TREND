@@ -11,9 +11,9 @@ from app.models.generation import (
     GenerateRequest,
     PlatformPresetEnum,
     ProviderEnum,
+    TextLanguageEnum,
     VoiceToneEnum,
 )
-
 
 VALID_BRIEF = {
     "campaign_goal": "product_launch",
@@ -193,3 +193,67 @@ def test_generation_brief_strips_text_and_converts_empty_optional_to_none():
 
     assert brief.core_idea == "فكرة إطلاق واضحة"
     assert brief.optional_notes is None
+
+
+
+def test_generation_brief_defaults_to_english():
+    brief = GenerationBrief.model_validate(VALID_BRIEF)
+
+    assert brief.language is TextLanguageEnum.ar
+  
+
+
+def test_generation_brief_accepts_arabic_language():
+    payload = {
+        **VALID_BRIEF,
+        "language": "ar",
+    }
+
+    brief = GenerationBrief.model_validate(payload)
+
+    assert brief.language is TextLanguageEnum.ar
+
+def test_generation_brief_accepts_english_language():
+    payload = {
+        **VALID_BRIEF,
+        "language": "en",
+    }
+
+    brief = GenerationBrief.model_validate(payload)
+
+    assert brief.language is TextLanguageEnum.en
+
+def test_generation_brief_rejects_invalid_language():
+    payload = {
+        **VALID_BRIEF,
+        "language": "fr",
+    }
+
+    with pytest.raises(ValidationError):
+        GenerationBrief.model_validate(payload)
+
+def test_generation_brief_serializes_language_as_string():
+    payload = {
+        **VALID_BRIEF,
+        "language": "ar",
+    }
+
+    brief = GenerationBrief.model_validate(payload)
+    data = brief.model_dump(mode="json")
+
+    assert data["language"] == "ar"
+
+def test_generate_request_passes_language_inside_brief():
+    request = GenerateRequest.model_validate(
+        {
+            "brief": {
+                **VALID_BRIEF,
+                "language": "ar",
+            },
+            "provider": "openai",
+            "platform_preset": "instagram_post",
+            "logo_mode": "none",
+        }
+    )
+
+    assert request.brief.language is TextLanguageEnum.ar

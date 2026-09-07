@@ -195,6 +195,17 @@ VOICE_TONE_MAP: dict[str, str] = {
     "youthful": "Youthful, trendy, and dynamic.",
     "urgent": "Urgent, action-oriented, and high-energy.",
 }
+LANGUAGE_INSTRUCTION_MAP: dict[str, str] = {
+    "ar": (
+        "Write newly generated campaign copy in Arabic. "
+        "Preserve user-provided text exactly as written and do not translate it."
+    ),
+    "en": (
+        "Write newly generated campaign copy in English. "
+        "Preserve user-provided text exactly as written and do not translate it."
+    ),
+}
+
 
 
 def build_platform_context(
@@ -301,8 +312,11 @@ def build_generation_prompt(
         f"Tone & Style: {_resolve_mapped_field(brief.voice_tone, brief.voice_tone_custom, VOICE_TONE_MAP)}",
     ]
 
+    language_instruction = _language_instruction(brief)
+   
+
     if brief.text_to_include:
-        brief_lines.append(f'Text to Include: "{brief.text_to_include}"')
+        brief_lines.append(f'Exact visible text to include; preserve exactly: "{brief.text_to_include}"')
 
     if brief.optional_notes:
         brief_lines.append(f"Design Notes: {brief.optional_notes}")
@@ -314,6 +328,7 @@ def build_generation_prompt(
     if brand_sec:
         sections.append(brand_sec)
 
+
     # Layer 4: Composition guidance (always present)
     sections.append(f"=== COMPOSITION ===\n{platform.note}")
 
@@ -323,7 +338,12 @@ def build_generation_prompt(
         sections.append(logo_sec)
 
     # Layer 6: Output rules
-    sections.append(OUTPUT_RULES_PROMPT)
+    sections.append(
+    OUTPUT_RULES_PROMPT
+    + "\n"
+    + language_instruction
+)
+
 
     return "\n\n".join(sections)
 
@@ -352,3 +372,18 @@ def compose_full_prompt(
     sections.append(f"=== IMAGE REQUEST ===\n{user_prompt}")
 
     return "\n\n".join(sections)
+
+
+def _value(value: object) -> str:
+    return getattr(value, "value", value) if value is not None else ""
+
+
+def _language_instruction(brief: GenerationBrief) -> str:
+    language = _value(brief.language) or "ar"
+    return LANGUAGE_INSTRUCTION_MAP[language]
+
+def _mapped(mapping: dict[str, str], value: object, custom: str | None = None) -> str:
+    key = _value(value)
+    if key == "custom":
+        return custom or "Custom"
+    return mapping.get(key, key.replace("_", " "))

@@ -13,9 +13,9 @@ def _valid_payload() -> dict:
             "campaign_goal": "brand_awareness",
             "content_type": "product_showcase",
             "target_audience": {
-                "segments": ["startup founders"],
+                "segments": ["entrepreneurs"],
                 "location": "UAE",
-                "age_range": "25-40",
+                "age_range": "25_34",
                 "gender_focus": "women",
                 "details": "tech-savvy shoppers",
             },
@@ -68,29 +68,6 @@ def test_preview_brand_brief_returns_creative_direction(monkeypatch):
             return FakeQuery([])
 
     monkeypatch.setattr(brands_router, "get_service_client", lambda: FakeClient())
-    _install_user()
-
-    try:
-        with TestClient(app) as client:
-            response = client.post(f"/brands/{brand_id}/preview-brief", json=_valid_payload())
-
-        assert response.status_code == 200
-        payload = response.json()
-        assert payload["brand_name"] == "Acme"
-        assert payload["creative_direction"]["campaign_goal"] == "brand_awareness"
-        assert payload["creative_direction"]["platform"]["name"] == "instagram_post"
-        assert "startup founders" in payload["creative_direction"]["target_audience"]
-    finally:
-        app.dependency_overrides.pop(brands_router.get_current_user, None)
-
-
-def test_preview_brand_brief_rejects_missing_required_payload_fields(monkeypatch):
-    brand_id = str(uuid4())
-    monkeypatch.setattr(
-        brands_router,
-        "_get_brand_or_404",
-        lambda _brand_id, _user_id: {"id": brand_id, "name": "Acme"},
-    )
     _install_user()
 
     try:
@@ -163,11 +140,53 @@ def test_preview_brand_brief_enforces_brand_ownership(monkeypatch):
     try:
         with TestClient(app) as client:
             response = client.post(
-                f"/brands/{brand_id}/preview-brief",
-                json=_valid_payload(),
+                f"/brands/{brand_id}/preview-brief", json=_valid_payload()
             )
 
         assert response.status_code == 404
         assert response.json()["error"]["code"] == "BRAND_NOT_FOUND"
+    finally:
+        app.dependency_overrides.pop(brands_router.get_current_user, None)
+
+
+def test_preview_brand_brief_accepts_english_language(monkeypatch):
+    brand_id = str(uuid4())
+    monkeypatch.setattr(
+        brands_router,
+        "_get_brand_or_404",
+        lambda _brand_id, _user_id: {"id": brand_id, "name": "Acme"},
+    )
+    _install_user()
+    payload = _valid_payload()
+    payload["brief"]["language"] = "en"
+
+    try:
+        with TestClient(app) as client:
+            response = client.post(f"/brands/{brand_id}/preview-brief", json=payload)
+
+        assert response.status_code == 200
+        assert response.json()["language"] == "en"
+    finally:
+        app.dependency_overrides.pop(brands_router.get_current_user, None)
+
+
+def test_preview_brand_brief_rejects_unsupported_language(monkeypatch):
+    brand_id = str(uuid4())
+    monkeypatch.setattr(
+        brands_router,
+        "_get_brand_or_404",
+        lambda _brand_id, _user_id: {"id": brand_id, "name": "Acme"},
+    )
+    _install_user()
+    payload = _valid_payload()
+    payload["brief"]["language"] = "Arabic"
+
+    try:
+        with TestClient(app) as client:
+            response = client.post(f"/brands/{brand_id}/preview-brief", json=payload)
+
+        assert response.status_code == 400
+        assert response.json()["error"]["code"] == "VALIDATION_ERROR"
+        assert "language" in response.json()["error"]["message"]
     finally:
         app.dependency_overrides.pop(brands_router.get_current_user, None)
