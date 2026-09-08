@@ -431,3 +431,130 @@ def test_language_instruction_appears_once():
 
 def test_prompt_language_output_is_deterministic():
     assert build(language="ar") == build(language="ar")
+
+
+def test_generation_brief_preserves_unicode_text():
+    unicode_text = "مرحباً — إصدار 3.0 ☕ #قهوة"
+
+    brief_data = dict(VALID_BRIEF)
+    brief_data["core_idea"] = unicode_text
+
+    brief = GenerationBrief.model_validate(brief_data)
+
+    assert brief.core_idea == unicode_text
+
+def test_prompt_preserves_arabic_mixed_script_and_user_text():
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update(
+        {
+            "language": "ar",
+            "core_idea": "إطلاق TREND AI 2026 — خصم 20% #قهوة",
+            "text_to_include": "خصم 20% لفترة محدودة",
+            "optional_notes": "لا تغيّر النص! Keep it exact.",
+        }
+    )
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    assert brief_data["core_idea"] in result
+    assert brief_data["text_to_include"] in result
+    assert brief_data["optional_notes"] in result
+
+def test_prompt_does_not_corrupt_unicode_text():
+    value = "مرحباً — إصدار 3.0 ☕ #قهوة"
+    brief_data = dict(VALID_BRIEF)
+    brief_data["core_idea"] = value
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    assert value in result
+    assert "�" not in result
+    assert "����" not in result
+
+def test_language_instruction_does_not_translate_user_text():
+    original = "إطلاق TREND AI 2026 — خصم 20%"
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update({"language": "en", "core_idea": original})
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    assert original in result
+    
+def test_user_text_is_preserved_from_model_to_prompt():
+    original_values = {
+        "core_idea": "إطلاق TREND AI 2026 — خصم 20% #قهوة",
+        "text_to_include": "خصم 20% لفترة محدودة",
+        "optional_notes": "لا تغيّر النص! Keep this exact.",
+    }
+
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update(
+        {
+            "language": "ar",
+            **original_values,
+        }
+    )
+
+    brief = GenerationBrief.model_validate(brief_data)
+
+    assert brief.core_idea == original_values["core_idea"]
+    assert brief.text_to_include == original_values["text_to_include"]
+    assert brief.optional_notes == original_values["optional_notes"]
+
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    for value in original_values.values():
+        assert value in result
+
+    assert "\ufffd" not in result
+
+
+def test_prompt_composer_language_instruction_server_side_formatting():
+    """Verify that language directive reaches prompt composer output rules without modifying exact visible text."""
+    exact_text = "WELCOME 2026! خصم خاص"
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update({
+        "language": "en",
+        "text_to_include": exact_text
+    })
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    # Check exact visible text preserved
+    assert f'Exact visible text to include; preserve exactly: "{exact_text}"' in result
+    # Check language instruction applied server-side
+    assert "Write newly generated campaign copy in English." in result

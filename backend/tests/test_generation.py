@@ -257,3 +257,50 @@ def test_generate_request_passes_language_inside_brief():
     )
 
     assert request.brief.language is TextLanguageEnum.ar
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "إطلاق مشروب قهوة بارد جديد",
+        "Launch a new cold coffee drink",
+        "إطلاق TREND AI 2026",
+        "خصم 20% على Cold Brew! #قهوة",
+        "مرحباً! العرض يبدأ اليوم؟",
+        "السعر 15.50 دينار — العرض حتى 2026",
+    ],
+)
+def test_generation_brief_preserves_core_idea(value):
+    brief_data = dict(VALID_BRIEF)
+    brief_data["core_idea"] = value
+
+    brief = GenerationBrief.model_validate(brief_data)
+
+    assert brief.core_idea == value
+
+def test_generation_brief_preserves_all_user_text_fields():
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update(
+        {
+            "core_idea": "إطلاق TREND AI 2026 — خصم 20% #قهوة",
+            "text_to_include": "خصم 20% لفترة محدودة",
+            "optional_notes": "استخدم النص العربي كما هو! Keep this phrase exactly.",
+        }
+    )
+
+    brief = GenerationBrief.model_validate(brief_data)
+
+    assert brief.core_idea == brief_data["core_idea"]
+    assert brief.text_to_include == brief_data["text_to_include"]
+    assert brief.optional_notes == brief_data["optional_notes"]
+
+
+@pytest.mark.parametrize("invalid_lang", ["", "   ", "fr", "es", "123", None])
+def test_generation_brief_rejects_invalid_or_empty_language(invalid_lang):
+    payload = {
+        **VALID_BRIEF,
+        "language": invalid_lang,
+    }
+
+    with pytest.raises(ValidationError):
+        GenerationBrief.model_validate(payload)
+
