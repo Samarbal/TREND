@@ -54,24 +54,17 @@ export default async function RootLayout({
 
   return (
     <html
-      lang="en"
-      dir="ltr"
+      lang={locale}
+      dir={dir}
       suppressHydrationWarning
       className={`${display.variable} ${sans.variable} ${arabic.variable} ${geistMono.variable}`}
     >
       <body className="font-sans antialiased">
-        <LanguageProvider>
-          {children}
-          <Toaster />
-        </LanguageProvider>
-      lang={locale}
-      dir={dir}
-      className={`${display.variable} ${sans.variable} ${geistMono.variable}`}
-    >
-      <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
-          {children}
-          <Toaster />
+          <LanguageProvider>
+            {children}
+            <Toaster />
+          </LanguageProvider>
         </NextIntlClientProvider>
       </body>
     </html>

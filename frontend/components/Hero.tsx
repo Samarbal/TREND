@@ -75,8 +75,8 @@ export default function Hero() {
                   >
                     <div
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${step.active
-                          ? "bg-brand-primary text-white"
-                          : "bg-gray-100"
+                        ? "bg-brand-primary text-white"
+                        : "bg-gray-100"
                         }`}
                     >
                       {step.n}
@@ -117,13 +117,13 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="hidden sm:flex absolute z-20 top-12 -right-8 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex rtl:-right-auto rtl:-left-8">
+          <div className="hidden sm:flex absolute z-20 top-12 -left-7 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex">
             <div className="w-8 h-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center text-sm">
               ✓
             </div>
             {t("hero.phoneBadge1")}
           </div>
-          <div className="hidden sm:flex absolute z-20 bottom-16 -left-6 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex rtl:-left-auto rtl:-right-6">
+          <div className="hidden sm:flex absolute z-20 bottom-16 right-5 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex">
             <div className="w-8 h-8 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center text-sm">
               ✎
             </div>
