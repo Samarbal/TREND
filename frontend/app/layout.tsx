@@ -4,6 +4,8 @@ import { Instrument_Serif, Hanken_Grotesk, Noto_Naskh_Arabic } from "next/font/g
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 
 const display = Instrument_Serif({
@@ -41,11 +43,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const dir = locale === "ar" ? "rtl" : "ltr";
+
   return (
     <html
       lang="en"
@@ -58,7 +64,17 @@ export default function RootLayout({
           {children}
           <Toaster />
         </LanguageProvider>
+      lang={locale}
+      dir={dir}
+      className={`${display.variable} ${sans.variable} ${geistMono.variable}`}
+    >
+      <body className="font-sans antialiased">
+        <NextIntlClientProvider messages={messages}>
+          {children}
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
 }
+

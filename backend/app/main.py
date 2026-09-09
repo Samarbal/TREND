@@ -69,6 +69,15 @@ async def request_validation_exception_handler(
 ):
     errors = exc.errors()
 
+    language_error = next(
+        (
+            error.get("msg")
+            for error in errors
+            if any(part == "language" for part in error.get("loc", []))
+        ),
+        None,
+    )
+
     name_error = next(
         (
             error.get("msg")
@@ -78,7 +87,10 @@ async def request_validation_exception_handler(
         None,
     )
 
-    message = name_error or "Invalid request payload"
+    if language_error:
+        message = "language must be one of: ar, en"
+    else:
+        message = name_error or "Invalid request payload"
 
     return JSONResponse(
         status_code=400,

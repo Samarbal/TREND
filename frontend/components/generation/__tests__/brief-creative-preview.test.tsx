@@ -1,8 +1,24 @@
+import type { ReactElement } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { NextIntlClientProvider } from 'next-intl'
 import { BriefCreativePreview } from '@/components/generation/brief-creative-preview'
 import type { CreativeDirection } from '@/types/generation'
+import messages from '@/messages/en.json'
+
+// The component now calls useTranslations(), which requires a
+// NextIntlClientProvider ancestor. Tests run the component in isolation
+// (no RootLayout), so we provide that context manually here. We render
+// in English so the existing assertions (which check English strings)
+// keep working unchanged.
+function renderWithIntl(ui: ReactElement) {
+    return render(
+        <NextIntlClientProvider locale="en" messages={messages}>
+            {ui}
+        </NextIntlClientProvider>,
+    )
+}
 
 const mockPreview: CreativeDirection = {
     campaign_goal: 'brand_awareness',
@@ -17,12 +33,12 @@ const mockPreview: CreativeDirection = {
 
 describe('BriefCreativePreview — regression: single instance only', () => {
     it('renders exactly ONE preview element while loading', () => {
-        render(<BriefCreativePreview preview={null} loading error={null} brandName="Acme" />)
+        renderWithIntl(<BriefCreativePreview preview={null} loading error={null} brandName="Acme" />)
         expect(screen.getAllByTestId('brief-creative-preview')).toHaveLength(1)
     })
 
     it('renders exactly ONE preview element on error', () => {
-        render(
+        renderWithIntl(
             <BriefCreativePreview
                 preview={null}
                 loading={false}
@@ -34,7 +50,7 @@ describe('BriefCreativePreview — regression: single instance only', () => {
     })
 
     it('renders exactly ONE preview element on success, with exactly ONE "Creative Direction" heading', () => {
-        render(
+        renderWithIntl(
             <BriefCreativePreview preview={mockPreview} loading={false} error={null} brandName="Acme" />,
         )
         expect(screen.getAllByTestId('brief-creative-preview')).toHaveLength(1)
@@ -42,16 +58,18 @@ describe('BriefCreativePreview — regression: single instance only', () => {
     })
 
     it('re-rendering with new preview data still yields exactly one instance (no card is appended)', () => {
-        const { rerender } = render(
+        const { rerender } = renderWithIntl(
             <BriefCreativePreview preview={mockPreview} loading={false} error={null} brandName="Acme" />,
         )
         rerender(
-            <BriefCreativePreview
-                preview={{ ...mockPreview, core_idea: 'A different idea now' }}
-                loading={false}
-                error={null}
-                brandName="Acme"
-            />,
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <BriefCreativePreview
+                    preview={{ ...mockPreview, core_idea: 'A different idea now' }}
+                    loading={false}
+                    error={null}
+                    brandName="Acme"
+                />
+            </NextIntlClientProvider>,
         )
         expect(screen.getAllByTestId('brief-creative-preview')).toHaveLength(1)
         expect(screen.getByText('A different idea now')).toBeInTheDocument()
@@ -60,12 +78,12 @@ describe('BriefCreativePreview — regression: single instance only', () => {
 
 describe('BriefCreativePreview — loading / error / success states', () => {
     it('shows a loading indicator while loading is true', () => {
-        render(<BriefCreativePreview preview={null} loading error={null} brandName="Acme" />)
+        renderWithIntl(<BriefCreativePreview preview={null} loading error={null} brandName="Acme" />)
         expect(screen.getByText(/Translating your brief/i)).toBeInTheDocument()
     })
 
     it('shows the error message and a Retry button when error is set', () => {
-        render(
+        renderWithIntl(
             <BriefCreativePreview
                 preview={null}
                 loading={false}
@@ -81,7 +99,7 @@ describe('BriefCreativePreview — loading / error / success states', () => {
     it('calls retryPreview when the Retry button is clicked', async () => {
         const retryPreview = vi.fn()
         const user = userEvent.setup()
-        render(
+        renderWithIntl(
             <BriefCreativePreview
                 preview={null}
                 loading={false}
@@ -95,14 +113,14 @@ describe('BriefCreativePreview — loading / error / success states', () => {
     })
 
     it('renders nothing when there is no preview, no error, and not loading', () => {
-        const { container } = render(
+        const { container } = renderWithIntl(
             <BriefCreativePreview preview={null} loading={false} error={null} brandName="Acme" />,
         )
         expect(container).toBeEmptyDOMElement()
     })
 
     it('shows the brief fields once preview data is available', () => {
-        render(
+        renderWithIntl(
             <BriefCreativePreview preview={mockPreview} loading={false} error={null} brandName="Acme" />,
         )
         expect(screen.getByText('Show the product in real-life use')).toBeInTheDocument()
@@ -114,7 +132,7 @@ describe('BriefCreativePreview — inline Edit affordance', () => {
     it('calls onEdit with the right step number for each field', async () => {
         const onEdit = vi.fn()
         const user = userEvent.setup()
-        render(
+        renderWithIntl(
             <BriefCreativePreview
                 preview={mockPreview}
                 loading={false}
@@ -143,7 +161,7 @@ describe('BriefCreativePreview — inline Edit affordance', () => {
     })
 
     it('does not render any edit buttons when onEdit is not provided', () => {
-        render(
+        renderWithIntl(
             <BriefCreativePreview preview={mockPreview} loading={false} error={null} brandName="Acme" />,
         )
         expect(screen.queryByRole('button', { name: /edit campaign goal/i })).not.toBeInTheDocument()

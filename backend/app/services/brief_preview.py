@@ -18,8 +18,7 @@ def build_creative_direction(
     platform_preset: str,
     brand_context: dict | None = None,
 ) -> dict:
-    """Translate a raw GenerationBrief into business-friendly creative direction."""
-    
+    """Translate a raw GenerationBrief into business-friendly creative direction.""" 
     # Resolve mapped fields using the same dictionaries as prompt_composer
     goal = _resolve_mapped_field(
         brief.campaign_goal, brief.campaign_goal_custom, CAMPAIGN_GOAL_MAP
@@ -30,6 +29,8 @@ def build_creative_direction(
     tone = _resolve_mapped_field(
         brief.voice_tone, brief.voice_tone_custom, VOICE_TONE_MAP
     )
+    language = getattr(brief, "language", "ar")
+    language = getattr(language, "value", language)
     
     # Audience
     audience = format_target_audience(brief.target_audience)
@@ -40,6 +41,7 @@ def build_creative_direction(
     
     # Build structured response
     direction = {
+        "language": language,
         "campaign_goal": goal,
         "content_type": content,
         "target_audience": audience,
@@ -60,6 +62,8 @@ def build_creative_direction(
     # Brand identity layer
     if brand_context:
         brand_identity = {}
+        if brand_context.get("language"):
+            brand_identity["language"] = brand_context["language"]
         if brand_context.get("tagline"):
             brand_identity["tagline"] = brand_context["tagline"]
         if brand_context.get("tone"):

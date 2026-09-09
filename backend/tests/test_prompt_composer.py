@@ -17,6 +17,8 @@ from app.models.generation import (
     VoiceToneEnum,
 )
 from app.services.presets import PLATFORM_PRESETS
+from tests.test_generation import VALID_BRIEF
+
 
 USER_PROMPT = "A modern minimal office"
 
@@ -324,7 +326,7 @@ def test_build_generation_prompt_preserves_arabic_and_user_text():
         brand_has_logo=False,
     )
     assert "Core Idea: إطلاق مشروب قهوة بارد جديد ومنعش لصباح صيفي مزدحم." in result
-    assert 'Text to Include: "خصم 20% لفترة محدودة"' in result
+    assert 'Exact visible text to include; preserve exactly: "خصم 20% لفترة محدودة"' in result
     assert "Design Notes: اترك مساحة في الأعلى لكتابة نص عربي واضح." in result
 
 
@@ -366,3 +368,66 @@ def test_build_generation_prompt_output_rules_always_present():
     )
     assert "=== OUTPUT RULES ===" in result
     assert "Do NOT render section headers" in result
+
+
+def test_prompt_composer_includes_arabic_instruction_and_preserves_core_idea():
+    result = build(language="ar")
+
+    assert "Write newly generated campaign copy in Arabic." in result
+    assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in result
+    assert "خصم 20% لفترة محدودة" in result
+    assert result.count("Write newly generated campaign copy in Arabic.") == 1
+
+
+def test_prompt_contains_english_language_instruction():
+    result = build(language="en")
+
+    assert "Write newly generated campaign copy in English." in result
+
+
+def test_prompt_contains_arabic_language_instruction():
+    result = build(language="ar")
+
+    assert "Write newly generated campaign copy in Arabic." in result
+
+def build(language=None, logo_mode="none", brand_has_logo=False):
+    brief_data = dict(VALID_BRIEF)
+
+    if language is not None:
+        brief_data["language"] = language
+
+    return build_generation_prompt(
+        brief=GenerationBrief.model_validate(brief_data),
+        brand_context=BrandContext(
+            name="Acme Coffee",
+            tagline="Make mornings brighter",
+            tone="friendly",
+            colors=["#123456", "#F4C95D"],
+            avoid_words="cheap",
+        ),
+        platform= SAMPLE_PLATFORM,
+        logo_mode=logo_mode,
+        brand_has_logo=brand_has_logo,
+    )
+
+def test_language_instruction_is_in_output_rules():
+    result = build(language="ar")
+
+    campaign_start = result.index("=== CAMPAIGN BRIEF ===")
+    output_start = result.index("=== OUTPUT RULES ===")
+
+    campaign_section = result[campaign_start:output_start]
+    output_section = result[output_start:]
+
+    assert "Write newly generated campaign copy in Arabic." not in campaign_section
+    assert "Write newly generated campaign copy in Arabic." in output_section
+
+def test_language_instruction_appears_once():
+    result = build(language="ar")
+
+    assert result.count(
+        "Write newly generated campaign copy in Arabic."
+    ) == 1
+
+def test_prompt_language_output_is_deterministic():
+    assert build(language="ar") == build(language="ar")
