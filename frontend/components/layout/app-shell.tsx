@@ -74,8 +74,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div
         ref={drawerRef}
         className={cn(
-          'z-40 h-full w-[248px] max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:bg-background max-md:shadow-lg max-md:transition-transform max-md:duration-fast max-md:ease-out',
-          navOpen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full',
+          'z-40 h-full w-[248px] bg-background max-md:fixed max-md:inset-y-0 max-md:start-0 max-md:shadow-lg max-md:transition-transform max-md:duration-fast max-md:ease-out md:static md:translate-x-0 md:transform-none',
+          navOpen
+            ? 'max-md:translate-x-0'
+            : 'max-md:-translate-x-full rtl:max-md:translate-x-full',
         )}
       >
         <AppSidebar

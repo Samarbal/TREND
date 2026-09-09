@@ -1,35 +1,39 @@
-import Reveal from "./Reveal";
+"use client";
 
-const AUDIENCES = [
-  {
-    title: "Founders & Entrepreneurs",
-    body: "You have a product idea and need to build a fast, affordable brand without deep marketing expertise.",
-  },
-  {
-    title: "Small Business Owners",
-    body: "You want to refresh your current identity or continuously produce professional content through the Content Studio.",
-  },
-  {
-    title: "Established Brand Owners",
-    body: "Already have a logo and colors? Import them directly and benefit from market analysis and content without generating a new identity from scratch.",
-  },
-];
+import Reveal from "./Reveal";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function AudiencesSection() {
+  const { t } = useLanguage();
+
+  const AUDIENCES = [
+    {
+      title: t("audiences.audience1Title"),
+      body: t("audiences.audience1Body"),
+    },
+    {
+      title: t("audiences.audience2Title"),
+      body: t("audiences.audience2Body"),
+    },
+    {
+      title: t("audiences.audience3Title"),
+      body: t("audiences.audience3Body"),
+    },
+  ];
+
   return (
     <section className="py-24 bg-brand-cream relative" id="audiences">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal className="max-w-2xl mb-14">
           <div className="inline-flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-headline font-bold text-xs px-4 py-1.5 rounded-full mb-5 font-readex">
             <i className="w-2 h-2 rounded-full bg-brand-primary block" />
-            Who is this for?
+            {t("audiences.badge")}
           </div>
           <h2 className="text-4xl md:text-5xl mb-4 font-ruqaa text-brand-headline">
-            Wherever you&apos;re starting from
+            {t("audiences.heading")}
           </h2>
           <p className="text-lg opacity-80 leading-relaxed font-readex text-brand-ink">
-            Whether you have just an idea, a small project, or an existing brand —
-            we have a path that fits you.
+            {t("audiences.subheading")}
           </p>
         </Reveal>
 

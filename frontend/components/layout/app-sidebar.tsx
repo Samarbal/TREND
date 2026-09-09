@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
+  Globe,
   History,
   Key,
   LogOut,
@@ -20,6 +21,7 @@ import { Eyebrow } from '@/components/ui/eyebrow'
 import { Separator } from '@/components/ui/separator'
 import { KitStatusBadge } from '@/components/kit/kit-status-badge'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 import type { BrandListItem, Profile } from '@/types'
 
 interface AppSidebarProps {
@@ -39,6 +41,7 @@ export function AppSidebar({
 }: AppSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const { t, lang, setLang } = useLanguage()
   const activeBrand = brands.find((b) => b.id === currentBrandId) ?? brands[0]
   const workspaceId = currentBrandId ?? activeBrand?.id
 
@@ -51,16 +54,16 @@ export function AppSidebar({
 
   const nav = workspaceId
     ? [
-      { href: `/${workspaceId}`, label: 'Generate', icon: Sparkles, match: 'exact' as const },
-      { href: `/${workspaceId}/history`, label: 'History', icon: History, match: 'prefix' as const },
-      { href: `/${workspaceId}/kit`, label: 'Brand Kit', icon: Palette, match: 'prefix' as const },
-      { href: `/${workspaceId}/keys`, label: 'Keys', icon: Key, match: 'prefix' as const },
-      { href: `/${workspaceId}/settings`, label: 'Settings', icon: Settings, match: 'prefix' as const },
+      { href: `/${workspaceId}`, label: t('dashboard.generate'), icon: Sparkles, match: 'exact' as const },
+      { href: `/${workspaceId}/history`, label: t('dashboard.history'), icon: History, match: 'prefix' as const },
+      { href: `/${workspaceId}/kit`, label: t('dashboard.brandKit'), icon: Palette, match: 'prefix' as const },
+      { href: `/${workspaceId}/keys`, label: t('dashboard.keys'), icon: Key, match: 'prefix' as const },
+      { href: `/${workspaceId}/settings`, label: t('dashboard.settings'), icon: Settings, match: 'prefix' as const },
     ]
     : []
 
   return (
-    <aside className="flex h-full w-[248px] shrink-0 flex-col overflow-y-auto border-r border-border bg-background px-3 py-4">
+    <aside className="flex h-full w-[248px] shrink-0 flex-col overflow-y-auto border-e border-border bg-background px-3 py-4">
       <Link href="/brands" className="mb-6 flex items-center gap-2 px-1 no-underline">
         <Image
           src="/trendy_logo.png"
@@ -72,10 +75,9 @@ export function AppSidebar({
         <span className="font-display text-[27px] leading-none tracking-tight text-brand-headline">
           TRENDY AI
         </span>
-
       </Link>
 
-      <Eyebrow className="px-1">Workspace</Eyebrow>
+      <Eyebrow className="px-1">{t('dashboard.workspace')}</Eyebrow>
       <div className="mt-2 flex flex-wrap items-center gap-[9px] px-1">
         {brands.map((brand) => {
           const selected = brand.id === currentBrandId
@@ -98,7 +100,7 @@ export function AppSidebar({
         <button
           type="button"
           onClick={onCreateBrand}
-          title="Create brand"
+          title={t('dashboard.createBrand')}
           className="inline-flex h-[26px] w-[26px] items-center justify-center rounded-full border border-dashed border-border text-muted-foreground transition-colors duration-fast hover:border-brand hover:text-brand"
         >
           <Plus className="h-3.5 w-3.5" />
@@ -109,9 +111,10 @@ export function AppSidebar({
       )}
       <Link
         href="/brands"
-        className="mt-0.5 px-1 text-[12px] text-muted-foreground no-underline hover:text-brand"
+        className="mt-0.5 flex items-center gap-1 px-1 text-[12px] text-muted-foreground no-underline hover:text-brand"
       >
-        All brands ›
+        <span>{t('dashboard.allBrands')}</span>
+        <span className="inline-block rtl:rotate-180">›</span>
       </Link>
 
       <nav className="mt-5 flex flex-col gap-[3px]">
@@ -136,7 +139,7 @@ export function AppSidebar({
                 className={cn('h-[18px] w-[18px]', active ? 'text-brand' : 'text-muted-foreground')}
               />
               <span className="flex-1">{item.label}</span>
-              {item.label === 'Brand Kit' && activeBrand && (
+              {item.icon === Palette && activeBrand && (
                 <KitStatusBadge status={activeBrand.kit_status} />
               )}
             </Link>
@@ -155,7 +158,7 @@ export function AppSidebar({
             )}
           >
             <Sliders className="h-[18px] w-[18px] text-muted-foreground" />
-            <span className="flex-1">Admin</span>
+            <span className="flex-1">{t('dashboard.admin')}</span>
             <Badge>Op</Badge>
           </Link>
         )}
@@ -169,15 +172,24 @@ export function AppSidebar({
           <span className="inline-flex h-[22px] w-[22px] items-center justify-center rounded-full bg-secondary">
             <User className="h-3.5 w-3.5 text-muted-foreground" />
           </span>
-          <span className="truncate">{profile?.full_name || 'You'}</span>
+          <span className="truncate">{profile?.full_name || t('dashboard.you')}</span>
         </Link>
+        {/* Quick language toggle */}
+        <button
+          type="button"
+          onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+          className="flex h-[33px] items-center gap-[11px] rounded-[10px] px-[11px] text-start text-[14px] font-medium text-muted-foreground transition-colors duration-fast hover:bg-accent hover:text-foreground"
+        >
+          <Globe className="h-[18px] w-[18px]" />
+          <span className="flex-1">{t('langToggle.switchTo')}</span>
+        </button>
         <button
           type="button"
           onClick={handleLogout}
-          className="flex h-[33px] items-center gap-[11px] rounded-[10px] px-[11px] text-left text-[14px] font-medium text-muted-foreground transition-colors duration-fast hover:bg-accent hover:text-foreground"
+          className="flex h-[33px] items-center gap-[11px] rounded-[10px] px-[11px] text-start text-[14px] font-medium text-muted-foreground transition-colors duration-fast hover:bg-accent hover:text-foreground"
         >
           <LogOut className="h-[18px] w-[18px]" />
-          Log out
+          {t('dashboard.logout')}
         </button>
       </div>
     </aside>
