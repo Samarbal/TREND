@@ -204,3 +204,32 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   RTL / Arabic language overrides
+   Applied when <html dir="rtl"> is set by LanguageProvider.
+   ============================================================ */
+
+/* Use Arabic font when in RTL mode */
+[dir="rtl"] body {
+  font-family: var(--font-arabic), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Reset direction for LTR-only content like email/URL inputs */
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="url"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Flip the "All brands ›" chevron in RTL */
+[dir="rtl"] .rtl-flip-chevron {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+/* Arrow icons in RTL (e.g. workflow steps → ) */
+[dir="rtl"] .rtl-arrow {
+  display: inline-block;
+  transform: scaleX(-1);
+}
