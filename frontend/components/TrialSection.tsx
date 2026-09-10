@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslations } from 'next-intl';
 
 export default function TrialSection() {
   const [submitted, setSubmitted] = useState(false);
-  const { t } = useLanguage();
+  const t = useTranslations();
 
   const TRIAL_STEPS = [
     {

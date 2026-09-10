@@ -1,7 +1,7 @@
 "use client";
 
 import Reveal from "./Reveal";
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslations } from 'next-intl';
 
 const SLIDES = [
   { text: "Organic Coffee\nwith Levantine Soul", dark: true },
@@ -10,7 +10,7 @@ const SLIDES = [
 ];
 
 export default function StudioSection() {
-  const { t } = useLanguage();
+  const t = useTranslations();
 
   const WORKFLOW_STEPS = [
     t("studio.step1"),

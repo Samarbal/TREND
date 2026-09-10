@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  Globe,
   History,
   Key,
   LogOut,
@@ -21,7 +20,8 @@ import { Eyebrow } from '@/components/ui/eyebrow'
 import { Separator } from '@/components/ui/separator'
 import { KitStatusBadge } from '@/components/kit/kit-status-badge'
 import { cn } from '@/lib/utils'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslations } from 'next-intl'
+import LanguageSwitcher from '@/components/language-switcher'
 import type { BrandListItem, Profile } from '@/types'
 
 interface AppSidebarProps {
@@ -41,7 +41,7 @@ export function AppSidebar({
 }: AppSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const { t, lang, setLang } = useLanguage()
+  const t = useTranslations()
   const activeBrand = brands.find((b) => b.id === currentBrandId) ?? brands[0]
   const workspaceId = currentBrandId ?? activeBrand?.id
 
@@ -175,14 +175,7 @@ export function AppSidebar({
           <span className="truncate">{profile?.full_name || t('dashboard.you')}</span>
         </Link>
         {/* Quick language toggle */}
-        <button
-          type="button"
-          onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-          className="flex h-[33px] items-center gap-[11px] rounded-[10px] px-[11px] text-start text-[14px] font-medium text-muted-foreground transition-colors duration-fast hover:bg-accent hover:text-foreground"
-        >
-          <Globe className="h-[18px] w-[18px]" />
-          <span className="flex-1">{t('langToggle.switchTo')}</span>
-        </button>
+        <LanguageSwitcher />
         <button
           type="button"
           onClick={handleLogout}

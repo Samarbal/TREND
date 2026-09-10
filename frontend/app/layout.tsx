@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Instrument_Serif, Hanken_Grotesk, Noto_Naskh_Arabic } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
-import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
@@ -61,10 +60,8 @@ export default async function RootLayout({
     >
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
-          <LanguageProvider>
-            {children}
-            <Toaster />
-          </LanguageProvider>
+          {children}
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>
