@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { ArrowLeft, Check, ImagePlus, KeyRound, Palette } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell } from '@/components/auth/auth-shell'
@@ -18,6 +19,7 @@ import {
 } from '@/components/ui/card'
 
 export default function SignUpPage() {
+  const t = useTranslations('auth')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -54,22 +56,22 @@ export default function SignUpPage() {
 
   const hero = success ? (
     <>
-      Your studio is <em className="text-brand-accent">almost open.</em>
+      {t('signupSuccessHeroBefore')} <em className="text-brand-accent">{t('signupSuccessHeroAccent')}</em>
     </>
   ) : (
     <>
-      Give your brand <em className="text-brand-accent">vision.</em>
+      {t('signupHeroBefore')} <em className="text-brand-accent">{t('signupHeroAccent')}</em>
     </>
   )
 
   return (
     <AuthShell
       hero={hero}
-      subcopy="One warm interview, your own keys, and every asset sized for the platform."
+      subcopy={t('signupSubcopy')}
       features={[
-        { icon: Palette, label: 'One warm interview, then you’re set' },
-        { icon: KeyRound, label: 'Bring your own OpenAI or Gemini key' },
-        { icon: ImagePlus, label: 'Every preset, sized correctly' },
+        { icon: Palette, label: t('signupFeatureInterview') },
+        { icon: KeyRound, label: t('featureKeys') },
+        { icon: ImagePlus, label: t('signupFeaturePreset') },
       ]}
     >
       {success ? (
@@ -78,17 +80,16 @@ export default function SignUpPage() {
             <span className="mb-2 inline-flex h-[46px] w-[46px] items-center justify-center rounded-full bg-[color-mix(in_srgb,hsl(var(--success))_14%,white)] text-success">
               <Check className="h-5 w-5" />
             </span>
-            <CardTitle className="text-[22px] font-semibold tracking-tight">Check your email</CardTitle>
+            <CardTitle className="text-[22px] font-semibold tracking-tight">{t('checkEmail')}</CardTitle>
             <CardDescription>
-              We sent a confirmation link to <strong className="text-foreground">{email}</strong>. Click the
-              link to activate your account.
+              {t('confirmationSent')} <strong className="text-foreground">{email}</strong>. {t('activateAccount')}
             </CardDescription>
           </CardHeader>
           <CardFooter>
             <Button asChild variant="secondary" size="lg" className="w-full">
               <Link href="/login">
                 <ArrowLeft className="h-4 w-4" />
-                Back to login
+                {t('backToLogin')}
               </Link>
             </Button>
           </CardFooter>
@@ -96,10 +97,8 @@ export default function SignUpPage() {
       ) : (
         <Card className="shadow-sm">
           <CardHeader>
-            <CardTitle className="text-[22px] font-semibold tracking-tight">Create an account</CardTitle>
-            <CardDescription>
-              Enter your email and password to get started.
-            </CardDescription>
+            <CardTitle className="text-[22px] font-semibold tracking-tight">{t('createAccount')}</CardTitle>
+            <CardDescription>{t('signupDescription')}</CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
@@ -109,11 +108,11 @@ export default function SignUpPage() {
                 </div>
               )}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('email')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder={t('emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -121,7 +120,7 @@ export default function SignUpPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('password')}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -131,17 +130,17 @@ export default function SignUpPage() {
                   minLength={6}
                   autoComplete="new-password"
                 />
-                <p className="text-[12px] text-muted-foreground">At least 6 characters.</p>
+                <p className="text-[12px] text-muted-foreground">{t('passwordHint')}</p>
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
               <Button type="submit" size="lg" className="w-full" disabled={loading}>
-                {loading ? 'Creating account…' : 'Sign up'}
+                {loading ? t('creatingAccount') : t('signUp')}
               </Button>
               <p className="text-center text-[12px] text-muted-foreground">
-                Already have an account?{' '}
+                {t('hasAccount')}{' '}
                 <Link href="/login" className="font-medium text-brand underline underline-offset-[2px]">
-                  Log in
+                  {t('loginTitle')}
                 </Link>
               </p>
             </CardFooter>

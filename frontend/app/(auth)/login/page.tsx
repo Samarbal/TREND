@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, ImagePlus, KeyRound, Palette } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell } from '@/components/auth/auth-shell'
 import { Button } from '@/components/ui/button'
@@ -20,6 +21,7 @@ import {
 
 export default function LoginPage() {
   const router = useRouter()
+  const t = useTranslations('auth')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -52,22 +54,20 @@ export default function LoginPage() {
     <AuthShell
       hero={
         <>
-          Walk into <em className="text-brand-accent">your own studio.</em>
+          {t('loginHeroBefore')} <em className="text-brand-accent">{t('loginHeroAccent')}</em>
         </>
       }
-      subcopy="TRENDY AI remembers your brand — kit, colors, tone — and hands back platform-ready images."
+      subcopy={t('loginSubcopy')}
       features={[
-        { icon: Palette, label: 'Your kit, colors, and tone — remembered' },
-        { icon: ImagePlus, label: 'Every image, sized for the platform' },
-        { icon: KeyRound, label: 'Bring your own OpenAI or Gemini key' },
+        { icon: Palette, label: t('featureKit') },
+        { icon: ImagePlus, label: t('featureImages') },
+        { icon: KeyRound, label: t('featureKeys') },
       ]}
     >
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle className="text-[22px] font-semibold tracking-tight">Log in</CardTitle>
-          <CardDescription>
-            Enter your email and password to access your studio.
-          </CardDescription>
+          <CardTitle className="text-[22px] font-semibold tracking-tight">{t('loginTitle')}</CardTitle>
+          <CardDescription>{t('loginDescription')}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -77,11 +77,11 @@ export default function LoginPage() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t('emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -89,7 +89,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('password')}</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -104,7 +104,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? t('hidePassword') : t('showPassword')}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -113,12 +113,12 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
             <Button type="submit" size="lg" className="w-full" disabled={loading}>
-              {loading ? 'Logging in…' : 'Log in'}
+              {loading ? t('loggingIn') : t('loginTitle')}
             </Button>
             <p className="text-center text-[12px] text-muted-foreground">
-              Don&apos;t have an account?{' '}
+              {t('noAccount')}{' '}
               <Link href="/signup" className="font-medium text-brand underline underline-offset-[2px]">
-                Sign up
+                {t('signUp')}
               </Link>
             </p>
           </CardFooter>

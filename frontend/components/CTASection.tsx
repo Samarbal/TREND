@@ -1,9 +1,9 @@
 "use client";
 
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslations } from 'next-intl';
 
 export default function CTASection() {
-  const { t } = useLanguage();
+  const t = useTranslations();
 
   return (
     <section className="py-28 bg-[#9F201C] text-center relative overflow-hidden">

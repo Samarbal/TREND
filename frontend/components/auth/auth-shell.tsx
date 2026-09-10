@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { type LucideIcon } from 'lucide-react'
 import Image from 'next/image'
+import LanguageSwitcher from '@/components/language-switcher'
 
 
 interface AuthShellProps {
@@ -21,7 +22,7 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
         }}
       >
         <div className="flex items-center gap-3">
-      
+
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4EBDD] p-2 shadow-sm">
             <Image
               src="/trendy_logo.png"
@@ -29,10 +30,10 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
               width={54}
               height={54}
               className="h-12 w-12 cursor-pointer object-contain"
-                onClick={() => {
+              onClick={() => {
                 window.location.href = '/'
-                          }}
-              />
+              }}
+            />
           </div>
 
           <span className="font-display text-[30px] leading-none text-brand-accent">
@@ -60,6 +61,9 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
         </ul>
       </section>
       <section className="auth-theme relative flex min-h-screen items-center justify-center overflow-hidden bg-[#F2EAD3] px-4 py-12">
+        <div className="absolute right-4 top-4 z-20">
+          <LanguageSwitcher />
+        </div>
         <Image
           src="/trendy_logo.png"
           alt=""

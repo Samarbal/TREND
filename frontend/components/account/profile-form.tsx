@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useTranslations, useLocale } from 'next-intl'
 import { apiRequest } from '@/lib/api'
 import { Profile } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -8,8 +10,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
-import type { Lang } from '@/lib/i18n/translations'
 
 interface ProfileFormProps {
   profile: Profile
@@ -18,7 +18,9 @@ interface ProfileFormProps {
 
 export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
   const { toast } = useToast()
-  const { t, lang, setLang } = useLanguage()
+  const router = useRouter()
+  const locale = useLocale()
+  const t = useTranslations()
   const [fullName, setFullName] = useState(profile.full_name ?? '')
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url ?? '')
   const [loading, setLoading] = useState(false)
@@ -124,8 +126,11 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
           </div>
           <select
             id="language-select"
-            value={lang}
-            onChange={(e) => setLang(e.target.value as Lang)}
+            value={locale}
+            onChange={(e) => {
+              document.cookie = `NEXT_LOCALE=${e.target.value};path=/;max-age=31536000;sameSite=lax`
+              router.refresh()
+            }}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           >
             <option value="en">{t('account.languageEnglish')}</option>

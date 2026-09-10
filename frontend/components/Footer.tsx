@@ -1,10 +1,10 @@
 "use client";
 
 import Image from 'next/image'
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const t = useTranslations();
 
   const PRODUCT_LINKS = [
     { href: "#studio", label: t("footer.studioLink") },

@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from 'next/image'
-import { Globe } from "lucide-react";
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from './language-switcher';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { t, lang, setLang } = useLanguage();
+  const t = useTranslations();
 
   const NAV_LINKS = [
     { href: "#hero", label: t("nav.about") },
@@ -45,15 +45,7 @@ export default function Header() {
 
         <div className="flex items-center gap-3 font-readex">
           {/* Language Toggle */}
-          <button
-            type="button"
-            onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-            className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-brand-headline hover:text-brand-primary transition-colors border border-brand-accent/40 rounded-full px-3 py-1 hover:border-brand-primary cursor-pointer"
-            aria-label="Switch language"
-          >
-            <Globe className="h-3.5 w-3.5" />
-            <span>{t("langToggle.switchTo")}</span>
-          </button>
+          <LanguageSwitcher />
 
           <a
             href="/login"
@@ -93,14 +85,7 @@ export default function Header() {
           ))}
           <div className="mt-2 flex items-center justify-center gap-3 border-t border-brand-accent/20 pt-4 flex-wrap">
             {/* Language toggle in mobile menu */}
-            <button
-              type="button"
-              onClick={() => { setLang(lang === 'en' ? 'ar' : 'en'); setMenuOpen(false); }}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-headline hover:text-brand-primary transition-colors border border-brand-accent/40 rounded-full px-3 py-1 cursor-pointer"
-            >
-              <Globe className="h-3.5 w-3.5" />
-              <span>{t("langToggle.switchTo")}</span>
-            </button>
+            <LanguageSwitcher />
             <a
               href="/login"
               onClick={() => setMenuOpen(false)}

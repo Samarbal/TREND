@@ -1,10 +1,10 @@
 "use client";
 
 import Reveal from "./Reveal";
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslations } from 'next-intl';
 
 export default function AudiencesSection() {
-  const { t } = useLanguage();
+  const t = useTranslations();
 
   const AUDIENCES = [
     {

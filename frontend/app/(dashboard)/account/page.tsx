@@ -2,11 +2,11 @@
 
 import { useProfile } from '@/hooks/use-profile'
 import { ProfileForm } from '@/components/account/profile-form'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useTranslations } from 'next-intl'
 
 export default function AccountPage() {
   const { profile, loading, error, mutate } = useProfile()
-  const { t } = useLanguage()
+  const t = useTranslations()
 
   if (loading) {
     return (
