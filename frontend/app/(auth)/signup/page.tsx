@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import { ArrowLeft, Check, ImagePlus, KeyRound, Palette } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell } from '@/components/auth/auth-shell'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,7 +20,11 @@ import {
 } from '@/components/ui/card'
 
 export default function SignUpPage() {
+<<<<<<< Updated upstream
   const t = useTranslations('auth')
+=======
+  const { t } = useLanguage()
+>>>>>>> Stashed changes
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -44,7 +49,7 @@ export default function SignUpPage() {
 
     if (error) {
       if (error.message.includes('User already registered')) {
-        setError('An account with this email already exists. Please log in instead.')
+        setError(t('.accountExists'))
       } else {
         setError(error.message)
       }
@@ -54,6 +59,7 @@ export default function SignUpPage() {
     setSuccess(true)
   }
 
+<<<<<<< Updated upstream
   const hero = success ? (
     <>
       {t('signupSuccessHeroBefore')} <em className="text-brand-accent">{t('signupSuccessHeroAccent')}</em>
@@ -63,15 +69,26 @@ export default function SignUpPage() {
       {t('signupHeroBefore')} <em className="text-brand-accent">{t('signupHeroAccent')}</em>
     </>
   )
+=======
+  const hero = success ? t('.signupSuccessHero') : t('.signupHero')
+>>>>>>> Stashed changes
 
   return (
     <AuthShell
       hero={hero}
+<<<<<<< Updated upstream
       subcopy={t('signupSubcopy')}
       features={[
         { icon: Palette, label: t('signupFeatureInterview') },
         { icon: KeyRound, label: t('featureKeys') },
         { icon: ImagePlus, label: t('signupFeaturePreset') },
+=======
+      subcopy={t('.signupSubcopy')}
+      features={[
+        { icon: Palette, label: t('.warmInterview') },
+        { icon: KeyRound, label: t('.bringYourKey') },
+        { icon: ImagePlus, label: t('.everyPresetSized') },
+>>>>>>> Stashed changes
       ]}
     >
       {success ? (
@@ -80,16 +97,28 @@ export default function SignUpPage() {
             <span className="mb-2 inline-flex h-[46px] w-[46px] items-center justify-center rounded-full bg-[color-mix(in_srgb,hsl(var(--success))_14%,white)] text-success">
               <Check className="h-5 w-5" />
             </span>
+<<<<<<< Updated upstream
             <CardTitle className="text-[22px] font-semibold tracking-tight">{t('checkEmail')}</CardTitle>
             <CardDescription>
               {t('confirmationSent')} <strong className="text-foreground">{email}</strong>. {t('activateAccount')}
+=======
+            <CardTitle className="text-[22px] font-semibold tracking-tight">{t('.checkEmailTitle')}</CardTitle>
+            <CardDescription>
+              {t('.checkEmailDescription').split('{email}')[0]}
+              <strong className="text-foreground">{email}</strong>
+              {t('.checkEmailDescription').split('{email}')[1]}
+>>>>>>> Stashed changes
             </CardDescription>
           </CardHeader>
           <CardFooter>
             <Button asChild variant="secondary" size="lg" className="w-full">
               <Link href="/login">
                 <ArrowLeft className="h-4 w-4" />
+<<<<<<< Updated upstream
                 {t('backToLogin')}
+=======
+                {t('.backToLogin')}
+>>>>>>> Stashed changes
               </Link>
             </Button>
           </CardFooter>
@@ -97,8 +126,15 @@ export default function SignUpPage() {
       ) : (
         <Card className="shadow-sm">
           <CardHeader>
+<<<<<<< Updated upstream
             <CardTitle className="text-[22px] font-semibold tracking-tight">{t('createAccount')}</CardTitle>
             <CardDescription>{t('signupDescription')}</CardDescription>
+=======
+            <CardTitle className="text-[22px] font-semibold tracking-tight">{t('.signupTitle')}</CardTitle>
+            <CardDescription>
+              {t('.signupDescription')}
+            </CardDescription>
+>>>>>>> Stashed changes
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
@@ -108,11 +144,19 @@ export default function SignUpPage() {
                 </div>
               )}
               <div className="space-y-2">
+<<<<<<< Updated upstream
                 <Label htmlFor="email">{t('email')}</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder={t('emailPlaceholder')}
+=======
+                <Label htmlFor="email">{t('.email')}</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={t('.emailPlaceholder')}
+>>>>>>> Stashed changes
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -120,7 +164,11 @@ export default function SignUpPage() {
                 />
               </div>
               <div className="space-y-2">
+<<<<<<< Updated upstream
                 <Label htmlFor="password">{t('password')}</Label>
+=======
+                <Label htmlFor="password">{t('.password')}</Label>
+>>>>>>> Stashed changes
                 <Input
                   id="password"
                   type="password"
@@ -130,17 +178,30 @@ export default function SignUpPage() {
                   minLength={6}
                   autoComplete="new-password"
                 />
+<<<<<<< Updated upstream
                 <p className="text-[12px] text-muted-foreground">{t('passwordHint')}</p>
+=======
+                <p className="text-[12px] text-muted-foreground">{t('.atLeastCharacters')}</p>
+>>>>>>> Stashed changes
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
               <Button type="submit" size="lg" className="w-full" disabled={loading}>
+<<<<<<< Updated upstream
                 {loading ? t('creatingAccount') : t('signUp')}
               </Button>
               <p className="text-center text-[12px] text-muted-foreground">
                 {t('hasAccount')}{' '}
                 <Link href="/login" className="font-medium text-brand underline underline-offset-[2px]">
                   {t('loginTitle')}
+=======
+                {loading ? t('.creatingAccount') : t('.signupLink')}
+              </Button>
+              <p className="text-center text-[12px] text-muted-foreground">
+                {t('.alreadyAccount')}{' '}
+                <Link href="/login" className="font-medium text-brand underline underline-offset-[2px]">
+                  {t('.loginLink')}
+>>>>>>> Stashed changes
                 </Link>
               </p>
             </CardFooter>

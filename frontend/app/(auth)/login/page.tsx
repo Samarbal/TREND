@@ -7,6 +7,7 @@ import { Eye, EyeOff, ImagePlus, KeyRound, Palette } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell } from '@/components/auth/auth-shell'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,6 +21,7 @@ import {
 } from '@/components/ui/card'
 
 export default function LoginPage() {
+  const { t } = useLanguage()
   const router = useRouter()
   const t = useTranslations('auth')
   const [email, setEmail] = useState('')
@@ -53,6 +55,7 @@ export default function LoginPage() {
   return (
     <AuthShell
       hero={
+<<<<<<< Updated upstream
         <>
           {t('loginHeroBefore')} <em className="text-brand-accent">{t('loginHeroAccent')}</em>
         </>
@@ -62,12 +65,28 @@ export default function LoginPage() {
         { icon: Palette, label: t('featureKit') },
         { icon: ImagePlus, label: t('featureImages') },
         { icon: KeyRound, label: t('featureKeys') },
+=======
+        t('.loginHero')
+      }
+      subcopy={t('.loginSubcopy')}
+      features={[
+        { icon: Palette, label: t('.kitRemembered') },
+        { icon: ImagePlus, label: t('.everyImageSized') },
+        { icon: KeyRound, label: t('.bringYourKey') },
+>>>>>>> Stashed changes
       ]}
     >
       <Card className="shadow-sm">
         <CardHeader>
+<<<<<<< Updated upstream
           <CardTitle className="text-[22px] font-semibold tracking-tight">{t('loginTitle')}</CardTitle>
           <CardDescription>{t('loginDescription')}</CardDescription>
+=======
+          <CardTitle className="text-[22px] font-semibold tracking-tight">{t('.loginTitle')}</CardTitle>
+          <CardDescription>
+            {t('.loginDescription')}
+          </CardDescription>
+>>>>>>> Stashed changes
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -77,11 +96,19 @@ export default function LoginPage() {
               </div>
             )}
             <div className="space-y-2">
+<<<<<<< Updated upstream
               <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder={t('emailPlaceholder')}
+=======
+              <Label htmlFor="email">{t('.email')}</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder={t('.emailPlaceholder')}
+>>>>>>> Stashed changes
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -89,7 +116,11 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
+<<<<<<< Updated upstream
               <Label htmlFor="password">{t('password')}</Label>
+=======
+              <Label htmlFor="password">{t('.password')}</Label>
+>>>>>>> Stashed changes
               <div className="relative">
                 <Input
                   id="password"
@@ -113,12 +144,21 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
             <Button type="submit" size="lg" className="w-full" disabled={loading}>
+<<<<<<< Updated upstream
               {loading ? t('loggingIn') : t('loginTitle')}
             </Button>
             <p className="text-center text-[12px] text-muted-foreground">
               {t('noAccount')}{' '}
               <Link href="/signup" className="font-medium text-brand underline underline-offset-[2px]">
                 {t('signUp')}
+=======
+              {loading ? t('.loggingIn') : t('.loginTitle')}
+            </Button>
+            <p className="text-center text-[12px] text-muted-foreground">
+              {t('.noAccount')}{' '}
+              <Link href="/signup" className="font-medium text-brand underline underline-offset-[2px]">
+                {t('.signupLink')}
+>>>>>>> Stashed changes
               </Link>
             </p>
           </CardFooter>
