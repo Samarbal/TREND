@@ -1,3 +1,4 @@
+import pytest
 from app.services.prompt_composer import (
     BrandContext,
     PlatformContext,
@@ -5,6 +6,8 @@ from app.services.prompt_composer import (
     TONE_STYLE_MAP,
     build_generation_prompt,
     compose_full_prompt,
+
+    
 )
 from app.models.generation import (
     AgeRangeEnum,
@@ -370,15 +373,6 @@ def test_build_generation_prompt_output_rules_always_present():
     assert "Do NOT render section headers" in result
 
 
-def test_prompt_composer_includes_arabic_instruction_and_preserves_core_idea():
-    result = build(language="ar")
-
-    assert "Write newly generated campaign copy in Arabic." in result
-    assert "إطلاق قهوة باردة لصباح صيفي مزدحم." in result
-    assert "خصم 20% لفترة محدودة" in result
-    assert result.count("Write newly generated campaign copy in Arabic.") == 1
-
-
 def test_prompt_contains_english_language_instruction():
     result = build(language="en")
 
@@ -390,11 +384,14 @@ def test_prompt_contains_arabic_language_instruction():
 
     assert "Write newly generated campaign copy in Arabic." in result
 
-def build(language=None, logo_mode="none", brand_has_logo=False):
+def build(language=None, core_idea=None, logo_mode="none", brand_has_logo=False):
     brief_data = dict(VALID_BRIEF)
 
     if language is not None:
         brief_data["language"] = language
+
+    if core_idea is not None:
+        brief_data["core_idea"] = core_idea
 
     return build_generation_prompt(
         brief=GenerationBrief.model_validate(brief_data),
@@ -431,3 +428,166 @@ def test_language_instruction_appears_once():
 
 def test_prompt_language_output_is_deterministic():
     assert build(language="ar") == build(language="ar")
+
+
+
+def test_generation_brief_preserves_unicode_text():
+    unicode_text = "مرحباً — إصدار 3.0 ☕ #قهوة"
+
+    brief_data = dict(VALID_BRIEF)
+    brief_data["core_idea"] = unicode_text
+
+    brief = GenerationBrief.model_validate(brief_data)
+
+    assert brief.core_idea == unicode_text
+
+def test_prompt_preserves_arabic_mixed_script_and_user_text():
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update(
+        {
+            "language": "ar",
+            "core_idea": "إطلاق TREND AI 2026 — خصم 20% #قهوة",
+            "text_to_include": "خصم 20% لفترة محدودة",
+            "optional_notes": "لا تغيّر النص! Keep it exact.",
+        }
+    )
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    assert brief_data["core_idea"] in result
+    assert brief_data["text_to_include"] in result
+    assert brief_data["optional_notes"] in result
+
+def test_prompt_does_not_corrupt_unicode_text():
+    value = "مرحباً — إصدار 3.0 ☕ #قهوة"
+    brief_data = dict(VALID_BRIEF)
+    brief_data["core_idea"] = value
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    assert value in result
+    assert "�" not in result
+    assert "����" not in result
+
+def test_language_instruction_does_not_translate_user_text():
+    original = "إطلاق TREND AI 2026 — خصم 20%"
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update({"language": "en", "core_idea": original})
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    assert original in result
+    
+def test_user_text_is_preserved_from_model_to_prompt():
+    original_values = {
+        "core_idea": "إطلاق TREND AI 2026 — خصم 20% #قهوة",
+        "text_to_include": "خصم 20% لفترة محدودة",
+        "optional_notes": "لا تغيّر النص! Keep this exact.",
+    }
+
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update(
+        {
+            "language": "ar",
+            **original_values,
+        }
+    )
+
+    brief = GenerationBrief.model_validate(brief_data)
+
+    assert brief.core_idea == original_values["core_idea"]
+    assert brief.text_to_include == original_values["text_to_include"]
+    assert brief.optional_notes == original_values["optional_notes"]
+
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    for value in original_values.values():
+        assert value in result
+
+    assert "\ufffd" not in result
+
+
+def test_prompt_composer_language_instruction_server_side_formatting():
+    """Verify that language directive reaches prompt composer output rules without modifying exact visible text."""
+    exact_text = "WELCOME 2026! خصم خاص"
+    brief_data = dict(VALID_BRIEF)
+    brief_data.update({
+        "language": "en",
+        "text_to_include": exact_text
+    })
+
+    brief = GenerationBrief.model_validate(brief_data)
+    result = build_generation_prompt(
+        brief=brief,
+        brand_context=None,
+        platform=SAMPLE_PLATFORM,
+        logo_mode="none",
+        brand_has_logo=False,
+    )
+
+    # Check exact visible text preserved
+    assert f'Exact visible text to include; preserve exactly: "{exact_text}"' in result
+    # Check language instruction applied server-side
+    assert "Write newly generated campaign copy in English." in result
+
+def test_arabic_language_instruction_is_added_to_prompt():
+    prompt = build(language="ar")
+
+    assert "Write newly generated campaign copy in Arabic." in prompt
+    assert "Write newly generated campaign copy in English." not in prompt
+
+def test_english_language_instruction_is_added_to_prompt():
+    prompt = build(language="en")
+
+    assert "Write newly generated campaign copy in English." in prompt
+    assert "Write newly generated campaign copy in Arabic." not in prompt
+
+@pytest.mark.parametrize(
+    ("language", "instruction"),
+    [
+        ("ar", "Write newly generated campaign copy in Arabic."),
+        ("en", "Write newly generated campaign copy in English."),
+    ],
+)
+def test_language_instruction_appears_once(language, instruction):
+    prompt = build(language=language)
+
+    assert prompt.count(instruction) == 1
+
+def test_prompt_preserves_core_idea_exactly():
+    idea = "إطلاق منتج جديد — Summer launch #2026"
+
+    prompt = build(
+        language="en",
+        core_idea=idea,
+    )
+
+    assert idea in prompt
+
