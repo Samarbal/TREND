@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl';
 import { KitQuestion } from '@/components/kit/kit-question'
 import { cn } from '@/lib/utils'
 import { KitAnswers, ToneOption } from '@/types'
@@ -11,46 +11,39 @@ interface StepProps {
   brandName: string
 }
 
-const TONE_OPTIONS: { value: ToneOption; label: string; descriptor: string }[] = [
-  { value: 'formal', label: 'common.tone_formal', descriptor: 'common.tone_formal_desc' },
-  { value: 'casual', label: 'common.tone_casual', descriptor: 'common.tone_casual_desc' },
-  { value: 'playful', label: 'common.tone_playful', descriptor: 'common.tone_playful_desc' },
-  { value: 'professional', label: 'common.tone_professional', descriptor: 'common.tone_professional_desc' },
-  { value: 'friendly', label: 'common.tone_friendly', descriptor: 'common.tone_friendly_desc' },
-]
+const TONE_VALUES: ToneOption[] = ['formal', 'casual', 'playful', 'professional', 'friendly']
 
 export function StepTone({ answers, onChange }: StepProps) {
-  const t = useTranslations()
-  const selected = TONE_OPTIONS.find((o) => o.value === answers.tone)
+  const t = useTranslations('components.kit.steps.step-tone');
+  const selected = TONE_VALUES.find((v) => v === answers.tone)
 
   return (
     <div className="space-y-6">
       <KitQuestion
-        before={t('common.how_should_it_prefix')}
-        emphasis={t('historyKit.sound')}
-        after="?"
-        helper={t('common.pick_voice_for_trendy_ai')}
+        before={t('how_should_it_prefix')}
+        emphasis={t('sound_word')}
+        helper={t('tone_help')}
       />
       <div className="flex flex-wrap gap-3">
-        {TONE_OPTIONS.map((option) => (
+        {TONE_VALUES.map((value) => (
           <button
-            key={option.value}
+            key={value}
             type="button"
-            onClick={() => onChange({ tone: option.value })}
-            aria-pressed={answers.tone === option.value}
+            onClick={() => onChange({ tone: value })}
+            aria-pressed={answers.tone === value}
             className={cn(
               'h-10 rounded-md border px-4 text-[13px] font-medium transition-colors duration-fast',
-              answers.tone === option.value
+              answers.tone === value
                 ? 'border-brand bg-brand-weak text-foreground'
                 : 'border-border bg-card hover:bg-accent',
             )}
           >
-            {t(option.label)}
+            {t(`tone_${value}`)}
           </button>
         ))}
       </div>
       {selected && (
-        <p className="text-[14px] italic text-muted-foreground">{t(selected.descriptor)}</p>
+        <p className="text-[14px] italic text-muted-foreground">{t(`tone_${selected}_desc`)}</p>
       )}
     </div>
   )

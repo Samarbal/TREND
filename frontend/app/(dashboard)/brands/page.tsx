@@ -27,7 +27,7 @@ export default function BrandsPage() {
         <div>
           <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('brands')}</h1>
           <p className="mt-1 text-[14px] text-muted-foreground">
-            {brands.length} {brands.length === 1 ? 'studio' : 'studios'}. Each one remembers its own kit, keys, and history.
+            {t('studio_summary', { count: brands.length })}
           </p>
         </div>
         <Button type="button" onClick={() => setShowCreateModal(true)}>

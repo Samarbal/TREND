@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl';
 import { KitQuestion } from '@/components/kit/kit-question'
 import { KitAnswers } from '@/types'
 
@@ -11,14 +11,14 @@ interface StepProps {
 }
 
 export function StepName({ brandName }: StepProps) {
-  const t = useTranslations()
+  const t = useTranslations('components.kit.steps.step-name');
   return (
     <div className="space-y-6">
       <KitQuestion
-        before={t('common.this_is_prefix')}
+        before={t('this_is_prefix')}
         emphasis={brandName}
         after="."
-        helper={t('common.registered_name_help')}
+        helper={t('registered_name_help')}
       />
       <p className="text-[16px] font-semibold">{brandName}</p>
     </div>

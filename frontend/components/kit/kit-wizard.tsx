@@ -1,6 +1,6 @@
 'use client'
-import { useTranslations } from 'next-intl'
 
+import { useTranslations } from 'next-intl';
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Check } from 'lucide-react'
@@ -25,10 +25,18 @@ interface KitWizardProps {
   initialKit: BrandKit
 }
 
-const STEPS = ['brandStep', 'taglineStep', 'toneStep', 'audienceStep', 'colorsStep', 'avoidStep', 'reviewStep']
+const STEP_KEYS = [
+  'step_brand',
+  'step_tagline',
+  'step_tone',
+  'step_audience',
+  'step_colors',
+  'step_avoid',
+  'step_review',
+] as const
 
 export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
-  const t = useTranslations()
+  const t = useTranslations('components.kit.kit-wizard');
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<KitAnswers>(initialKit.answers)
   const [savedSummary, setSavedSummary] = useState<string | null>(initialKit.summary)
@@ -70,7 +78,7 @@ export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
       updateBrand({ id: brandId, kit_status: saved.status })
       router.refresh()
     } catch (e) {
-      setSaveError(e instanceof Error ? e.message : t('remaining.saveFailed'))
+      setSaveError(e instanceof Error ? e.message : t('save_failed'))
     } finally {
       setSaving(false)
     }
@@ -101,7 +109,7 @@ export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
         url.pathname === window.location.pathname &&
         url.search === window.location.search
       ) return
-      const confirmed = window.confirm(t('internal.unsavedChanges'))
+      const confirmed = window.confirm(t('unsaved_changes_confirm'))
       if (!confirmed) {
         e.preventDefault()
         e.stopPropagation()
@@ -111,27 +119,27 @@ export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
     return () => document.removeEventListener('click', handleClick, true)
   }, [t])
 
-  const last = step === STEPS.length - 1
+  const last = step === STEP_KEYS.length - 1
   const colorsInvalid = answers.colors.some((color) => !isKitColor(color))
 
   return (
     <div className="mx-auto flex max-w-[780px] flex-col gap-8">
       <div>
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('internal.brandKit')}</h1>
+          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('brand_kit')}</h1>
           <KitStatusBadge status={isDirty ? 'in_progress' : savedStatus} />
         </div>
         <p className="mt-1 text-[14px] text-muted-foreground">
-          {t('internal.interviewDescription', { brandName })}
+          {t('interview_subtitle', { brandName })}
         </p>
       </div>
 
       <ol className="grid grid-cols-7 gap-2">
-        {STEPS.map((item, index) => {
+        {STEP_KEYS.map((key, index) => {
           const current = index === step
           const done = index < step
           return (
-            <li key={item}>
+            <li key={key}>
               <button
                 type="button"
                 onClick={() => setStep(index)}
@@ -145,7 +153,7 @@ export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
                 />
                 <span className="text-micro font-semibold uppercase tracking-[0.09em] text-muted-foreground">
                   {done && <Check className="mr-0.5 inline h-[11px] w-[11px] text-brand" />}
-                  {t(`remaining.${item}`)}
+                  {t(key)}
                 </span>
               </button>
             </li>
@@ -182,18 +190,14 @@ export function KitWizard({ brandId, brandName, initialKit }: KitWizardProps) {
           onClick={() => setStep(step - 1)}
           disabled={step === 0}
         >
-          <ArrowLeft className="h-4 w-4" />
-          {t('historyKit.back')}
-        </Button>
+          <ArrowLeft className="h-4 w-4" />{t('back')}</Button>
         {last ? (
           <Button type="button" onClick={handleSave} disabled={saving || colorsInvalid}>
             <Check className="h-4 w-4" />
-            {saving ? t('remaining.saving') : t('remaining.saveBrandKit')}
+            {saving ? t('saving') : t('save_brand_kit')}
           </Button>
         ) : (
-          <Button type="button" onClick={() => setStep(step + 1)}>
-            {t('historyKit.continue')}
-          </Button>
+          <Button type="button" onClick={() => setStep(step + 1)}>{t('continue')}</Button>
         )}
       </div>
     </div>

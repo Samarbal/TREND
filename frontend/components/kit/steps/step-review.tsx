@@ -1,6 +1,6 @@
 'use client'
-import { useTranslations } from 'next-intl'
 
+import { useTranslations } from 'next-intl';
 import { KitQuestion } from '@/components/kit/kit-question'
 import { Notice } from '@/components/ui/notice'
 import { formatHex, normalizeHex } from '@/components/brand/brand-workspace'
@@ -26,31 +26,34 @@ export function StepReview({
   isDirty,
   saveError,
 }: StepReviewProps) {
-  const t = useTranslations()
+  const t = useTranslations('components.kit.steps.step-review');
+  const tTone = useTranslations('components.kit.steps.step-tone');
+  const none = t('none_value')
+
   const missingRequired: string[] = []
-  if (!answers.tone) missingRequired.push(t('common.tone'))
-  if (!answers.audience || answers.audience.trim().length < 2) missingRequired.push(t('common.common_audience'))
-  if (!answers.colors || answers.colors.length === 0) missingRequired.push(t('common.colors_at_least_one'))
+  if (!answers.tone) missingRequired.push(t('missing_tone'))
+  if (!answers.audience || answers.audience.trim().length < 2) missingRequired.push(t('missing_audience'))
+  if (!answers.colors || answers.colors.length === 0) missingRequired.push(t('missing_colors'))
 
   const hasSaved = !isDirty && saveError === null && savedStatus !== 'not_started'
+  const toneLabel = answers.tone ? tTone(`tone_${answers.tone}`) : none
 
   return (
     <div className="space-y-6">
       <KitQuestion
-        before={t('common.ready_to_prefix')}
-        emphasis={t('common.save')}
-        after="?"
-        helper={`${brandName} — a short interview so TRENDY AI can paint in its voice.`}
+        before={t('ready_to_prefix')}
+        emphasis={t('save_word')}
+        helper={t('review_help', { brandName })}
       />
 
       <div className="overflow-hidden rounded-lg border border-border">
         <table className="w-full text-[14px]">
           <tbody>
-            <Row label={t('common.common_tagline')} value={answers.tagline || '—'} />
-            <Row label={t('common.tone')} value={answers.tone || '—'} />
-            <Row label={t('common.common_audience')} value={answers.audience || '—'} />
+            <Row label={t('tagline')} value={answers.tagline || none} />
+            <Row label={t('tone')} value={toneLabel} />
+            <Row label={t('audience')} value={answers.audience || none} />
             <tr className="border-t border-border-subtle">
-              <th className="w-32 px-4 py-3 text-left font-medium text-muted-foreground">{t('internal.colors')}</th>
+              <th className="w-32 px-4 py-3 text-left font-medium text-muted-foreground">{t('colors')}</th>
               <td className="px-4 py-3">
                 {answers.colors.length > 0 ? (
                   <span className="flex flex-wrap items-center gap-2">
@@ -63,54 +66,50 @@ export function StepReview({
                             style={{ background: hex }}
                           />
                           <span className="font-mono text-[12px]">
-                            {hex}{i === 0 ? ` ${t('historyKit.primary')}` : ''}
+                            {hex}{i === 0 ? t('primary_suffix') : ''}
                           </span>
                         </span>
                       )
                     })}
                   </span>
                 ) : (
-                  '—'
+                  none
                 )}
               </td>
             </tr>
-            <Row label={t('common.common_avoid')} value={answers.avoid_words || '—'} />
+            <Row label={t('avoid')} value={answers.avoid_words || none} />
           </tbody>
         </table>
       </div>
 
       {missingRequired.length > 0 && (
         <Notice variant="warning">
-          <p className="font-medium">{t('internal.stillMissing', { items: missingRequired.join(', ') })}</p>
-          <p className="mt-1">{t('internal.kitProgress')}</p>
+          <p className="font-medium">{t('still_missing', { items: missingRequired.join(', ') })}</p>
+          <p className="mt-1">{t('you_can_save_now')}</p>
         </Notice>
       )}
 
       {hasSaved && savedStatus === 'complete' && (
-        <Notice variant="success">{t('common.common_brand_kit_saved_complete')}</Notice>
+        <Notice variant="success">{t('brand_kit_saved_complete')}</Notice>
       )}
 
       {hasSaved && savedStatus === 'in_progress' && (
-        <Notice variant="warning">
-          {t('historyKit.kitSavedInProgress')}
-        </Notice>
+        <Notice variant="warning">{t('brand_kit_saved_in')}</Notice>
       )}
 
       <div className="space-y-2">
-        <h3 className="text-[13px] font-medium">{t('internal.modelUses')}</h3>
+        <h3 className="text-[13px] font-medium">{t('what_the_model_will')}</h3>
         {savedSummary ? (
           <>
             <pre className="whitespace-pre-wrap rounded-md bg-surface-sunken p-3 font-sans text-[13px] leading-relaxed">
               {savedSummary}
             </pre>
             {isDirty && (
-              <p className="text-[12px] italic text-muted-foreground">
-                {t('historyKit.unsavedSummary')}
-              </p>
+              <p className="text-[12px] italic text-muted-foreground">{t('you_have_unsaved_changes')}</p>
             )}
           </>
         ) : (
-          <p className="text-[13px] text-muted-foreground">{t('internal.summaryAfterSave')}</p>
+          <p className="text-[13px] text-muted-foreground">{t('summary_is_generated_after')}</p>
         )}
       </div>
 
