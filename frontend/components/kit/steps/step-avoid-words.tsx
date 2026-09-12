@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 
 import { KitQuestion } from '@/components/kit/kit-question'
 import { Label } from '@/components/ui/label'
@@ -12,22 +13,23 @@ interface StepProps {
 }
 
 export function StepAvoidWords({ answers, onChange }: StepProps) {
+  const t = useTranslations()
   return (
     <div className="space-y-6">
       <KitQuestion
-        before="Anything to "
-        emphasis="avoid"
+        before={t('common.anything_to_prefix')}
+        emphasis={t('historyKit.avoid')}
         after="?"
-        helper="Optional. Words or themes TRENDY AI should stay away from."
+        helper={t('common.optional_avoid_words_or_themes')}
       />
       <div className="space-y-2">
-        <Label htmlFor="kit-avoid">Avoid</Label>
+        <Label htmlFor="kit-avoid">{t('common.common_avoid')}</Label>
         <Textarea
           id="kit-avoid"
           value={answers.avoid_words ?? ''}
           maxLength={500}
           onChange={(e) => onChange({ avoid_words: e.target.value || null })}
-          placeholder="Words or themes to avoid…"
+          placeholder={t('internal.avoidPlaceholder')}
           rows={4}
         />
         <p className="text-[12px] text-muted-foreground">

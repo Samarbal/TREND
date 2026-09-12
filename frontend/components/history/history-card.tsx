@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl';
 import { TriangleAlert } from 'lucide-react'
 import type { GenerationHistoryItem } from '@/types'
 import type { DeleteGenerationOutcome } from '@/hooks/use-delete-generation'
 import { PLATFORM_PRESETS } from '@/lib/presets'
+import { providerLabel } from '@/lib/providers'
 import { Badge } from '@/components/ui/badge'
 import { DeleteGenerationDialog } from './delete-generation-dialog'
 
@@ -17,6 +19,9 @@ interface HistoryCardProps {
 }
 
 export function HistoryCard({ item, brandId, search, onDelete }: HistoryCardProps) {
+  const t = useTranslations('components.history.history-card');
+  const tOpt = useTranslations('options');
+  const tFilters = useTranslations('components.history.history-filters');
   const preset = PLATFORM_PRESETS[item.platform_preset]
   const href = `/${brandId}/history/${item.id}${search ? `?${search}` : ''}`
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -32,12 +37,12 @@ export function HistoryCard({ item, brandId, search, onDelete }: HistoryCardProp
     try {
       const outcome = await onDelete(item.id)
       if (!outcome.ok) {
-        setDeleteError(outcome.message ?? 'Failed to delete. Please try again.')
+        setDeleteError(outcome.message ?? t('failed_to_delete_try_again'))
       } else {
         setDialogOpen(false)
       }
     } catch (err) {
-      setDeleteError(err instanceof Error ? err.message : 'Failed to delete. Please try again.')
+      setDeleteError(err instanceof Error ? err.message : t('failed_to_delete_try_again'))
     } finally {
       setDeleting(false)
     }
@@ -60,7 +65,7 @@ export function HistoryCard({ item, brandId, search, onDelete }: HistoryCardProp
               <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center">
                 <TriangleAlert className="h-5 w-5 text-muted-foreground" />
                 <span className="text-[12px] text-muted-foreground">
-                  {failed ? 'Failed' : 'Image unavailable'}
+                  {failed ? t('failed') : t('image_unavailable')}
                 </span>
               </div>
             )}
@@ -69,18 +74,18 @@ export function HistoryCard({ item, brandId, search, onDelete }: HistoryCardProp
             <p className="line-clamp-2 break-words text-[12px] leading-snug">{item.prompt_excerpt}</p>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               <Badge variant="muted" className="normal-case tracking-normal">
-                {item.provider}
+                {providerLabel(item.provider)}
               </Badge>
               {preset && (
                 <Badge variant="muted" className="normal-case tracking-normal">
-                  {preset.shortLabel}
+                  {tOpt(`preset_short_${preset.shortLabelKey}`)}
                 </Badge>
               )}
               <Badge
                 variant={item.status === 'succeeded' ? 'success' : 'danger'}
                 className="normal-case tracking-normal"
               >
-                {item.status}
+                {tFilters(item.status)}
               </Badge>
             </div>
             {item.error_message && (
@@ -98,7 +103,7 @@ export function HistoryCard({ item, brandId, search, onDelete }: HistoryCardProp
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDialogOpen(true) }}
           className="absolute right-2 top-2 rounded-md bg-background/80 px-2 py-1 text-[11px] text-destructive opacity-0 backdrop-blur transition-opacity hover:bg-background focus-visible:opacity-100 max-md:opacity-100 group-hover:opacity-100"
         >
-          Delete
+          {t('delete')}
         </button>
       </div>
       <DeleteGenerationDialog

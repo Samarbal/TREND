@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { ProviderKey } from '@/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -13,6 +14,7 @@ interface KeyCardProps {
 }
 
 export function KeyCard({ keyData, onValidate, onActivate, onDelete, isValidating }: KeyCardProps) {
+  const t = useTranslations('components.keys.key-card');
   return (
     <div className="space-y-2.5 rounded-lg border border-border px-4 py-[15px]">
       <div className="flex items-center justify-between gap-3">
@@ -28,9 +30,7 @@ export function KeyCard({ keyData, onValidate, onActivate, onDelete, isValidatin
         </div>
         {keyData.is_active && (
           <Badge variant="success" className="gap-1 normal-case tracking-normal">
-            <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            Active
-          </Badge>
+            <span className="h-1.5 w-1.5 rounded-full bg-success" />{t('active')}</Badge>
         )}
       </div>
 

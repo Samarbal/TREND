@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 
 import { Sparkles } from 'lucide-react'
 import { BrandDot } from '@/components/brand/brand-dot'
@@ -21,6 +22,7 @@ const CURATED = [
 ]
 
 export function StepColors({ answers, onChange }: StepProps) {
+  const t = useTranslations()
   const colors = answers.colors
   const primary = colors[0] && normalizeHex(colors[0]) ? formatHex(colors[0]) : TRENDY_AI_ACCENT
 
@@ -52,10 +54,10 @@ export function StepColors({ answers, onChange }: StepProps) {
   return (
     <div className="space-y-6">
       <KitQuestion
-        before="Your "
-        emphasis="colors"
+        before={t('common.your_prefix')}
+        emphasis={t('historyKit.colors')}
         after="."
-        helper="Up to three. The first one is the accent TRENDY AI wears in this workspace."
+        helper={t('common.up_to_three_voice_accent')}
       />
       <div className="grid gap-6 lg:grid-cols-[1fr_244px]">
         <div className="space-y-2">
@@ -71,7 +73,7 @@ export function StepColors({ answers, onChange }: StepProps) {
             />
           ))}
           {colors.length === 0 && (
-            <p className="text-[13px] text-muted-foreground">Add a color to set the studio accent.</p>
+            <p className="text-[13px] text-muted-foreground">{t('internal.accentHint')}</p>
           )}
           <button
             type="button"
