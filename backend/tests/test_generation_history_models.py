@@ -20,6 +20,7 @@ def _make_item(**overrides):
         "status": "succeeded",
         "image_url": "https://example.com/image.png",
         "error_message": None,
+        "language": "ar",
         "created_at": "2026-06-07T12:30:00Z",
         "completed_at": "2026-06-07T12:30:15Z",
     }

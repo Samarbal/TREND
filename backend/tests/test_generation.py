@@ -194,43 +194,40 @@ def test_generation_brief_strips_text_and_converts_empty_optional_to_none():
     assert brief.core_idea == "فكرة إطلاق واضحة"
     assert brief.optional_notes is None
 
-
-
-def test_generation_brief_defaults_to_english():
+  
+def test_generation_brief_defaults_to_arabic():
     brief = GenerationBrief.model_validate(VALID_BRIEF)
 
     assert brief.language is TextLanguageEnum.ar
-  
+    assert brief.language.value == "ar"
 
 
-def test_generation_brief_accepts_arabic_language():
+@pytest.mark.parametrize("language", ["ar", "en"])
+def test_generation_brief_accepts_supported_languages(language):
     payload = {
         **VALID_BRIEF,
-        "language": "ar",
+        "language": language,
     }
 
     brief = GenerationBrief.model_validate(payload)
 
-    assert brief.language is TextLanguageEnum.ar
+    assert brief.language.value == language
 
-def test_generation_brief_accepts_english_language():
+
+
+@pytest.mark.parametrize(
+    "language",
+    ["Arabic", "English", "fr", "en-US", "", None],
+)
+def test_generation_brief_rejects_unsupported_language(language):
     payload = {
         **VALID_BRIEF,
-        "language": "en",
-    }
-
-    brief = GenerationBrief.model_validate(payload)
-
-    assert brief.language is TextLanguageEnum.en
-
-def test_generation_brief_rejects_invalid_language():
-    payload = {
-        **VALID_BRIEF,
-        "language": "fr",
+        "language": language,
     }
 
     with pytest.raises(ValidationError):
         GenerationBrief.model_validate(payload)
+
 
 def test_generation_brief_serializes_language_as_string():
     payload = {
@@ -303,4 +300,52 @@ def test_generation_brief_rejects_invalid_or_empty_language(invalid_lang):
 
     with pytest.raises(ValidationError):
         GenerationBrief.model_validate(payload)
+
+def test_generation_brief_preserves_arabic_user_text():
+    arabic_idea = "إطلاق حملة قهوة باردة لصيف مزدحم"
+    arabic_visible_text = "خصم 20% لفترة محدودة"
+
+    payload = {
+        **VALID_BRIEF,
+        "language": "ar",
+        "core_idea": arabic_idea,
+        "text_to_include": arabic_visible_text,
+    }
+
+    brief = GenerationBrief.model_validate(payload)
+
+    assert brief.core_idea == arabic_idea
+    assert brief.text_to_include == arabic_visible_text
+
+def test_generation_brief_preserves_english_user_text():
+    english_idea = "Launch a cold coffee campaign for busy summer mornings"
+    english_visible_text = "20% off for a limited time"
+
+    payload = {
+        **VALID_BRIEF,
+        "language": "en",
+        "core_idea": english_idea,
+        "text_to_include": english_visible_text,
+    }
+
+    brief = GenerationBrief.model_validate(payload)
+
+    assert brief.core_idea == english_idea
+    assert brief.text_to_include == english_visible_text
+
+def test_generation_brief_preserves_mixed_script_text():
+    mixed_text = "خصم 20% — Summer Sale #TRENDY_AI"
+
+    payload = {
+        **VALID_BRIEF,
+        "language": "ar",
+        "core_idea": mixed_text,
+        "text_to_include": mixed_text,
+    }
+
+    brief = GenerationBrief.model_validate(payload)
+
+    assert brief.core_idea == mixed_text
+    assert brief.text_to_include == mixed_text
+
 

@@ -218,6 +218,8 @@ async def test_generate_endpoint_accepts_language_param(override_auth, mock_supa
     assert "خصم 20%" in sent_prompt
 
 
+
+
 @pytest.mark.asyncio
 async def test_generate_endpoint_rejects_invalid_language(override_auth, mock_helpers):
     """When the brief contains an invalid language, the endpoint should return a 400 validation error."""
@@ -235,3 +237,46 @@ async def test_generate_endpoint_rejects_invalid_language(override_auth, mock_he
     assert response.status_code == 400
     res_data = response.json()
     assert res_data["error"]["code"] == "VALIDATION_ERROR"     
+
+@pytest.mark.asyncio
+async def test_generate_endpoint_persists_language(
+    override_auth,
+    mock_supabase,
+    mock_helpers,
+    monkeypatch,
+):
+    from app.services.providers.base import ProviderResult
+
+    mock_result = ProviderResult(
+        image_bytes=b"fake-image-bytes",
+        request_id="req-123",
+    )
+
+    provider_mock = AsyncMock(return_value=mock_result)
+    monkeypatch.setattr(generations, "openai_generate", provider_mock)
+
+    client = TestClient(app)
+    brand_id = uuid4()
+
+    payload = {
+        "brief": {
+            **VALID_BRIEF,
+            "language": "en",
+        },
+        "provider": "openai",
+        "platform_preset": "instagram_post",
+        "logo_mode": "none",
+    }
+
+    response = client.post(
+        f"/brands/{brand_id}/generate",
+        json=payload,
+    )
+
+    assert response.status_code == 500
+
+    inserted = mock_supabase.inserted_rows["generations"][0]
+
+    assert inserted["language"] == "en"
+
+
