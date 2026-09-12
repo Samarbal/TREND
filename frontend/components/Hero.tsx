@@ -1,40 +1,44 @@
-import Reveal from "./Reveal";
+"use client";
 
-const PHONE_STEPS = [
-  { n: "1", label: "Brief", active: true },
-  { n: "2", label: "Plan", active: false },
-  { n: "3", label: "Carousel", active: false },
-  { n: "4", label: "Export", active: false },
-];
+import Reveal from "./Reveal";
+import { useTranslations } from 'next-intl';
 
 export default function Hero() {
+  const t = useTranslations();
+
+  const PHONE_STEPS = [
+    { n: "1", label: t("hero.phoneStep1"), active: true },
+    { n: "2", label: t("hero.phoneStep2"), active: false },
+    { n: "3", label: t("hero.phoneStep3"), active: false },
+    { n: "4", label: t("hero.phoneStep4"), active: false },
+  ];
+
   return (
     <section className="relative pt-24 pb-16 overflow-hidden" id="hero">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center relative z-10">
         <Reveal>
           <div className="inline-flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-headline font-bold text-xs px-4 py-1.5 rounded-full mb-6">
             <i className="w-2 h-2 rounded-full bg-brand-primary block" />
-            AI-Powered Brand Builder
+            {t("hero.badge")}
           </div>
           <h1 className="text-5xl md:text-6xl lg:text-[4rem] leading-tight mb-6 font-ruqaa text-brand-headline">
-            From a simple idea… to a{" "}
-            <em className="not-italic text-brand-primary">brand</em> ready to launch
+            {t("hero.headline1")}{" "}
+            <em className="not-italic text-brand-primary">{t("hero.headline2")}</em>{" "}
+            {t("hero.headline3")}
           </h1>
           <p className="text-lg leading-relaxed text-brand-ink/80 max-w-xl mb-10 font-medium font-readex">
-            Trendy is your AI assistant for building brands: market analysis, visual
-            identity, and ready-to-publish marketing content — it speaks your
-            language and understands your market, in minutes, not months.
+            {t("hero.subheading")}
           </p>
           <div className="flex flex-wrap gap-4 items-center mb-10">
             <a
               href="#trial"
               className="inline-flex items-center justify-center bg-brand-primary text-[#fafafa] px-8 py-3.5 rounded-full font-bold text-base shadow-vintage hover:-translate-y-1 hover:shadow-xl transition-all duration-200"
             >
-              Start Your Free Trial
+              {t("hero.cta")}
             </a>
           </div>
           <div className="flex flex-wrap gap-6">
-            {["No credit card required", "AI-powered end-to-end", "Results in seconds"].map(
+            {[t("hero.noCard"), t("hero.aiPowered"), t("hero.results")].map(
               (item) => (
                 <div
                   key={item}
@@ -58,7 +62,7 @@ export default function Hero() {
                   ✦ Trendy
                 </div>
                 <div className="text-[10px] opacity-70 font-readex">
-                  Creating Instagram content
+                  {t("hero.phoneHeader")}
                 </div>
               </div>
 
@@ -71,8 +75,8 @@ export default function Hero() {
                   >
                     <div
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${step.active
-                          ? "bg-brand-primary text-white"
-                          : "bg-gray-100"
+                        ? "bg-brand-primary text-white"
+                        : "bg-gray-100"
                         }`}
                     >
                       {step.n}
@@ -83,47 +87,47 @@ export default function Hero() {
               </div>
 
               <div className="p-4 text-[11px] text-brand-headline flex-1 bg-brand-cream/30 font-readex">
-                <div className="font-bold text-[12px] mb-1.5 mt-2">Idea / Product *</div>
+                <div className="font-bold text-[12px] mb-1.5 mt-2">{t("hero.phoneField1")}</div>
                 <div className="border border-brand-accent/30 rounded-lg p-2.5 text-[10.5px] text-gray-500 mb-2 bg-white">
-                  e.g., specialty coffee with Levantine flavors
+                  {t("hero.phoneField1Placeholder")}
                 </div>
-                <div className="font-bold text-[12px] mb-1.5 mt-3">Brand Name</div>
+                <div className="font-bold text-[12px] mb-1.5 mt-3">{t("hero.phoneField2")}</div>
                 <div className="border border-brand-accent/30 rounded-lg p-2.5 text-[10.5px] text-gray-400 mb-2 bg-white">
-                  Optional
+                  {t("hero.phoneField2Placeholder")}
                 </div>
-                <div className="font-bold text-[12px] mb-1.5 mt-3">Colors &amp; Font</div>
+                <div className="font-bold text-[12px] mb-1.5 mt-3">{t("hero.phoneField3")}</div>
                 <div className="flex gap-2 mb-2">
                   <div className="flex-1 text-center">
                     <div className="h-6 rounded-md mb-1 border border-black/10 bg-brand-headline" />
-                    <span className="text-[8.5px] text-gray-500">Primary</span>
+                    <span className="text-[8.5px] text-gray-500">{t("hero.phonePrimary")}</span>
                   </div>
                   <div className="flex-1 text-center">
                     <div className="h-6 rounded-md mb-1 border border-black/10 bg-brand-primary" />
-                    <span className="text-[8.5px] text-gray-500">Secondary</span>
+                    <span className="text-[8.5px] text-gray-500">{t("hero.phoneSecondary")}</span>
                   </div>
                   <div className="flex-1 text-center">
                     <div className="h-6 rounded-md mb-1 border border-black/10 bg-brand-accent" />
-                    <span className="text-[8.5px] text-gray-500">Accent</span>
+                    <span className="text-[8.5px] text-gray-500">{t("hero.phoneAccent")}</span>
                   </div>
                 </div>
                 <div className="mt-4 bg-brand-primary text-white text-center p-2.5 rounded-lg font-bold text-[12px] shadow-sm">
-                  Next: Generate Plan →
+                  {t("hero.phoneNext")}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="hidden sm:flex absolute z-20 top-12 -right-8 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex">
+          <div className="hidden sm:flex absolute z-20 top-12 -left-7 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex">
             <div className="w-8 h-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center text-sm">
               ✓
             </div>
-            Complete brand strategy
+            {t("hero.phoneBadge1")}
           </div>
-          <div className="hidden sm:flex absolute z-20 bottom-16 -left-6 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex">
+          <div className="hidden sm:flex absolute z-20 bottom-16 right-5 bg-white rounded-2xl p-3 shadow-xl items-center gap-2 text-xs font-bold text-brand-headline border border-brand-accent/20 font-readex">
             <div className="w-8 h-8 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center text-sm">
               ✎
             </div>
-            3 identity suggestions
+            {t("hero.phoneBadge2")}
           </div>
         </Reveal>
       </div>

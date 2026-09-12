@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
+import { Instrument_Serif, Hanken_Grotesk, Noto_Naskh_Arabic } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 
 const display = Instrument_Serif({
@@ -16,6 +18,13 @@ const display = Instrument_Serif({
 const sans = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+const arabic = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-arabic",
   display: "swap",
 });
 
@@ -33,20 +42,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const dir = locale === "ar" ? "rtl" : "ltr";
+
   return (
     <html
-      lang="en"
-      className={`${display.variable} ${sans.variable} ${geistMono.variable}`}
+      lang={locale}
+      dir={dir}
+      suppressHydrationWarning
+      className={`${display.variable} ${sans.variable} ${arabic.variable} ${geistMono.variable}`}
     >
       <body className="font-sans antialiased">
-        {children}
-        <Toaster />
+        <NextIntlClientProvider messages={messages}>
+          {children}
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
 }
+

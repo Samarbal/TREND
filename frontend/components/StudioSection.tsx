@@ -1,24 +1,7 @@
+"use client";
+
 import Reveal from "./Reveal";
-
-const WORKFLOW_STEPS = ["Brief", "Plan", "Carousel", "Export"];
-
-const STUDIO_FEATURES = [
-  {
-    icon: "↻",
-    title: "Unlimited requests",
-    body: "Every request from the Content Studio is independent and repeatable without limits, with no need to redo any previous step.",
-  },
-  {
-    icon: "▤",
-    title: "Auto-adjusted sizing",
-    body: "Image dimensions are automatically adjusted to fit every platform — Instagram, Facebook, and more — without any manual work.",
-  },
-  {
-    icon: "⬇",
-    title: "Instant save & download",
-    body: "Save or download any post instantly (as text or image) to use right away outside the platform.",
-  },
-];
+import { useTranslations } from 'next-intl';
 
 const SLIDES = [
   { text: "Organic Coffee\nwith Levantine Soul", dark: true },
@@ -27,21 +10,46 @@ const SLIDES = [
 ];
 
 export default function StudioSection() {
+  const t = useTranslations();
+
+  const WORKFLOW_STEPS = [
+    t("studio.step1"),
+    t("studio.step2"),
+    t("studio.step3"),
+    t("studio.step4"),
+  ];
+
+  const STUDIO_FEATURES = [
+    {
+      icon: "↻",
+      title: t("studio.feature1Title"),
+      body: t("studio.feature1Body"),
+    },
+    {
+      icon: "▤",
+      title: t("studio.feature2Title"),
+      body: t("studio.feature2Body"),
+    },
+    {
+      icon: "⬇",
+      title: t("studio.feature3Title"),
+      body: t("studio.feature3Body"),
+    },
+  ];
+
   return (
     <section className="py-24 bg-brand-cream relative" id="studio">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[0.95fr_1.05fr] gap-16 items-center">
         <Reveal>
           <div className="inline-flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-headline font-bold text-xs px-4 py-1.5 rounded-full mb-5 font-readex">
             <i className="w-2 h-2 rounded-full bg-brand-primary block" />
-            Content Studio
+            {t("studio.badge")}
           </div>
           <h2 className="text-4xl md:text-5xl mb-6 font-ruqaa text-brand-headline">
-            Ready-to-publish content, whenever you need it
+            {t("studio.heading")}
           </h2>
           <p className="text-lg opacity-80 leading-relaxed mb-8 font-readex text-brand-ink">
-            Once your identity is complete, the Content Creator becomes a permanent
-            part of your dashboard — request a new post anytime, and it
-            automatically reads your saved identity to keep everything consistent.
+            {t("studio.subheading")}
           </p>
 
           <div className="flex flex-wrap gap-2 mb-10 font-readex items-center">
@@ -52,7 +60,7 @@ export default function StudioSection() {
                   {step}
                 </div>
                 {i < WORKFLOW_STEPS.length - 1 && (
-                  <div className="text-brand-accent/60 self-center">→</div>
+                  <div className="text-brand-accent/60 self-center rtl:rotate-180">→</div>
                 )}
               </div>
             ))}
@@ -85,7 +93,7 @@ export default function StudioSection() {
                 Noura Coffee
               </div>
               <div className="text-xs text-brand-accent font-bold">
-                Carousel — 3 slides
+                {t("studio.mockCarousel")}
               </div>
             </div>
 
@@ -111,10 +119,10 @@ export default function StudioSection() {
 
             <div className="flex gap-3 font-readex">
               <div className="flex-1 text-center py-2.5 rounded-xl text-xs font-bold border border-brand-headline text-brand-headline cursor-pointer hover:bg-gray-50">
-                Save
+                {t("studio.mockSave")}
               </div>
               <div className="flex-1 text-center py-2.5 rounded-xl text-xs font-bold bg-brand-primary text-white cursor-pointer hover:bg-brand-primary/90 shadow-md">
-                Download
+                {t("studio.mockDownload")}
               </div>
             </div>
           </div>

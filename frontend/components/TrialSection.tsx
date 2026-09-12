@@ -1,27 +1,29 @@
 "use client";
 
 import { useState } from "react";
-
-const TRIAL_STEPS = [
-  {
-    n: "1",
-    title: "Start with just your idea and email",
-    body: "No complicated sign-up, no credit card.",
-  },
-  {
-    n: "2",
-    title: "Automatic email at every stage",
-    body: "A stage summary and a direct link to review or request changes.",
-  },
-  {
-    n: "3",
-    title: "Approve with total flexibility",
-    body: "Review from your inbox without needing to repeatedly log into the dashboard.",
-  },
-];
+import { useTranslations } from 'next-intl';
 
 export default function TrialSection() {
   const [submitted, setSubmitted] = useState(false);
+  const t = useTranslations();
+
+  const TRIAL_STEPS = [
+    {
+      n: "1",
+      title: t("trial.step1Title"),
+      body: t("trial.step1Body"),
+    },
+    {
+      n: "2",
+      title: t("trial.step2Title"),
+      body: t("trial.step2Body"),
+    },
+    {
+      n: "3",
+      title: t("trial.step3Title"),
+      body: t("trial.step3Body"),
+    },
+  ];
 
   return (
     <section className="py-24 bg-brand-bg relative" id="trial">
@@ -29,15 +31,13 @@ export default function TrialSection() {
         <div>
           <div className="inline-flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-headline font-bold text-xs px-4 py-1.5 rounded-full mb-5 font-readex">
             <i className="w-2 h-2 rounded-full bg-brand-primary block" />
-            Free trial via email
+            {t("trial.badge")}
           </div>
           <h2 className="text-4xl md:text-5xl mb-6 font-ruqaa text-brand-headline">
-            Try your brand before you pay anything
+            {t("trial.heading")}
           </h2>
           <p className="text-lg opacity-80 leading-relaxed mb-8 font-readex text-brand-ink">
-            Start without entering payment details. Track your project&apos;s
-            progress directly from your email, and review each stage at your own
-            pace.
+            {t("trial.subheading")}
           </p>
 
           <div className="flex flex-col gap-0 mt-4 font-readex text-brand-ink">
@@ -62,11 +62,10 @@ export default function TrialSection() {
 
         <div className="bg-white rounded-[2rem] p-8 md:p-10 shadow-card border border-brand-accent/20">
           <h3 className="text-3xl mb-3 font-ruqaa text-brand-headline">
-            Start now for free
+            {t("trial.formHeading")}
           </h3>
           <p className="text-sm text-gray-600 leading-relaxed mb-8 font-readex">
-            Enter your email and a quick description of your idea, and we&apos;ll
-            send you your first market analysis report within minutes.
+            {t("trial.formSubheading")}
           </p>
           <form
             className="flex flex-col gap-4 font-readex"
@@ -77,13 +76,13 @@ export default function TrialSection() {
           >
             <input
               className="px-5 py-4 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none bg-gray-50 font-readex text-sm transition-all text-brand-ink"
-              placeholder="Your email"
+              placeholder={t("trial.emailPlaceholder")}
               required
               type="email"
             />
             <input
               className="px-5 py-4 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none bg-gray-50 font-readex text-sm transition-all text-brand-ink"
-              placeholder="Your idea in one sentence (e.g., specialty coffee with Levantine flavors)"
+              placeholder={t("trial.ideaPlaceholder")}
               required
               type="text"
             />
@@ -91,11 +90,11 @@ export default function TrialSection() {
               className="bg-brand-primary text-white w-full py-4 rounded-xl font-bold text-base mt-2 shadow-lg hover:bg-brand-primary/90 transition-colors"
               type="submit"
             >
-              {submitted ? "Submitted ✓" : "Start My Free Trial"}
+              {submitted ? t("trial.submitted") : t("trial.submit")}
             </button>
           </form>
           <div className="text-xs text-center mt-5 text-gray-400 font-medium font-readex">
-            No credit card · Cancel anytime
+            {t("trial.noCard")}
           </div>
         </div>
       </div>

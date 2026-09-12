@@ -1,21 +1,27 @@
+"use client";
+
 import Image from 'next/image'
-const PRODUCT_LINKS = [
-  { href: "#studio", label: "Content Studio" },
-  { href: "#audiences", label: "Who is this for?" },
-];
-
-const COMPANY_LINKS = [
-  { href: "#", label: "About Us" },
-  { href: "#", label: "Contact Us" },
-  { href: "#", label: "Careers" },
-];
-
-const LEGAL_LINKS = [
-  { href: "#", label: "Privacy Policy" },
-  { href: "#", label: "Terms & Conditions" },
-];
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
+  const t = useTranslations();
+
+  const PRODUCT_LINKS = [
+    { href: "#studio", label: t("footer.studioLink") },
+    { href: "#audiences", label: t("footer.audiencesLink") },
+  ];
+
+  const COMPANY_LINKS = [
+    { href: "#", label: t("footer.aboutLink") },
+    { href: "#", label: t("footer.contactLink") },
+    { href: "#", label: t("footer.careersLink") },
+  ];
+
+  const LEGAL_LINKS = [
+    { href: "#", label: t("footer.privacyLink") },
+    { href: "#", label: t("footer.termsLink") },
+  ];
+
   return (
     <footer className="bg-brand-headline text-brand-bg pt-20 pb-8 border-t border-brand-accent/20 font-readex" id="footer">
       <div className="max-w-7xl mx-auto px-6">
@@ -34,13 +40,12 @@ export default function Footer() {
               Trendy
             </div>
             <p className="text-sm leading-relaxed max-w-xs">
-              A comprehensive AI platform for building and managing brands, from
-              the first idea to ready-to-publish content.
+              {t("footer.tagline")}
             </p>
           </div>
 
           <div>
-            <h5 className="text-white font-bold text-sm mb-5 font-ruqaa">Product</h5>
+            <h5 className="text-white font-bold text-sm mb-5 font-ruqaa">{t("footer.product")}</h5>
             <div className="flex flex-col gap-3 text-sm">
               {PRODUCT_LINKS.map((link) => (
                 <a
@@ -55,7 +60,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h5 className="text-white font-bold text-sm mb-5 font-ruqaa">Company</h5>
+            <h5 className="text-white font-bold text-sm mb-5 font-ruqaa">{t("footer.company")}</h5>
             <div className="flex flex-col gap-3 text-sm">
               {COMPANY_LINKS.map((link) => (
                 <a
@@ -70,7 +75,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h5 className="text-white font-bold text-sm mb-5 font-ruqaa">Legal</h5>
+            <h5 className="text-white font-bold text-sm mb-5 font-ruqaa">{t("footer.legal")}</h5>
             <div className="flex flex-col gap-3 text-sm">
               {LEGAL_LINKS.map((link) => (
                 <a
@@ -86,7 +91,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 gap-4 text-xs text-brand-bg/80">
-          <div>© 2026 Trendy (Trendy AI). All rights reserved.</div>
+          <div>{t("footer.copyright")}</div>
           <div className="flex gap-4">
             <a
               href="#"
