@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { KitQuestion } from '@/components/kit/kit-question'
 import { Notice } from '@/components/ui/notice'
 import { formatHex, normalizeHex } from '@/components/brand/brand-workspace'
@@ -25,30 +26,34 @@ export function StepReview({
   isDirty,
   saveError,
 }: StepReviewProps) {
+  const t = useTranslations('components.kit.steps.step-review');
+  const tTone = useTranslations('components.kit.steps.step-tone');
+  const none = t('none_value')
+
   const missingRequired: string[] = []
-  if (!answers.tone) missingRequired.push('Tone')
-  if (!answers.audience || answers.audience.trim().length < 2) missingRequired.push('Audience')
-  if (!answers.colors || answers.colors.length === 0) missingRequired.push('Colors (at least one)')
+  if (!answers.tone) missingRequired.push(t('missing_tone'))
+  if (!answers.audience || answers.audience.trim().length < 2) missingRequired.push(t('missing_audience'))
+  if (!answers.colors || answers.colors.length === 0) missingRequired.push(t('missing_colors'))
 
   const hasSaved = !isDirty && saveError === null && savedStatus !== 'not_started'
+  const toneLabel = answers.tone ? tTone(`tone_${answers.tone}`) : none
 
   return (
     <div className="space-y-6">
       <KitQuestion
-        before="Ready to "
-        emphasis="save"
-        after="?"
-        helper={`${brandName} — a short interview so TRENDY AI can paint in its voice.`}
+        before={t('ready_to_prefix')}
+        emphasis={t('save_word')}
+        helper={t('review_help', { brandName })}
       />
 
       <div className="overflow-hidden rounded-lg border border-border">
         <table className="w-full text-[14px]">
           <tbody>
-            <Row label="Tagline" value={answers.tagline || '—'} />
-            <Row label="Tone" value={answers.tone || '—'} />
-            <Row label="Audience" value={answers.audience || '—'} />
+            <Row label={t('tagline')} value={answers.tagline || none} />
+            <Row label={t('tone')} value={toneLabel} />
+            <Row label={t('audience')} value={answers.audience || none} />
             <tr className="border-t border-border-subtle">
-              <th className="w-32 px-4 py-3 text-left font-medium text-muted-foreground">Colors</th>
+              <th className="w-32 px-4 py-3 text-left font-medium text-muted-foreground">{t('colors')}</th>
               <td className="px-4 py-3">
                 {answers.colors.length > 0 ? (
                   <span className="flex flex-wrap items-center gap-2">
@@ -61,54 +66,50 @@ export function StepReview({
                             style={{ background: hex }}
                           />
                           <span className="font-mono text-[12px]">
-                            {hex}{i === 0 ? ' primary' : ''}
+                            {hex}{i === 0 ? t('primary_suffix') : ''}
                           </span>
                         </span>
                       )
                     })}
                   </span>
                 ) : (
-                  '—'
+                  none
                 )}
               </td>
             </tr>
-            <Row label="Avoid" value={answers.avoid_words || '—'} />
+            <Row label={t('avoid')} value={answers.avoid_words || none} />
           </tbody>
         </table>
       </div>
 
       {missingRequired.length > 0 && (
         <Notice variant="warning">
-          <p className="font-medium">Still missing: {missingRequired.join(', ')}.</p>
-          <p className="mt-1">You can save now — the kit stays in progress until those are filled.</p>
+          <p className="font-medium">{t('still_missing', { items: missingRequired.join(', ') })}</p>
+          <p className="mt-1">{t('you_can_save_now')}</p>
         </Notice>
       )}
 
       {hasSaved && savedStatus === 'complete' && (
-        <Notice variant="success">Brand kit saved — complete.</Notice>
+        <Notice variant="success">{t('brand_kit_saved_complete')}</Notice>
       )}
 
       {hasSaved && savedStatus === 'in_progress' && (
-        <Notice variant="warning">
-          Brand kit saved — in progress. Fill the remaining required fields to reach complete.
-        </Notice>
+        <Notice variant="warning">{t('brand_kit_saved_in')}</Notice>
       )}
 
       <div className="space-y-2">
-        <h3 className="text-[13px] font-medium">What the model will use</h3>
+        <h3 className="text-[13px] font-medium">{t('what_the_model_will')}</h3>
         {savedSummary ? (
           <>
             <pre className="whitespace-pre-wrap rounded-md bg-surface-sunken p-3 font-sans text-[13px] leading-relaxed">
               {savedSummary}
             </pre>
             {isDirty && (
-              <p className="text-[12px] italic text-muted-foreground">
-                You have unsaved changes — the summary updates after save.
-              </p>
+              <p className="text-[12px] italic text-muted-foreground">{t('you_have_unsaved_changes')}</p>
             )}
           </>
         ) : (
-          <p className="text-[13px] text-muted-foreground">Summary is generated after you save.</p>
+          <p className="text-[13px] text-muted-foreground">{t('summary_is_generated_after')}</p>
         )}
       </div>
 

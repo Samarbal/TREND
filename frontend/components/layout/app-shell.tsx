@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl';
 import Image from 'next/image'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
@@ -23,6 +24,7 @@ function isNeutralRoute(pathname: string) {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const t = useTranslations('components.layout.app-shell');
   const params = useParams()
   const pathname = usePathname()
   const router = useRouter()
@@ -66,7 +68,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       {navOpen && (
         <button
           type="button"
-          aria-label="Close menu"
+          aria-label={t('close_menu')}
           className="fixed inset-0 z-30 bg-[#0B1220]/40 md:hidden"
           onClick={() => setNavOpen(false)}
         />
@@ -93,7 +95,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <button
             type="button"
             onClick={() => setNavOpen(true)}
-            aria-label="Open menu"
+            aria-label={t('open_menu')}
             className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent"
           >
             <PanelLeft className="h-4 w-4" />

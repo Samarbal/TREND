@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import { apiRequest } from '@/lib/api'
@@ -32,6 +33,7 @@ export function AddKeyModal({
   onKeyAdded,
   defaultProvider,
 }: AddKeyModalProps) {
+  const t = useTranslations('components.keys.add-key-modal');
   const [provider, setProvider] = useState<'openai' | 'gemini'>(
     defaultProvider === 'openai' || defaultProvider === 'gemini' ? defaultProvider : 'openai'
   )
@@ -87,26 +89,24 @@ export function AddKeyModal({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-[460px]">
         <DialogHeader>
-          <DialogTitle>Add API key</DialogTitle>
-          <DialogDescription>
-            Add a key for an image provider. It is stored securely and never shown again.
-          </DialogDescription>
+          <DialogTitle>{t('add_api_key')}</DialogTitle>
+          <DialogDescription>{t('add_a_key_for')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label>Provider</Label>
+            <Label>{t('provider')}</Label>
             <SegmentedControl
               value={provider}
               onChange={setProvider}
               options={[
                 { value: 'openai', label: 'OpenAI' },
-                { value: 'gemini', label: 'Gemini' },
+                { value: 'gemini', label: t('gemini') },
               ]}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="api-key">API key</Label>
+            <Label htmlFor="api-key">{t('api_key')}</Label>
             <div className="relative">
               <Input
                 id="api-key"
@@ -129,13 +129,13 @@ export function AddKeyModal({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="key-label">Label (optional)</Label>
+            <Label htmlFor="key-label">{t('label_optional')}</Label>
             <Input
               id="key-label"
               type="text"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              placeholder="e.g. Production key"
+              placeholder={t('eg_production_key')}
               maxLength={100}
             />
           </div>
@@ -146,16 +146,12 @@ export function AddKeyModal({
               checked={makeActive}
               onChange={(e) => setMakeActive(e.target.checked)}
               className="h-4 w-4 rounded border-input accent-[var(--brand)]"
-            />
-            Set as active key for this provider
-          </label>
+            />{t('set_as_active_key')}</label>
 
           {error && <p className="text-[13px] text-destructive">{error}</p>}
 
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>
-              Cancel
-            </Button>
+            <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>{t('cancel')}</Button>
             <Button type="submit" disabled={loading || !key.trim()}>
               {loading ? 'Adding…' : 'Add key'}
             </Button>

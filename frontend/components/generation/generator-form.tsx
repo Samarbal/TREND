@@ -2,6 +2,7 @@
 
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react'
 import { Download, Loader2, Sparkles } from 'lucide-react'
 import { useActiveKeys } from '@/hooks/use-active-keys'
@@ -14,6 +15,7 @@ import { ErrorMessage } from '@/components/generation/error-message'
 import { Button } from '@/components/ui/button'
 import { downloadImageFile } from '@/lib/download'
 import { PLATFORM_PRESETS } from '@/lib/presets'
+import { providerLabel } from '@/lib/providers'
 import type { LogoMode, PlatformPreset, Provider } from '@/types'
 import {
   EMPTY_GENERATION_BRIEF,
@@ -28,6 +30,8 @@ interface GeneratorFormProps {
 }
 
 export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFormProps) {
+  const t = useTranslations('components.generation.generator-form');
+  const tOpt = useTranslations('options');
   const [brief, setBrief] = useState<GenerationBrief>(EMPTY_GENERATION_BRIEF)
   const [briefReviewed, setBriefReviewed] = useState(false)
   const [provider, setProvider] = useState<Provider>('openai')
@@ -107,7 +111,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
     try {
       await downloadImageFile(result.image_url, result.download_filename)
     } catch (err) {
-      setDownloadError(err instanceof Error ? err.message : 'Download failed. Please try again.')
+      setDownloadError(err instanceof Error ? err.message : t('download_failed_try_again'))
     } finally {
       setDownloading(false)
     }
@@ -123,9 +127,9 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         className="flex flex-col gap-4"
       >
         <div>
-          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">Generate</h1>
+          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('generate')}</h1>
           <p className="mt-1 text-[14px] text-muted-foreground">
-            Answer a few questions and TRENDY AI will create an image that matches {brandName}&apos;s identity.
+            {t('matches_brand_identity', { brandName })}
           </p>
         </div>
 
@@ -167,21 +171,15 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
           <Button type="submit" size="lg" className="w-full" disabled={generateDisabled}>
             {submitting ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Painting…
-              </>
+                <Loader2 className="h-4 w-4 animate-spin" />{t('painting')}</>
             ) : (
               <>
-                <Sparkles className="h-4 w-4" />
-                Generate
-              </>
+                <Sparkles className="h-4 w-4" />{t('generate2')}</>
             )}
           </Button>
 
           {!hasActiveKey && (
-            <p className="text-[12px] text-muted-foreground">
-              Add an active provider key before generating.
-            </p>
+            <p className="text-[12px] text-muted-foreground">{t('add_an_active_provider')}</p>
           )}
 
           {state.status === 'error' && (
@@ -201,7 +199,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
 
         <div className="flex items-center justify-between gap-3">
           <p className="font-mono text-[12px] text-muted-foreground">
-            {presetInfo.width} × {presetInfo.height} · {presetInfo.label} · {result?.provider ?? provider}
+            {presetInfo.width} × {presetInfo.height} · {tOpt(`preset_${preset}`)} · {providerLabel(result?.provider ?? provider)}
           </p>
           <Button
             type="button"
@@ -210,7 +208,7 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
             disabled={!canDownload || downloading}
           >
             <Download className="h-4 w-4" />
-            {downloading ? 'Downloading…' : 'Download'}
+            {downloading ? t('downloading') : t('download')}
           </Button>
         </div>
 

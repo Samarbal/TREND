@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Plus } from 'lucide-react'
@@ -10,9 +11,12 @@ import { AddKeyModal } from '@/components/keys/add-key-modal'
 import { Button } from '@/components/ui/button'
 import { Notice } from '@/components/ui/notice'
 import { apiRequest } from '@/lib/api'
+import { providerLabel } from '@/lib/providers'
 import { ProviderKey, ValidateKeyResponse } from '@/types'
 
 export default function KeysPage() {
+  const t = useTranslations('app.(dashboard).[brandId].keys.page');
+  const tNoKey = useTranslations('components.generation.no-key-notice');
   const params = useParams()
   const brandId = Array.isArray(params.brandId) ? params.brandId[0] : params.brandId ?? ''
   const { keys, loading, error, refetch } = useKeys(brandId)
@@ -31,7 +35,7 @@ export default function KeysPage() {
       })
       refetch()
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'Validation failed')
+      setActionError(err instanceof Error ? err.message : t('validation_failed'))
     } finally {
       setValidatingKeyId(null)
     }
@@ -45,7 +49,7 @@ export default function KeysPage() {
       })
       refetch()
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'Activation failed')
+      setActionError(err instanceof Error ? err.message : t('activation_failed'))
     }
   }
 
@@ -55,7 +59,7 @@ export default function KeysPage() {
       await apiRequest(`/brands/${brandId}/keys/${keyId}`, { method: 'DELETE' })
       refetch()
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'Deletion failed')
+      setActionError(err instanceof Error ? err.message : t('deletion_failed'))
     }
   }
 
@@ -65,21 +69,19 @@ export default function KeysPage() {
   }
 
   if (loading) {
-    return <p className="text-muted-foreground">Loading…</p>
+    return <p className="text-muted-foreground">{t('loading')}</p>
   }
 
   if (error) {
-    return <p className="text-destructive">Failed to load keys.</p>
+    return <p className="text-destructive">{t('failed_to_load_keys')}</p>
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">Keys</h1>
+        <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('keys')}</h1>
         <Button type="button" onClick={() => handleAddClick('openai')}>
-          <Plus className="h-4 w-4" />
-          Add key
-        </Button>
+          <Plus className="h-4 w-4" />{t('add_key')}</Button>
       </div>
 
       {actionError && <Notice variant="danger">{actionError}</Notice>}
@@ -89,15 +91,15 @@ export default function KeysPage() {
           <div className="space-y-2.5">
             {filteredKeys.length === 0 ? (
               <Notice variant="warning">
-                No {activeProvider === 'openai' ? 'OpenAI' : 'Gemini'} key yet —{' '}
+                {tNoKey('no_provider_key_yet', { provider: providerLabel(activeProvider) })}{' '}
                 <button
                   type="button"
                   onClick={() => handleAddClick(activeProvider)}
                   className="font-medium underline underline-offset-2"
                 >
-                  Add one
+                  {tNoKey('add_one')}
                 </button>{' '}
-                to generate with this provider.
+                {tNoKey('to_generate_with_provider')}
               </Notice>
             ) : (
               filteredKeys.map((k) => (

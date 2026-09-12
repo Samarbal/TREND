@@ -121,14 +121,14 @@
   "dashboard": {
     "generate": "توليد",
     "history": "السجل",
-    "brandKit": "حزمة العلامة",
+    "brandKit": "هوية العلامة التجارية",
     "keys": "المفاتيح",
     "settings": "الإعدادات",
     "admin": "الإدارة",
-    "allBrands": "كل العلامات",
+    "allBrands": "كل العلامات التجارية",
     "logout": "تسجيل الخروج",
     "workspace": "مساحة العمل",
-    "createBrand": "إنشاء علامة",
+    "createBrand": "إنشاء علامة تجارية",
     "you": "أنت"
   },
   "account": {
@@ -162,13 +162,13 @@
   },
   "auth": {
     "loginHeroBefore": "ادخل إلى",
-    "loginHeroAccent": "استوديوك الخاص.",
+    "loginHeroAccent": " الاستوديو الخاص بك.",
     "loginSubcopy": "ترندي AI يتذكر علامتك التجارية — الهوية والألوان والنبرة — ويعيد لك صورًا جاهزة للمنصات.",
     "featureKit": "هويتك وألوانك ونبرتك — محفوظة",
     "featureImages": "كل صورة بأبعاد المنصة المناسبة",
     "featureKeys": "استخدم مفتاح OpenAI أو Gemini الخاص بك",
     "loginTitle": "تسجيل الدخول",
-    "loginDescription": "أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى استوديوك.",
+    "loginDescription": " أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى الاستوديو الخاص بك.",
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "you@example.com",
     "password": "كلمة المرور",
@@ -222,5 +222,491 @@
     "generalAudience": "جمهور عام",
     "selectedPlatform": "المنصة المحددة",
     "editLabel": "تعديل {label}"
+  },
+  "app": {
+    "(dashboard)": {
+      "[brandId]": {
+        "history": {
+          "[generationId]": {
+            "page": {
+              "generation_not_found": "التوليد غير موجود",
+              "this_generation_may_have": "ربما تم حذف هذا التوليد أو أنه غير موجود.",
+              "back_to_history": "العودة إلى السجل"
+            }
+          },
+          "page": {
+            "history": "السجل"
+          }
+        },
+        "keys": {
+          "page": {
+            "loading": "جارٍ التحميل…",
+            "failed_to_load_keys": "تعذّر تحميل المفاتيح.",
+            "keys": "المفاتيح",
+            "add_key": "إضافة مفتاح",
+            "validation_failed": "فشل التحقق",
+            "activation_failed": "فشل التفعيل",
+            "deletion_failed": "فشل الحذف"
+          }
+        },
+        "kit": {
+          "page": {
+            "loading": "جارٍ التحميل…",
+            "failed_to_load_brand": "تعذّر تحميل هوية العلامة التجارية."
+          }
+        },
+        "settings": {
+          "page": {
+            "loading": "جارٍ التحميل…",
+            "failed_to_load_brand": "تعذّر تحميل إعدادات العلامة التجارية.",
+            "settings": "الإعدادات",
+            "brand_name": "اسم العلامة التجارية",
+            "name_updated": "تم تحديث الاسم.",
+            "brand_logo": "شعار العلامة التجارية",
+            "png_jpg_or_webp": "PNG أو JPG أو WebP. يُستخدم للعلامات المائية.",
+            "danger_zone": "منطقة الخطر",
+            "permanently_delete_this_brand": "حذف هذه العلامة التجارية وكل بياناتها نهائيًا.",
+            "save": "حفظ",
+            "saving": "جارٍ الحفظ…",
+            "upload_logo": "رفع الشعار",
+            "uploading": "جارٍ الرفع…",
+            "remove_logo": "إزالة الشعار",
+            "delete_brand": "حذف العلامة التجارية",
+            "failed_to_rename_brand": "تعذّر تغيير اسم العلامة التجارية",
+            "failed_to_upload_logo": "تعذّر رفع الشعار",
+            "failed_to_remove_logo": "تعذّر إزالة الشعار"
+          }
+        }
+      },
+      "admin": {
+        "page": {
+          "admin_dashboard": "لوحة تحكم المدير",
+          "operator": "مشغّل",
+          "platformwide_totals_across_every": "إجماليات عامة عبر جميع الحسابات.",
+          "loading": "جارٍ التحميل…",
+          "all_brands": "كل العلامات التجارية"
+        }
+      },
+      "brands": {
+        "page": {
+          "brands": "العلامات التجارية",
+          "create_brand": "إنشاء علامة تجارية",
+          "loading": "جارٍ التحميل…",
+          "studio_summary": "{count, plural, =1 {استوديو واحد. كل استوديو يتذكر مجموعته الخاصة من الهوية والمفاتيح والسجل.} other {# استوديوهات. كل استوديو يتذكر مجموعته الخاصة من الهوية والمفاتيح والسجل.}}",
+          "no_studios_yet": "لا توجد استوديوهات بعد.",
+          "create_your_first_brand": "أنشئ علامتك التجارية الأولى لدخول الاستوديو.",
+          "create_brand2": "إنشاء علامة تجارية"
+        }
+      }
+    }
+  },
+  "components": {
+    "admin": {
+      "admin-brands-table": {
+        "previous_page": "الصفحة السابقة",
+        "previous_page2": "الصفحة السابقة",
+        "next_page": "الصفحة التالية",
+        "next_page2": "الصفحة التالية",
+        "no_brands_found": "لا توجد علامات تجارية.",
+        "brand_name": "اسم العلامة التجارية",
+        "owner": "المالك",
+        "kit_status": "حالة الهوية",
+        "generations": "التوليدات",
+        "active_key": "المفتاح النشط",
+        "created": "تاريخ الإنشاء",
+        "yes": "نعم",
+        "no": "لا"
+      },
+      "admin-stats-cards": {
+        "accounts": "الحسابات",
+        "brands": "العلامات التجارية",
+        "generations": "التوليدات",
+        "pending": "قيد الانتظار",
+        "processing": "قيد المعالجة",
+        "succeeded": "نجح",
+        "failed": "فاشل",
+        "openai_generations": "توليدات OpenAI",
+        "gemini_generations": "توليدات Gemini",
+        "last_7_days": "آخر 7 أيام",
+        "last_30_days": "آخر 30 يومًا",
+        "completed_brand_kits": "هويات العلامات المكتملة",
+        "active_provider_keys": "مفاتيح المزوّدين النشطة"
+      }
+    },
+    "auth": {
+      "auth-shell": {
+        "text": "ترندي"
+      }
+    },
+    "brand": {
+      "brand-card": {
+        "current": "الحالية"
+      },
+      "create-brand-modal": {
+        "enter_brand_name": "أدخل اسم العلامة التجارية",
+        "create_brand": "إنشاء علامة تجارية",
+        "name_a_studio_you": "سمِّ استوديوك. يمكنك إضافة الهوية والمفاتيح والشعار لاحقًا.",
+        "brand_name": "اسم العلامة التجارية",
+        "cancel": "إلغاء"
+      },
+      "delete-brand-dialog": {
+        "type_brand_name_to": "اكتب اسم العلامة التجارية للتأكيد",
+        "this_removes_the_brand": "يؤدي هذا إلى حذف العلامة التجارية وهويتها ومفاتيحها وسجلها نهائيًا. لا يمكن التراجع.",
+        "type": "اكتب",
+        "to_confirm": "للتأكيد:",
+        "cancel": "إلغاء",
+        "delete_confirm_title": "حذف {name}؟",
+        "delete_brand": "حذف العلامة التجارية",
+        "deleting": "جارٍ الحذف…",
+        "failed_to_delete_brand": "تعذّر حذف العلامة التجارية"
+      }
+    },
+    "brand-selector": {
+      "select_a_brand": "اختر علامة تجارية"
+    },
+    "generation": {
+      "brief-audience-step": {
+        "eg_amman_jordan": "مثال: عمّان، الأردن",
+        "share_context_needs_preferences": "شارك السياق أو الاحتياجات أو التفضيلات أو دوافع الشراء.",
+        "who_is_the_target": "من هو الجمهور المستهدف؟",
+        "select_up_to_two": "اختر حتى مجموعتين. التفاصيل المتبقية اختيارية.",
+        "you_can_select_up": "يمكنك اختيار حتى مجموعتين من الجمهور.",
+        "location_optional": "الموقع (اختياري)",
+        "age_range_optional": "الفئة العمرية (اختياري)",
+        "select_an_age_range": "اختر الفئة العمرية",
+        "gender_focus_optional": "التركيز الجندري (اختياري)",
+        "no_specific_focus": "بدون تركيز محدد",
+        "tell_us_more_about": "أخبرنا أكثر عن هذا الجمهور (اختياري)"
+      },
+      "generation-brief-form": {
+        "generation_brief_progress": "تقدّم موجز التوليد",
+        "what_is_the_campaign": "ما هو هدف الحملة؟",
+        "describe_your_campaign_goal": "صف هدف حملتك",
+        "what_do_you_want": "ماذا تريد أن تنشئ؟",
+        "describe_your_content_type": "صف نوع المحتوى",
+        "eg_show_how_our": "مثال: أظهر كيف تجعل قهوتنا المثلجة صباح الصيف المزدحم أكثر انتعاشًا.",
+        "how_should_the_content": "كيف يجب أن يكون إحساس المحتوى؟",
+        "describe_your_tone": "صف النبرة",
+        "add_visual_direction_things": "أضف التوجيه البصري، أو أشياء لتجنبها، أو تفضيلات التخطيط.",
+        "eg_20_off_this": "مثال: خصم 20% هذا الأسبوع",
+        "structured_brief": "موجز منظم",
+        "answer_a_few_questions": "أجب عن بعض الأسئلة لإنشاء موجز توليد مركّز.",
+        "what_is_the_main": "ما الفكرة الأساسية التي تريد أن يفهمها الجمهور؟ *",
+        "write_naturally_you_do": "اكتب بشكل طبيعي. لا حاجة لكتابة موجّه احترافي.",
+        "additional_notes_optional": "ملاحظات إضافية (اختياري)",
+        "text_to_include_in": "نص ليظهر في الصورة (اختياري)",
+        "back": "رجوع",
+        "next": "التالي",
+        "ready_to_generate": "جاهز للتوليد"
+      },
+      "generator-form": {
+        "generate": "توليد",
+        "painting": "جارٍ الرسم…",
+        "generate2": "توليد",
+        "add_an_active_provider": "أضف مفتاح مزوّد نشط قبل التوليد.",
+        "matches_brand_identity": "أجب عن بعض الأسئلة وستُنشئ TRENDY AI صورة تتماشى مع هوية {brandName}.",
+        "download": "تنزيل",
+        "downloading": "جارٍ التنزيل…",
+        "download_failed_try_again": "فشل التنزيل. حاول مرة أخرى."
+      },
+      "logo-mode-selector": {
+        "none": "بدون",
+        "in_prompt": "ضمن الموجّه",
+        "mark": "علامة مائية",
+        "both": "كلاهما",
+        "logo_mode": "وضع الشعار",
+        "logo": "الشعار",
+        "settings": "الإعدادات",
+        "settings2": "الإعدادات"
+      },
+      "preset-selector": {
+        "platform": "المنصة",
+        "platform2": "المنصة"
+      },
+      "prompt-input": {
+        "describe_the_image": "صف الصورة…",
+        "prompt": "الموجّه"
+      },
+      "provider-selector": {
+        "gemini": "Gemini",
+        "provider": "المزوّد",
+        "provider2": "المزوّد"
+      },
+      "no-key-notice": {
+        "no_provider_key_yet": "لا يوجد مفتاح {provider} بعد —",
+        "add_one": "أضف واحدًا",
+        "to_generate_with_provider": "للتوليد باستخدام هذا المزوّد."
+      },
+      "error-message": {
+        "review_your_keys": "راجع مفاتيحك"
+      },
+      "canvas-stage": {
+        "describe_what_you_see_for": "صِف ما تريد رؤيته لـ {brandName}.",
+        "painting_your_image": "جارٍ رسم صورتك…",
+        "generated_image": "الصورة المولَّدة"
+      }
+    },
+    "history": {
+      "delete-generation-dialog": {
+        "delete_generation": "حذف التوليد",
+        "this_will_permanently_delete": "سيؤدي هذا إلى حذف هذا التوليد وصورته المخزنة نهائيًا. لا يمكن التراجع عن هذا الإجراء."
+      },
+      "history-detail": {
+        "model": "النموذج",
+        "dimensions": "الأبعاد",
+        "logo_mode": "وضع الشعار",
+        "created": "تاريخ الإنشاء",
+        "completed": "مكتمل",
+        "back_to_history": "العودة إلى السجل",
+        "image_unavailable_the_saved": "الصورة غير متاحة. البيانات المحفوظة ما زالت موجودة، لكن تعذّر تحميل الصورة المخزنة.",
+        "prompt": "الموجّه",
+        "failed_to_delete_try_again": "تعذّر الحذف. حاول مرة أخرى.",
+        "delete": "حذف"
+      },
+      "history-filters": {
+        "all": "الكل",
+        "succeeded": "ناجح",
+        "failed": "فاشل",
+        "status": "الحالة",
+        "filter_by_provider": "تصفية حسب المزوّد",
+        "all_providers": "كل المزوّدين",
+        "gemini": "Gemini",
+        "filter_by_preset": "تصفية حسب النمط",
+        "all_presets": "كل الأنماط"
+      },
+      "history-list": {
+        "loading": "جارٍ التحميل…",
+        "load_more": "تحميل المزيد",
+        "no_history_match_filters": "لا توجد عناصر سجل مطابقة للفلاتر المحددة.",
+        "no_history_yet": "لا يوجد سجل توليد بعد. أنشئ أول صورة من صفحة التوليد."
+      },
+      "history-card": {
+        "failed": "فشل",
+        "image_unavailable": "الصورة غير متاحة",
+        "delete": "حذف",
+        "failed_to_delete_try_again": "تعذّر الحذف. حاول مرة أخرى."
+      }
+    },
+    "keys": {
+      "add-key-modal": {
+        "gemini": "Gemini",
+        "eg_production_key": "مثال: مفتاح الإنتاج",
+        "add_api_key": "إضافة مفتاح API",
+        "add_a_key_for": "أضف مفتاحًا لأحد مزوّدي الصور. يُخزَّن بأمان ولا يُعرض مرة أخرى.",
+        "provider": "المزوّد",
+        "api_key": "مفتاح API",
+        "label_optional": "التسمية (اختياري)",
+        "set_as_active_key": "تعيينه كمفتاح نشط لهذا المزوّد",
+        "cancel": "إلغاء"
+      },
+      "key-card": {
+        "active": "نشط"
+      },
+      "provider-tabs": {
+        "provider": "المزوّد",
+        "openai_count": "OpenAI ({count})",
+        "gemini_count": "Gemini ({count})"
+      }
+    },
+    "kit": {
+      "color-slot": {
+        "color_picker": "منتقي الألوان",
+        "rrggbb": "#RRGGBB",
+        "hex_color_value": "قيمة اللون السداسية",
+        "remove_color": "إزالة اللون",
+        "primary_the_accent": "الأساسي · اللون المميز",
+        "make_primary": "اجعله أساسيًا"
+      },
+      "kit-wizard": {
+        "brand_kit": "هوية العلامة التجارية",
+        "back": "رجوع",
+        "continue": "متابعة",
+        "step_brand": "العلامة",
+        "step_tagline": "الشعار",
+        "step_tone": "النبرة",
+        "step_audience": "الجمهور",
+        "step_colors": "الألوان",
+        "step_avoid": "تجنّب",
+        "step_review": "مراجعة",
+        "interview_subtitle": "مقابلة قصيرة عشان TRENDY AI يقدر يرسم بصوت {brandName}.",
+        "unsaved_changes_confirm": "عندك تغييرات غير محفوظة. متأكد إنك بدك تطلع؟",
+        "save_failed": "فشل الحفظ",
+        "saving": "جارٍ الحفظ…",
+        "save_brand_kit": "حفظ حزمة العلامة"
+      },
+      "steps": {
+        "step-audience": {
+          "describe_your_target_audience": "صف جمهورك المستهدف…",
+          "audience": "الجمهور",
+          "who_is_it_prefix": "مين هو ",
+          "for_word": "الجمهور؟",
+          "audience_help": "كم جملة عن مين لازم يحس إنه المحتوى موجّه إله."
+        },
+        "step-avoid-words": {
+          "words_or_themes_to": "كلمات أو مواضيع لتجنّبها…",
+          "avoid": "تجنّب",
+          "anything_to_prefix": "في شي لازم ",
+          "avoid_word": "نتجنبه؟",
+          "avoid_help": "اختياري. كلمات أو مواضيع لازم TRENDY AI يبتعد عنها."
+        },
+        "step-colors": {
+          "add_a_color_to": "أضف لونًا لتحديد لون الاستوديو المميز.",
+          "live_preview": "معاينة مباشرة",
+          "generate": "توليد",
+          "add_color": "إضافة لون",
+          "your_prefix": "ألوان ",
+          "colors_word": "علامتك.",
+          "colors_help": "حتى ثلاثة ألوان. أول لون هو اللون المميز يلي TRENDY AI بيستخدمه بمساحة العمل.",
+          "text_white": "أبيض",
+          "text_ink": "غامق"
+        },
+        "step-review": {
+          "tagline": "الشعار النصي",
+          "tone": "النبرة",
+          "audience": "الجمهور",
+          "avoid": "تجنّب",
+          "colors": "الألوان",
+          "you_can_save_now": "يمكنك الحفظ الآن — تبقى الهوية قيد التقدم حتى تُملأ تلك الحقول.",
+          "brand_kit_saved_complete": "تم حفظ الهوية — مكتملة.",
+          "brand_kit_saved_in": "تم حفظ الهوية — قيد التقدم. املأ الحقول المطلوبة المتبقية لاكتمالها.",
+          "what_the_model_will": "ما سيستخدمه النموذج",
+          "you_have_unsaved_changes": "لديك تغييرات غير محفوظة — يُحدَّث الملخص بعد الحفظ.",
+          "summary_is_generated_after": "يتم إنشاء الملخص بعد الحفظ.",
+          "ready_to_prefix": "جاهزة ",
+          "save_word": "للحفظ؟",
+          "review_help": "{brandName} — مقابلة قصيرة عشان TRENDY AI يرسم بصوتها.",
+          "missing_tone": "النبرة",
+          "missing_audience": "الجمهور",
+          "missing_colors": "الألوان (لون واحد على الأقل)",
+          "still_missing": "لسا ناقص: {items}.",
+          "primary_suffix": " أساسي",
+          "none_value": "—"
+        },
+        "step-tagline": {
+          "enter_a_tagline": "أدخل شعارًا نصيًا…",
+          "tagline": "الشعار النصي",
+          "whats_prefix": "شو هو شعار ",
+          "tagline_suffix": "؟",
+          "tagline_help": "اختياري. جملة قصيرة يقدر TRENDY AI يدمجها بموجز الصورة.",
+          "example_seen_clearly": "{brandName}. واضح ومميز.",
+          "example_made_to_be_remembered": "مصمم ليُتذكر.",
+          "example_quietly_distinctive": "مميز بهدوء."
+        },
+        "step-name": {
+          "this_is_prefix": "هاي هي ",
+          "registered_name_help": "الاسم يلي سجّلتيه. كمّلي خبري TRENDY AI كيف لازم يبين ويحكي."
+        },
+        "step-tone": {
+          "how_should_it_prefix": "كيف لازم ",
+          "sound_word": "يحكي؟",
+          "tone_help": "اختاري الصوت يلي TRENDY AI لازم يرسم فيه.",
+          "tone_formal": "رسمي",
+          "tone_formal_desc": "محافظ، دقيق، وفيه شوي مسافة.",
+          "tone_casual": "عفوي",
+          "tone_casual_desc": "بسيط، حواري، متل ما بيحكي صاحبك.",
+          "tone_playful": "مرح",
+          "tone_playful_desc": "خفيف وسلس، فيه لمسة خفة دم بالكلام.",
+          "tone_professional": "احترافي",
+          "tone_professional_desc": "واضح، كفؤ، بدون كلام زايد.",
+          "tone_friendly": "ودود",
+          "tone_friendly_desc": "دافئ، منفتح، ومرحّب فيك."
+        }
+      },
+      "kit-status-badge": {
+        "not_started": "لم يبدأ",
+        "in_progress": "قيد التنفيذ",
+        "complete": "مكتمل",
+        "status_aria": "حالة حزمة العلامة: {status}",
+        "status_aria_edit": "حالة حزمة العلامة: {status}. اضغط للتعديل."
+      }
+    },
+    "layout": {
+      "app-shell": {
+        "close_menu": "إغلاق القائمة",
+        "open_menu": "فتح القائمة"
+      }
+    }
+  },
+  "options": {
+    "goal_brand_awareness": "زيادة الوعي بالعلامة التجارية",
+    "goal_product_launch": "إطلاق منتج أو خدمة",
+    "goal_product_showcase": "عرض منتج أو خدمة",
+    "goal_promotion_offer": "الترويج لعرض أو خصم",
+    "goal_sales_conversion": "زيادة المبيعات",
+    "goal_engagement": "زيادة التفاعل",
+    "goal_education": "تثقيف الجمهور",
+    "goal_custom": "هدف آخر",
+    "content_type_product_showcase": "عرض منتج",
+    "content_type_service_showcase": "عرض خدمة",
+    "content_type_promotional_ad": "إعلان ترويجي",
+    "content_type_educational": "محتوى تثقيفي",
+    "content_type_testimonial": "شهادة عميل",
+    "content_type_brand_story": "قصة العلامة التجارية",
+    "content_type_event_promo": "ترويج لفعالية",
+    "content_type_infographic": "إنفوجرافيك أو شرح بصري",
+    "content_type_custom": "نوع محتوى آخر",
+    "tone_friendly": "ودود",
+    "tone_professional": "احترافي",
+    "tone_playful": "مرح",
+    "tone_bold": "جريء",
+    "tone_elegant": "أنيق وفاخر",
+    "tone_warm": "دافئ وإنساني",
+    "tone_educational": "واضح وتثقيفي",
+    "tone_inspirational": "ملهم",
+    "tone_minimal": "هادئ وبسيط",
+    "tone_trustworthy": "موثوق",
+    "tone_custom": "نبرة أخرى",
+    "audience_general_consumers": "المستهلكون العامّون",
+    "audience_small_business_owners": "أصحاب المشاريع الصغيرة",
+    "audience_entrepreneurs": "رواد الأعمال",
+    "audience_marketers_creators": "المسوّقون وصنّاع المحتوى",
+    "audience_professionals": "المهنيون والموظفون",
+    "audience_students": "الطلاب",
+    "audience_online_shoppers": "متسوقو الإنترنت",
+    "audience_beauty_fashion_audience": "جمهور الجمال والأزياء",
+    "audience_food_hospitality_audience": "جمهور الطعام والضيافة",
+    "audience_technology_users": "مستخدمو التكنولوجيا",
+    "audience_local_community": "المجتمع المحلي",
+    "audience_custom": "جمهور آخر",
+    "gender_all": "الجميع",
+    "gender_women": "النساء",
+    "gender_men": "الرجال",
+    "gender_non_binary": "أشخاص غير ثنائيي الجنس",
+    "preset_instagram_post": "منشور إنستغرام",
+    "preset_instagram_story": "ستوري إنستغرام",
+    "preset_instagram_reel_cover": "غلاف ريلز إنستغرام",
+    "preset_facebook_post": "منشور فيسبوك",
+    "preset_facebook_cover": "غلاف صفحة فيسبوك",
+    "preset_facebook_story": "ستوري فيسبوك",
+    "preset_twitter_post": "منشور تويتر",
+    "preset_twitter_header": "غلاف تويتر",
+    "preset_linkedin_post": "منشور لينكدإن",
+    "preset_linkedin_banner": "بانر لينكدإن",
+    "preset_tiktok_video_cover": "غلاف فيديو تيك توك",
+    "preset_youtube_thumbnail": "صورة مصغّرة ليوتيوب",
+    "preset_youtube_banner": "بانر يوتيوب",
+    "preset_short_post": "منشور",
+    "preset_short_story": "ستوري",
+    "preset_short_reel": "ريل",
+    "preset_short_header": "رأس",
+    "preset_short_cover": "غلاف",
+    "preset_short_banner": "بانر",
+    "preset_short_thumb": "صورة مصغّرة",
+    "location_amman_jordan": "عمّان، الأردن",
+    "location_irbid_jordan": "إربد، الأردن",
+    "location_zarqa_jordan": "الزرقاء، الأردن",
+    "location_dubai_uae": "دبي، الإمارات",
+    "location_riyadh_saudi_arabia": "الرياض، السعودية",
+    "location_jeddah_saudi_arabia": "جدة، السعودية",
+    "location_doha_qatar": "الدوحة، قطر",
+    "location_cairo_egypt": "القاهرة، مصر",
+    "location_beirut_lebanon": "بيروت، لبنان",
+    "location_remote_online": "عن بُعد / عبر الإنترنت",
+    "age_under_18": "أقل من 18",
+    "age_18_24": "18–24",
+    "age_25_34": "25–34",
+    "age_35_44": "35–44",
+    "age_45_54": "45–54",
+    "age_55_plus": "55+"
   }
 }

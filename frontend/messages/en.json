@@ -219,5 +219,491 @@
     "generalAudience": "General audience",
     "selectedPlatform": "Selected platform",
     "editLabel": "Edit {label}"
+  },
+  "app": {
+    "(dashboard)": {
+      "[brandId]": {
+        "history": {
+          "[generationId]": {
+            "page": {
+              "generation_not_found": "Generation not found",
+              "this_generation_may_have": "This generation may have been deleted or does not exist.",
+              "back_to_history": "Back to History"
+            }
+          },
+          "page": {
+            "history": "History"
+          }
+        },
+        "keys": {
+          "page": {
+            "loading": "Loading…",
+            "failed_to_load_keys": "Failed to load keys.",
+            "keys": "Keys",
+            "add_key": "Add key",
+            "validation_failed": "Validation failed",
+            "activation_failed": "Activation failed",
+            "deletion_failed": "Deletion failed"
+          }
+        },
+        "kit": {
+          "page": {
+            "loading": "Loading…",
+            "failed_to_load_brand": "Failed to load brand kit."
+          }
+        },
+        "settings": {
+          "page": {
+            "loading": "Loading…",
+            "failed_to_load_brand": "Failed to load brand settings.",
+            "settings": "Settings",
+            "brand_name": "Brand name",
+            "name_updated": "Name updated.",
+            "brand_logo": "Brand logo",
+            "png_jpg_or_webp": "PNG, JPG or WebP. Used for watermarks.",
+            "danger_zone": "Danger zone",
+            "permanently_delete_this_brand": "Permanently delete this brand and all associated data.",
+            "save": "Save",
+            "saving": "Saving…",
+            "upload_logo": "Upload logo",
+            "uploading": "Uploading…",
+            "remove_logo": "Remove logo",
+            "delete_brand": "Delete brand",
+            "failed_to_rename_brand": "Failed to rename brand",
+            "failed_to_upload_logo": "Failed to upload logo",
+            "failed_to_remove_logo": "Failed to remove logo"
+          }
+        }
+      },
+      "admin": {
+        "page": {
+          "admin_dashboard": "Admin Dashboard",
+          "operator": "Operator",
+          "platformwide_totals_across_every": "Platform-wide totals across every account.",
+          "loading": "Loading…",
+          "all_brands": "All brands"
+        }
+      },
+      "brands": {
+        "page": {
+          "brands": "Brands",
+          "create_brand": "Create brand",
+          "loading": "Loading…",
+          "studio_summary": "{count, plural, =1 {1 studio. Each one remembers its own kit, keys, and history.} other {# studios. Each one remembers its own kit, keys, and history.}}",
+          "no_studios_yet": "No studios yet.",
+          "create_your_first_brand": "Create your first brand to walk into the studio.",
+          "create_brand2": "Create brand"
+        }
+      }
+    }
+  },
+  "components": {
+    "admin": {
+      "admin-brands-table": {
+        "previous_page": "Previous page",
+        "previous_page2": "Previous page",
+        "next_page": "Next page",
+        "next_page2": "Next page",
+        "no_brands_found": "No brands found.",
+        "brand_name": "Brand name",
+        "owner": "Owner",
+        "kit_status": "Kit status",
+        "generations": "Generations",
+        "active_key": "Active key",
+        "created": "Created",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "admin-stats-cards": {
+        "accounts": "Accounts",
+        "brands": "Brands",
+        "generations": "Generations",
+        "pending": "Pending",
+        "processing": "Processing",
+        "succeeded": "Succeeded",
+        "failed": "Failed",
+        "openai_generations": "OpenAI generations",
+        "gemini_generations": "Gemini generations",
+        "last_7_days": "Last 7 days",
+        "last_30_days": "Last 30 days",
+        "completed_brand_kits": "Completed brand kits",
+        "active_provider_keys": "Active provider keys"
+      }
+    },
+    "auth": {
+      "auth-shell": {
+        "text": "ترندي"
+      }
+    },
+    "brand": {
+      "brand-card": {
+        "current": "Current"
+      },
+      "create-brand-modal": {
+        "enter_brand_name": "Enter brand name",
+        "create_brand": "Create brand",
+        "name_a_studio_you": "Name a studio. You can add a kit, keys, and a logo after.",
+        "brand_name": "Brand name",
+        "cancel": "Cancel"
+      },
+      "delete-brand-dialog": {
+        "type_brand_name_to": "Type brand name to confirm",
+        "this_removes_the_brand": "This removes the brand, its kit, keys, and history. This cannot be undone.",
+        "type": "Type",
+        "to_confirm": "to confirm:",
+        "cancel": "Cancel",
+        "delete_confirm_title": "Delete {name}?",
+        "delete_brand": "Delete brand",
+        "deleting": "Deleting…",
+        "failed_to_delete_brand": "Failed to delete brand"
+      }
+    },
+    "brand-selector": {
+      "select_a_brand": "Select a brand"
+    },
+    "generation": {
+      "brief-audience-step": {
+        "eg_amman_jordan": "e.g. Amman, Jordan",
+        "share_context_needs_preferences": "Share context, needs, preferences, or buying motivations.",
+        "who_is_the_target": "Who is the target audience?",
+        "select_up_to_two": "Select up to two groups. The remaining details are optional.",
+        "you_can_select_up": "You can select up to two audience groups.",
+        "location_optional": "Location (optional)",
+        "age_range_optional": "Age range (optional)",
+        "select_an_age_range": "Select an age range",
+        "gender_focus_optional": "Gender focus (optional)",
+        "no_specific_focus": "No specific focus",
+        "tell_us_more_about": "Tell us more about this audience (optional)"
+      },
+      "generation-brief-form": {
+        "generation_brief_progress": "Generation brief progress",
+        "what_is_the_campaign": "What is the campaign goal?",
+        "describe_your_campaign_goal": "Describe your campaign goal",
+        "what_do_you_want": "What do you want to create?",
+        "describe_your_content_type": "Describe your content type",
+        "eg_show_how_our": "e.g. Show how our iced coffee makes a busy summer morning feel more refreshing.",
+        "how_should_the_content": "How should the content feel?",
+        "describe_your_tone": "Describe your tone",
+        "add_visual_direction_things": "Add visual direction, things to avoid, or layout preferences.",
+        "eg_20_off_this": "e.g. 20% off this week",
+        "structured_brief": "Structured brief",
+        "answer_a_few_questions": "Answer a few questions to create a focused generation brief.",
+        "what_is_the_main": "What is the main idea you want the audience to understand? *",
+        "write_naturally_you_do": "Write naturally. You do not need to write a professional prompt.",
+        "additional_notes_optional": "Additional notes (optional)",
+        "text_to_include_in": "Text to include in the image (optional)",
+        "back": "Back",
+        "next": "Next",
+        "ready_to_generate": "Ready to generate"
+      },
+      "generator-form": {
+        "generate": "Generate",
+        "painting": "Painting…",
+        "generate2": "Generate",
+        "add_an_active_provider": "Add an active provider key before generating.",
+        "matches_brand_identity": "Answer a few questions and TRENDY AI will create an image that matches {brandName}'s identity.",
+        "download": "Download",
+        "downloading": "Downloading…",
+        "download_failed_try_again": "Download failed. Please try again."
+      },
+      "logo-mode-selector": {
+        "none": "None",
+        "in_prompt": "In prompt",
+        "mark": "Mark",
+        "both": "Both",
+        "logo_mode": "Logo mode",
+        "logo": "Logo",
+        "settings": "Settings",
+        "settings2": "Settings"
+      },
+      "preset-selector": {
+        "platform": "Platform",
+        "platform2": "Platform"
+      },
+      "prompt-input": {
+        "describe_the_image": "Describe the image…",
+        "prompt": "Prompt"
+      },
+      "provider-selector": {
+        "gemini": "Gemini",
+        "provider": "Provider",
+        "provider2": "Provider"
+      },
+      "no-key-notice": {
+        "no_provider_key_yet": "No {provider} key yet —",
+        "add_one": "Add one",
+        "to_generate_with_provider": "to generate with this provider."
+      },
+      "error-message": {
+        "review_your_keys": "Review your keys"
+      },
+      "canvas-stage": {
+        "describe_what_you_see_for": "Describe what you see for {brandName}.",
+        "painting_your_image": "Painting your image…",
+        "generated_image": "Generated image"
+      }
+    },
+    "history": {
+      "delete-generation-dialog": {
+        "delete_generation": "Delete Generation",
+        "this_will_permanently_delete": "This will permanently delete this generation and its stored image. This action cannot be undone."
+      },
+      "history-detail": {
+        "model": "Model",
+        "dimensions": "Dimensions",
+        "logo_mode": "Logo mode",
+        "created": "Created",
+        "completed": "Completed",
+        "back_to_history": "Back to History",
+        "image_unavailable_the_saved": "Image unavailable. The saved metadata is still here, but the stored image could not be loaded.",
+        "prompt": "Prompt",
+        "failed_to_delete_try_again": "Failed to delete. Please try again.",
+        "delete": "Delete"
+      },
+      "history-filters": {
+        "all": "All",
+        "succeeded": "Succeeded",
+        "failed": "Failed",
+        "status": "Status",
+        "filter_by_provider": "Filter by provider",
+        "all_providers": "All providers",
+        "gemini": "Gemini",
+        "filter_by_preset": "Filter by preset",
+        "all_presets": "All presets"
+      },
+      "history-list": {
+        "loading": "Loading…",
+        "load_more": "Load more",
+        "no_history_match_filters": "No history items match the selected filters.",
+        "no_history_yet": "No generation history yet. Create your first image on Generate."
+      },
+      "history-card": {
+        "failed": "Failed",
+        "image_unavailable": "Image unavailable",
+        "delete": "Delete",
+        "failed_to_delete_try_again": "Failed to delete. Please try again."
+      }
+    },
+    "keys": {
+      "add-key-modal": {
+        "gemini": "Gemini",
+        "eg_production_key": "e.g. Production key",
+        "add_api_key": "Add API key",
+        "add_a_key_for": "Add a key for an image provider. It is stored securely and never shown again.",
+        "provider": "Provider",
+        "api_key": "API key",
+        "label_optional": "Label (optional)",
+        "set_as_active_key": "Set as active key for this provider",
+        "cancel": "Cancel"
+      },
+      "key-card": {
+        "active": "Active"
+      },
+      "provider-tabs": {
+        "provider": "Provider",
+        "openai_count": "OpenAI ({count})",
+        "gemini_count": "Gemini ({count})"
+      }
+    },
+    "kit": {
+      "color-slot": {
+        "color_picker": "Color picker",
+        "rrggbb": "#RRGGBB",
+        "hex_color_value": "Hex color value",
+        "remove_color": "Remove color",
+        "primary_the_accent": "Primary · the accent",
+        "make_primary": "Make primary"
+      },
+      "kit-wizard": {
+        "brand_kit": "Brand Kit",
+        "back": "Back",
+        "continue": "Continue",
+        "step_brand": "Brand",
+        "step_tagline": "Tagline",
+        "step_tone": "Tone",
+        "step_audience": "Audience",
+        "step_colors": "Colors",
+        "step_avoid": "Avoid",
+        "step_review": "Review",
+        "interview_subtitle": "A short interview so TRENDY AI can paint in {brandName}'s voice.",
+        "unsaved_changes_confirm": "You have unsaved changes. Are you sure you want to leave?",
+        "save_failed": "Save failed",
+        "saving": "Saving…",
+        "save_brand_kit": "Save brand kit"
+      },
+      "steps": {
+        "step-audience": {
+          "describe_your_target_audience": "Describe your target audience…",
+          "audience": "Audience",
+          "who_is_it_prefix": "Who is it ",
+          "for_word": "for?",
+          "audience_help": "A few sentences on who should feel spoken to."
+        },
+        "step-avoid-words": {
+          "words_or_themes_to": "Words or themes to avoid…",
+          "avoid": "Avoid",
+          "anything_to_prefix": "Anything to ",
+          "avoid_word": "avoid?",
+          "avoid_help": "Optional. Words or themes TRENDY AI should stay away from."
+        },
+        "step-colors": {
+          "add_a_color_to": "Add a color to set the studio accent.",
+          "live_preview": "Live preview",
+          "generate": "Generate",
+          "add_color": "Add color",
+          "your_prefix": "Your ",
+          "colors_word": "colors",
+          "colors_help": "Up to three. The first one is the accent TRENDY AI wears in this workspace.",
+          "text_white": "white",
+          "text_ink": "ink"
+        },
+        "step-review": {
+          "tagline": "Tagline",
+          "tone": "Tone",
+          "audience": "Audience",
+          "avoid": "Avoid",
+          "colors": "Colors",
+          "you_can_save_now": "You can save now — the kit stays in progress until those are filled.",
+          "brand_kit_saved_complete": "Brand kit saved — complete.",
+          "brand_kit_saved_in": "Brand kit saved — in progress. Fill the remaining required fields to reach complete.",
+          "what_the_model_will": "What the model will use",
+          "you_have_unsaved_changes": "You have unsaved changes — the summary updates after save.",
+          "summary_is_generated_after": "Summary is generated after you save.",
+          "ready_to_prefix": "Ready to ",
+          "save_word": "save?",
+          "review_help": "{brandName} — a short interview so TRENDY AI can paint in its voice.",
+          "missing_tone": "Tone",
+          "missing_audience": "Audience",
+          "missing_colors": "Colors (at least one)",
+          "still_missing": "Still missing: {items}.",
+          "primary_suffix": " primary",
+          "none_value": "—"
+        },
+        "step-tagline": {
+          "enter_a_tagline": "Enter a tagline…",
+          "tagline": "Tagline",
+          "whats_prefix": "What's ",
+          "tagline_suffix": " tagline?",
+          "tagline_help": "Optional. A short line TRENDY AI can weave into the image brief.",
+          "example_seen_clearly": "{brandName}. Seen clearly.",
+          "example_made_to_be_remembered": "Made to be remembered.",
+          "example_quietly_distinctive": "Quietly distinctive."
+        },
+        "step-name": {
+          "this_is_prefix": "This is ",
+          "registered_name_help": "The name you registered. Continue to tell TRENDY AI how it should look and sound."
+        },
+        "step-tone": {
+          "how_should_it_prefix": "How should it ",
+          "sound_word": "sound?",
+          "tone_help": "Pick the voice TRENDY AI should paint in.",
+          "tone_formal": "Formal",
+          "tone_formal_desc": "Reserved, precise, a little distant.",
+          "tone_casual": "Casual",
+          "tone_casual_desc": "Easy, conversational, like a friend.",
+          "tone_playful": "Playful",
+          "tone_playful_desc": "Light on its feet, a wink in the copy.",
+          "tone_professional": "Professional",
+          "tone_professional_desc": "Clear, competent, no wasted words.",
+          "tone_friendly": "Friendly",
+          "tone_friendly_desc": "Warm, open, glad you showed up."
+        }
+      },
+      "kit-status-badge": {
+        "not_started": "Not started",
+        "in_progress": "In progress",
+        "complete": "Complete",
+        "status_aria": "Brand kit status: {status}",
+        "status_aria_edit": "Brand kit status: {status}. Click to edit."
+      }
+    },
+    "layout": {
+      "app-shell": {
+        "close_menu": "Close menu",
+        "open_menu": "Open menu"
+      }
+    }
+  },
+  "options": {
+    "goal_brand_awareness": "Increase brand awareness",
+    "goal_product_launch": "Launch a product or service",
+    "goal_product_showcase": "Showcase a product or service",
+    "goal_promotion_offer": "Promote an offer or discount",
+    "goal_sales_conversion": "Increase sales",
+    "goal_engagement": "Increase engagement",
+    "goal_education": "Educate the audience",
+    "goal_custom": "Other goal",
+    "content_type_product_showcase": "Product showcase",
+    "content_type_service_showcase": "Service showcase",
+    "content_type_promotional_ad": "Promotional ad",
+    "content_type_educational": "Educational content",
+    "content_type_testimonial": "Customer testimonial",
+    "content_type_brand_story": "Brand story",
+    "content_type_event_promo": "Event promotion",
+    "content_type_infographic": "Infographic or visual explanation",
+    "content_type_custom": "Other content type",
+    "tone_friendly": "Friendly",
+    "tone_professional": "Professional",
+    "tone_playful": "Playful",
+    "tone_bold": "Bold",
+    "tone_elegant": "Elegant and premium",
+    "tone_warm": "Warm and human",
+    "tone_educational": "Educational and clear",
+    "tone_inspirational": "Inspirational",
+    "tone_minimal": "Calm and minimal",
+    "tone_trustworthy": "Trustworthy",
+    "tone_custom": "Other tone",
+    "audience_general_consumers": "General consumers",
+    "audience_small_business_owners": "Small business owners",
+    "audience_entrepreneurs": "Entrepreneurs",
+    "audience_marketers_creators": "Marketers and content creators",
+    "audience_professionals": "Professionals and employees",
+    "audience_students": "Students",
+    "audience_online_shoppers": "Online shoppers",
+    "audience_beauty_fashion_audience": "Beauty and fashion audience",
+    "audience_food_hospitality_audience": "Food and hospitality audience",
+    "audience_technology_users": "Technology users",
+    "audience_local_community": "Local community",
+    "audience_custom": "Other audience",
+    "gender_all": "Everyone",
+    "gender_women": "Women",
+    "gender_men": "Men",
+    "gender_non_binary": "Non-binary people",
+    "preset_instagram_post": "Instagram Post",
+    "preset_instagram_story": "Instagram Story",
+    "preset_instagram_reel_cover": "Instagram Reel Cover",
+    "preset_facebook_post": "Facebook Post",
+    "preset_facebook_cover": "Facebook Cover",
+    "preset_facebook_story": "Facebook Story",
+    "preset_twitter_post": "Twitter Post",
+    "preset_twitter_header": "Twitter Header",
+    "preset_linkedin_post": "LinkedIn Post",
+    "preset_linkedin_banner": "LinkedIn Banner",
+    "preset_tiktok_video_cover": "TikTok Video Cover",
+    "preset_youtube_thumbnail": "YouTube Thumbnail",
+    "preset_youtube_banner": "YouTube Banner",
+    "preset_short_post": "Post",
+    "preset_short_story": "Story",
+    "preset_short_reel": "Reel",
+    "preset_short_header": "Header",
+    "preset_short_cover": "Cover",
+    "preset_short_banner": "Banner",
+    "preset_short_thumb": "Thumb",
+    "location_amman_jordan": "Amman, Jordan",
+    "location_irbid_jordan": "Irbid, Jordan",
+    "location_zarqa_jordan": "Zarqa, Jordan",
+    "location_dubai_uae": "Dubai, UAE",
+    "location_riyadh_saudi_arabia": "Riyadh, Saudi Arabia",
+    "location_jeddah_saudi_arabia": "Jeddah, Saudi Arabia",
+    "location_doha_qatar": "Doha, Qatar",
+    "location_cairo_egypt": "Cairo, Egypt",
+    "location_beirut_lebanon": "Beirut, Lebanon",
+    "location_remote_online": "Remote / online",
+    "age_under_18": "Under 18",
+    "age_18_24": "18–24",
+    "age_25_34": "25–34",
+    "age_35_44": "35–44",
+    "age_45_54": "45–54",
+    "age_55_plus": "55+"
   }
 }

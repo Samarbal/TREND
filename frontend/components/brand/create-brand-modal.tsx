@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react'
 import { apiRequest } from '@/lib/api'
 import { Brand } from '@/types'
@@ -22,6 +23,7 @@ interface CreateBrandModalProps {
 }
 
 export function CreateBrandModal({ open, onOpenChange, onBrandCreated }: CreateBrandModalProps) {
+  const t = useTranslations('components.brand.create-brand-modal');
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -57,28 +59,24 @@ export function CreateBrandModal({ open, onOpenChange, onBrandCreated }: CreateB
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create brand</DialogTitle>
-          <DialogDescription>
-            Name a studio. You can add a kit, keys, and a logo after.
-          </DialogDescription>
+          <DialogTitle>{t('create_brand')}</DialogTitle>
+          <DialogDescription>{t('name_a_studio_you')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="brand-name">Brand name</Label>
+            <Label htmlFor="brand-name">{t('brand_name')}</Label>
             <Input
               id="brand-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter brand name"
+              placeholder={t('enter_brand_name')}
               autoFocus
             />
           </div>
           {error && <p className="text-[13px] text-destructive">{error}</p>}
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>
-              Cancel
-            </Button>
+            <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>{t('cancel')}</Button>
             <Button type="submit" disabled={loading || !name.trim()}>
               {loading ? 'Creating…' : 'Create'}
             </Button>
