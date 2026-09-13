@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
@@ -10,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Brand } from '@/types'
 
 export default function BrandsPage() {
+  const t = useTranslations('app.(dashboard).brands.page');
   const [showCreateModal, setShowCreateModal] = useState(false)
   const { brands, loading, error, addBrand } = useBrands()
   const router = useRouter()
@@ -23,30 +25,24 @@ export default function BrandsPage() {
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">Brands</h1>
+          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('brands')}</h1>
           <p className="mt-1 text-[14px] text-muted-foreground">
-            {brands.length} {brands.length === 1 ? 'studio' : 'studios'}. Each one remembers its own kit, keys, and history.
+            {t('studio_summary', { count: brands.length })}
           </p>
         </div>
         <Button type="button" onClick={() => setShowCreateModal(true)}>
-          <Plus className="h-4 w-4" />
-          Create brand
-        </Button>
+          <Plus className="h-4 w-4" />{t('create_brand')}</Button>
       </div>
 
-      {loading && <p className="mt-4 text-muted-foreground">Loading…</p>}
+      {loading && <p className="mt-4 text-muted-foreground">{t('loading')}</p>}
 
       {error && <p className="mt-4 text-[13px] text-destructive">{error}</p>}
 
       {!loading && !error && brands.length === 0 && (
         <div className="mt-12 text-center">
-          <p className="font-display text-[24px] text-muted-foreground">No studios yet.</p>
-          <p className="mt-2 text-[14px] text-muted-foreground">
-            Create your first brand to walk into the studio.
-          </p>
-          <Button type="button" className="mt-6" onClick={() => setShowCreateModal(true)}>
-            Create brand
-          </Button>
+          <p className="font-display text-[24px] text-muted-foreground">{t('no_studios_yet')}</p>
+          <p className="mt-2 text-[14px] text-muted-foreground">{t('create_your_first_brand')}</p>
+          <Button type="button" className="mt-6" onClick={() => setShowCreateModal(true)}>{t('create_brand2')}</Button>
         </div>
       )}
 

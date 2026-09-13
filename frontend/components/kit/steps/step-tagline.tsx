@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { KitQuestion } from '@/components/kit/kit-question'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -13,29 +14,30 @@ interface StepProps {
 }
 
 export function StepTagline({ answers, onChange, brandName }: StepProps) {
+  const t = useTranslations('components.kit.steps.step-tagline');
   const examples = [
-    `${brandName}. Seen clearly.`,
-    'Made to be remembered.',
-    'Quietly distinctive.',
+    t('example_seen_clearly', { brandName }),
+    t('example_made_to_be_remembered'),
+    t('example_quietly_distinctive'),
   ]
 
   return (
     <div className="space-y-6">
       <KitQuestion
-        before="What's "
+        before={t('whats_prefix')}
         emphasis={`${brandName}'s`}
-        after=" tagline?"
-        helper="Optional. A short line TRENDY AI can weave into the image brief."
+        after={t('tagline_suffix')}
+        helper={t('tagline_help')}
       />
       <div className="space-y-2">
-        <Label htmlFor="kit-tagline">Tagline</Label>
+        <Label htmlFor="kit-tagline">{t('tagline')}</Label>
         <Input
           id="kit-tagline"
           type="text"
           value={answers.tagline ?? ''}
           maxLength={160}
           onChange={(e) => onChange({ tagline: e.target.value || null })}
-          placeholder="Enter a tagline…"
+          placeholder={t('enter_a_tagline')}
         />
         <p className="text-[12px] text-muted-foreground">
           {answers.tagline?.length ?? 0}/160

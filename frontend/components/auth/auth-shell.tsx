@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react'
 import { type LucideIcon } from 'lucide-react'
 import Image from 'next/image'
@@ -12,6 +13,7 @@ interface AuthShellProps {
 }
 
 export function AuthShell({ hero, subcopy, features, children }: AuthShellProps) {
+  const t = useTranslations('components.auth.auth-shell');
   return (
     <div className="grid min-h-screen bg-background lg:grid-cols-[1.05fr_0.95fr]">
       <section
@@ -39,7 +41,7 @@ export function AuthShell({ hero, subcopy, features, children }: AuthShellProps)
           <span className="font-display text-[30px] leading-none text-brand-accent">
             Trendy
           </span>
-          <span className="font-display text-[30px] leading-none text-brand-accent"> ترندي </span>
+          <span className="font-display text-[30px] leading-none text-brand-accent">{t('text')}</span>
 
         </div>
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { AUDIENCE_SEGMENTS } from '@/lib/generation-options'
 import type { BriefFieldErrors } from '@/lib/validation'
 import type { TargetAudienceBrief } from '@/types/generation'
@@ -14,27 +15,27 @@ interface BriefAudienceStepProps {
     disabled?: boolean
 }
 
-const LOCATION_SUGGESTIONS = [
-    'Amman, Jordan',
-    'Irbid, Jordan',
-    'Zarqa, Jordan',
-    'Dubai, UAE',
-    'Riyadh, Saudi Arabia',
-    'Jeddah, Saudi Arabia',
-    'Doha, Qatar',
-    'Cairo, Egypt',
-    'Beirut, Lebanon',
-    'Remote / online',
-]
+const LOCATION_SUGGESTION_KEYS = [
+    'location_amman_jordan',
+    'location_irbid_jordan',
+    'location_zarqa_jordan',
+    'location_dubai_uae',
+    'location_riyadh_saudi_arabia',
+    'location_jeddah_saudi_arabia',
+    'location_doha_qatar',
+    'location_cairo_egypt',
+    'location_beirut_lebanon',
+    'location_remote_online',
+] as const
 
 const AGE_RANGES = [
-    'Under 18',
-    '18–24',
-    '25–34',
-    '35–44',
-    '45–54',
-    '55+',
-]
+    { value: 'Under 18', labelKey: 'age_under_18' },
+    { value: '18–24', labelKey: 'age_18_24' },
+    { value: '25–34', labelKey: 'age_25_34' },
+    { value: '35–44', labelKey: 'age_35_44' },
+    { value: '45–54', labelKey: 'age_45_54' },
+    { value: '55+', labelKey: 'age_55_plus' },
+] as const
 
 const GENDER_OPTIONS = [
     { value: 'all', label: 'Everyone' },
@@ -49,6 +50,8 @@ export function BriefAudienceStep({
     errors,
     disabled = false,
 }: BriefAudienceStepProps) {
+  const t = useTranslations('components.generation.brief-audience-step');
+  const tOpt = useTranslations('options');
     const availableSegments = AUDIENCE_SEGMENTS.filter(
         (segment) => segment.value !== 'custom',
     )
@@ -78,10 +81,8 @@ export function BriefAudienceStep({
     return (
         <div className="space-y-4">
             <div>
-                <Label>Who is the target audience?</Label>
-                <p className="mt-1 text-[12px] text-muted-foreground">
-                    Select up to two groups. The remaining details are optional.
-                </p>
+                <Label>{t('who_is_the_target')}</Label>
+                <p className="mt-1 text-[12px] text-muted-foreground">{t('select_up_to_two')}</p>
             </div>
 
             <div className="grid gap-2 sm:grid-cols-2">
@@ -103,7 +104,7 @@ export function BriefAudienceStep({
                                         : 'border-border bg-card hover:border-brand-border'
                                 }`}
                         >
-                            {segment.label}
+                            {tOpt(`audience_${segment.value}`)}
                         </button>
                     )
                 })}
@@ -116,14 +117,12 @@ export function BriefAudienceStep({
             )}
 
             {hasReachedLimit && !errors?.audience_segments && (
-                <p className="text-[12px] text-muted-foreground">
-                    You can select up to two audience groups.
-                </p>
+                <p className="text-[12px] text-muted-foreground">{t('you_can_select_up')}</p>
             )}
 
             <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="audience-location">Location (optional)</Label>
+                    <Label htmlFor="audience-location">{t('location_optional')}</Label>
                     <Input
                         id="audience-location"
                         role="combobox"
@@ -133,17 +132,17 @@ export function BriefAudienceStep({
                             update({ location: event.target.value || null })
                         }
                         disabled={disabled}
-                        placeholder="e.g. Amman, Jordan"
+                        placeholder={t('eg_amman_jordan')}
                     />
                     <datalist id="audience-location-suggestions">
-                        {LOCATION_SUGGESTIONS.map((location) => (
-                            <option key={location} value={location} />
+                        {LOCATION_SUGGESTION_KEYS.map((key) => (
+                            <option key={key} value={tOpt(key)} />
                         ))}
                     </datalist>
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="audience-age">Age range (optional)</Label>
+                    <Label htmlFor="audience-age">{t('age_range_optional')}</Label>
                     <select
                         id="audience-age"
                         value={audience.age_range ?? ''}
@@ -153,10 +152,10 @@ export function BriefAudienceStep({
                         disabled={disabled}
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/20"
                     >
-                        <option value="">Select an age range</option>
+                        <option value="">{t('select_an_age_range')}</option>
                         {AGE_RANGES.map((range) => (
-                            <option key={range} value={range}>
-                                {range}
+                            <option key={range.value} value={range.value}>
+                                {tOpt(range.labelKey)}
                             </option>
                         ))}
                     </select>
@@ -164,7 +163,7 @@ export function BriefAudienceStep({
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="audience-gender">Gender focus (optional)</Label>
+                <Label htmlFor="audience-gender">{t('gender_focus_optional')}</Label>
                 <select
                     id="audience-gender"
                     value={audience.gender_focus ?? ''}
@@ -174,19 +173,17 @@ export function BriefAudienceStep({
                     disabled={disabled}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/20"
                 >
-                    <option value="">No specific focus</option>
+                    <option value="">{t('no_specific_focus')}</option>
                     {GENDER_OPTIONS.map((option) => (
                         <option key={option.value} value={option.value}>
-                            {option.label}
+                            {tOpt(`gender_${option.value}`)}
                         </option>
                     ))}
                 </select>
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="audience-details">
-                    Tell us more about this audience (optional)
-                </Label>
+                <Label htmlFor="audience-details">{t('tell_us_more_about')}</Label>
                 <Textarea
                     id="audience-details"
                     value={audience.details ?? ''}
@@ -195,7 +192,7 @@ export function BriefAudienceStep({
                     }
                     disabled={disabled}
                     maxLength={500}
-                    placeholder="Share context, needs, preferences, or buying motivations."
+                    placeholder={t('share_context_needs_preferences')}
                     className="min-h-[110px]"
                 />
                 <p className="text-right font-mono text-[11px] text-muted-foreground">

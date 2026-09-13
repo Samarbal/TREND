@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react'
 import { Upload } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -14,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Brand, LogoUploadResponse } from '@/types'
 
 export default function BrandSettingsPage() {
+  const t = useTranslations('app.(dashboard).[brandId].settings.page');
   const params = useParams()
   const router = useRouter()
   const brandId = Array.isArray(params.brandId) ? params.brandId[0] : params.brandId ?? ''
@@ -38,11 +40,11 @@ export default function BrandSettingsPage() {
   }, [brand])
 
   if (loading) {
-    return <p className="text-muted-foreground">Loading…</p>
+    return <p className="text-muted-foreground">{t('loading')}</p>
   }
 
   if (error || !brand) {
-    return <p className="text-destructive">Failed to load brand settings.</p>
+    return <p className="text-destructive">{t('failed_to_load_brand')}</p>
   }
 
   const handleRename = async () => {
@@ -59,7 +61,7 @@ export default function BrandSettingsPage() {
       nameDirty.current = false
       setRenameSuccess(true)
     } catch (err) {
-      setRenameError(err instanceof Error ? err.message : 'Failed to rename brand')
+      setRenameError(err instanceof Error ? err.message : t('failed_to_rename_brand'))
     } finally {
       setRenameLoading(false)
     }
@@ -82,7 +84,7 @@ export default function BrandSettingsPage() {
       mutate(updatedBrand)
       updateBrand(updatedBrand)
     } catch (err) {
-      setLogoError(err instanceof Error ? err.message : 'Failed to upload logo')
+      setLogoError(err instanceof Error ? err.message : t('failed_to_upload_logo'))
     } finally {
       setLogoLoading(false)
       e.target.value = ''
@@ -98,7 +100,7 @@ export default function BrandSettingsPage() {
       mutate(updatedBrand)
       updateBrand(updatedBrand)
     } catch (err) {
-      setLogoError(err instanceof Error ? err.message : 'Failed to remove logo')
+      setLogoError(err instanceof Error ? err.message : t('failed_to_remove_logo'))
     } finally {
       setLogoLoading(false)
     }
@@ -111,11 +113,11 @@ export default function BrandSettingsPage() {
 
   return (
     <div className="mx-auto max-w-[620px] space-y-6">
-      <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">Settings</h1>
+      <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('settings')}</h1>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-[16px]">Brand name</CardTitle>
+          <CardTitle className="text-[16px]">{t('brand_name')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex gap-2">
@@ -133,17 +135,17 @@ export default function BrandSettingsPage() {
               onClick={handleRename}
               disabled={renameLoading || !newName.trim()}
             >
-              {renameLoading ? 'Saving…' : 'Save'}
+              {renameLoading ? t('saving') : t('save')}
             </Button>
           </div>
           {renameError && <p className="text-[13px] text-destructive">{renameError}</p>}
-          {renameSuccess && <p className="text-[13px] text-success">Name updated.</p>}
+          {renameSuccess && <p className="text-[13px] text-success">{t('name_updated')}</p>}
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-[16px]">Brand logo</CardTitle>
+          <CardTitle className="text-[16px]">{t('brand_logo')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
@@ -156,7 +158,7 @@ export default function BrandSettingsPage() {
             <div className="flex flex-col gap-2">
               <label className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-md bg-secondary px-3.5 text-[13px] font-medium text-secondary-foreground shadow-xs hover:bg-secondary/80">
                   <Upload className="h-4 w-4" />
-                  {logoLoading ? 'Uploading…' : 'Upload logo'}
+                  {logoLoading ? t('uploading') : t('upload_logo')}
                   <input
                     type="file"
                     accept="image/png,image/jpeg,image/webp"
@@ -172,12 +174,10 @@ export default function BrandSettingsPage() {
                   disabled={logoLoading}
                   className="text-left text-[13px] text-destructive hover:underline disabled:opacity-50"
                 >
-                  Remove logo
+                  {t('remove_logo')}
                 </button>
               )}
-              <p className="text-[12px] text-muted-foreground">
-                PNG, JPG or WebP. Used for watermarks.
-              </p>
+              <p className="text-[12px] text-muted-foreground">{t('png_jpg_or_webp')}</p>
             </div>
           </div>
           {logoError && <p className="mt-2 text-[13px] text-destructive">{logoError}</p>}
@@ -186,19 +186,17 @@ export default function BrandSettingsPage() {
 
       <Card className="border-[color-mix(in_srgb,hsl(var(--destructive))_35%,hsl(var(--border)))]">
         <CardHeader>
-          <CardTitle className="text-[16px] text-destructive">Danger zone</CardTitle>
+          <CardTitle className="text-[16px] text-destructive">{t('danger_zone')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-[13px] text-muted-foreground">
-            Permanently delete this brand and all associated data.
-          </p>
+          <p className="text-[13px] text-muted-foreground">{t('permanently_delete_this_brand')}</p>
           <Button
             type="button"
             variant="destructive"
             className="mt-4"
             onClick={() => setShowDeleteDialog(true)}
           >
-            Delete brand
+            {t('delete_brand')}
           </Button>
         </CardContent>
       </Card>

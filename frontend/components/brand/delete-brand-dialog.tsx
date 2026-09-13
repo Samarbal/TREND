@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react'
 import { apiRequest } from '@/lib/api'
 import { Brand } from '@/types'
@@ -27,6 +28,7 @@ export function DeleteBrandDialog({
   onOpenChange,
   onBrandDeleted,
 }: DeleteBrandDialogProps) {
+  const t = useTranslations('components.brand.delete-brand-dialog');
   const [confirmName, setConfirmName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -44,7 +46,7 @@ export function DeleteBrandDialog({
       onBrandDeleted()
       onOpenChange(false)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete brand')
+      setError(err instanceof Error ? err.message : t('failed_to_delete_brand'))
     } finally {
       setLoading(false)
     }
@@ -62,35 +64,29 @@ export function DeleteBrandDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-destructive">Delete {brand.name}?</DialogTitle>
-          <DialogDescription>
-            This removes the brand, its kit, keys, and history. This cannot be undone.
-          </DialogDescription>
+          <DialogTitle className="text-destructive">{t('delete_confirm_title', { name: brand.name })}</DialogTitle>
+          <DialogDescription>{t('this_removes_the_brand')}</DialogDescription>
         </DialogHeader>
         <div>
-          <p className="text-[13px]">
-            Type <strong>&quot;{brand.name}&quot;</strong> to confirm:
-          </p>
+          <p className="text-[13px]">{t('type')}<strong>&quot;{brand.name}&quot;</strong>{t('to_confirm')}</p>
           <Input
             type="text"
             value={confirmName}
             onChange={(e) => setConfirmName(e.target.value)}
-            placeholder="Type brand name to confirm"
+            placeholder={t('type_brand_name_to')}
             className="mt-2"
           />
           {error && <p className="mt-2 text-[13px] text-destructive">{error}</p>}
         </div>
         <DialogFooter>
-          <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>
-            Cancel
-          </Button>
+          <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>{t('cancel')}</Button>
           <Button
             type="button"
             variant="destructive"
             onClick={handleDelete}
             disabled={!canDelete}
           >
-            {loading ? 'Deleting…' : 'Delete brand'}
+            {loading ? t('deleting') : t('delete_brand')}
           </Button>
         </DialogFooter>
       </DialogContent>

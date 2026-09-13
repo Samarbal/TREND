@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -25,14 +26,13 @@ export function DeleteGenerationDialog({
   loading,
   error,
 }: DeleteGenerationDialogProps) {
+  const t = useTranslations('components.history.delete-generation-dialog');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Generation</DialogTitle>
-          <DialogDescription>
-            This will permanently delete this generation and its stored image. This action cannot be undone.
-          </DialogDescription>
+          <DialogTitle>{t('delete_generation')}</DialogTitle>
+          <DialogDescription>{t('this_will_permanently_delete')}</DialogDescription>
         </DialogHeader>
         {error && (
           <p className="text-sm text-destructive">{error}</p>
@@ -43,14 +43,14 @@ export function DeleteGenerationDialog({
             onClick={() => onOpenChange(false)}
             disabled={loading}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             variant="destructive"
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? 'Deleting…' : 'Delete'}
+            {loading ? t('deleting') : t('delete')}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { Sparkles } from 'lucide-react'
 import { BrandDot } from '@/components/brand/brand-dot'
 import { BrandWorkspace, TRENDY_AI_ACCENT, formatHex, normalizeHex, onBrandTextColor } from '@/components/brand/brand-workspace'
@@ -21,6 +22,7 @@ const CURATED = [
 ]
 
 export function StepColors({ answers, onChange }: StepProps) {
+  const t = useTranslations('components.kit.steps.step-colors');
   const colors = answers.colors
   const primary = colors[0] && normalizeHex(colors[0]) ? formatHex(colors[0]) : TRENDY_AI_ACCENT
 
@@ -52,10 +54,10 @@ export function StepColors({ answers, onChange }: StepProps) {
   return (
     <div className="space-y-6">
       <KitQuestion
-        before="Your "
-        emphasis="colors"
+        before={t('your_prefix')}
+        emphasis={t('colors_word')}
         after="."
-        helper="Up to three. The first one is the accent TRENDY AI wears in this workspace."
+        helper={t('colors_help')}
       />
       <div className="grid gap-6 lg:grid-cols-[1fr_244px]">
         <div className="space-y-2">
@@ -71,7 +73,7 @@ export function StepColors({ answers, onChange }: StepProps) {
             />
           ))}
           {colors.length === 0 && (
-            <p className="text-[13px] text-muted-foreground">Add a color to set the studio accent.</p>
+            <p className="text-[13px] text-muted-foreground">{t('add_a_color_to')}</p>
           )}
           <button
             type="button"
@@ -79,7 +81,7 @@ export function StepColors({ answers, onChange }: StepProps) {
             disabled={colors.length >= 3}
             className="mt-2 w-full rounded-md border border-dashed border-border px-3 py-2 text-[13px] text-muted-foreground hover:border-brand hover:text-brand disabled:opacity-50"
           >
-            Add color
+            {t('add_color')}
           </button>
           <div className="grid grid-cols-6 gap-2 pt-2">
             {CURATED.map((hex) => (
@@ -100,20 +102,16 @@ export function StepColors({ answers, onChange }: StepProps) {
 
         <BrandWorkspace color={primary} syncRoot={false}>
           <div className="rounded-lg border border-border bg-card p-[18px] shadow-xs">
-            <p className="text-micro font-semibold uppercase tracking-[0.09em] text-muted-foreground">
-              Live preview
-            </p>
+            <p className="text-micro font-semibold uppercase tracking-[0.09em] text-muted-foreground">{t('live_preview')}</p>
             <div className="mt-4 flex flex-col items-start gap-3">
               <Button size="sm">
-                <Sparkles className="h-3.5 w-3.5" />
-                Generate
-              </Button>
+                <Sparkles className="h-3.5 w-3.5" />{t('generate')}</Button>
               <BrandDot color={primary} selected />
               <div className="h-1 w-full overflow-hidden rounded-full bg-brand-weak">
                 <div className="h-full w-2/3 rounded-full bg-brand" />
               </div>
               <p className="font-mono text-[11px] text-muted-foreground">
-                {primary} · text {onBrandTextColor(primary) === '#FFFFFF' ? 'white' : 'ink'}
+                {primary} · text {onBrandTextColor(primary) === '#FFFFFF' ? t('text_white') : t('text_ink')}
               </p>
             </div>
           </div>

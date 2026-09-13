@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { KitQuestion } from '@/components/kit/kit-question'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -12,22 +13,22 @@ interface StepProps {
 }
 
 export function StepAudience({ answers, onChange }: StepProps) {
+  const t = useTranslations('components.kit.steps.step-audience');
   return (
     <div className="space-y-6">
       <KitQuestion
-        before="Who is it "
-        emphasis="for"
-        after="?"
-        helper="A few sentences on who should feel spoken to."
+        before={t('who_is_it_prefix')}
+        emphasis={t('for_word')}
+        helper={t('audience_help')}
       />
       <div className="space-y-2">
-        <Label htmlFor="kit-audience">Audience</Label>
+        <Label htmlFor="kit-audience">{t('audience')}</Label>
         <Textarea
           id="kit-audience"
           value={answers.audience ?? ''}
           maxLength={500}
           onChange={(e) => onChange({ audience: e.target.value || null })}
-          placeholder="Describe your target audience…"
+          placeholder={t('describe_your_target_audience')}
           rows={4}
         />
         <p className="text-[12px] text-muted-foreground">

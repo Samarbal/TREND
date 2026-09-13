@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useGenerationHistory } from '@/hooks/use-generation-history'
@@ -22,6 +23,7 @@ function buildHistorySearch(provider?: string, status?: string, preset?: string,
 }
 
 export default function HistoryPage({ params }: HistoryPageProps) {
+  const t = useTranslations('app.(dashboard).[brandId].history.page');
   const { brandId } = params
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -68,7 +70,7 @@ export default function HistoryPage({ params }: HistoryPageProps) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">History</h1>
+          <h1 className="text-[30px] font-semibold leading-[1.16] tracking-tight">{t('history')}</h1>
           <p className="mt-1 text-[14px] text-muted-foreground">
             {brand?.name ?? 'Brand'} · {visibleItems.length}
             {hasNext ? '+' : ''} {preset ? 'matching' : 'generations'}

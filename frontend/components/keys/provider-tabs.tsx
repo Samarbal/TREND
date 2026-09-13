@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { useState, type ReactNode } from 'react'
 import { ProviderKey } from '@/types'
 import { SegmentedControl } from '@/components/ui/segmented-control'
@@ -12,6 +13,7 @@ interface ProviderTabsProps {
 }
 
 export function ProviderTabs({ keys, children }: ProviderTabsProps) {
+  const t = useTranslations('components.keys.provider-tabs');
   const [activeProvider, setActiveProvider] = useState<Provider>('openai')
   const filteredKeys = keys.filter((k) => k.provider === activeProvider)
   const openaiCount = keys.filter((k) => k.provider === 'openai').length
@@ -20,12 +22,12 @@ export function ProviderTabs({ keys, children }: ProviderTabsProps) {
   return (
     <div className="space-y-4">
       <SegmentedControl
-        aria-label="Provider"
+        aria-label={t('provider')}
         value={activeProvider}
         onChange={setActiveProvider}
         options={[
-          { value: 'openai', label: `OpenAI (${openaiCount})` },
-          { value: 'gemini', label: `Gemini (${geminiCount})` },
+          { value: 'openai', label: t('openai_count', { count: openaiCount }) },
+          { value: 'gemini', label: t('gemini_count', { count: geminiCount }) },
         ]}
       />
       {children(filteredKeys, activeProvider)}

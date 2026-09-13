@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { NextIntlClientProvider } from 'next-intl'
 import { GenerationBriefForm } from '@/components/generation/generation-brief-form'
+import messages from '@/messages/en.json'
 import type { GenerationBrief } from '@/types'
 
 const { fetchPreviewMock, retryPreviewMock } = vi.hoisted(() => ({
@@ -51,14 +53,16 @@ describe('GenerationBriefForm — Preview Brief integration regression', () => {
     it('mounts one preview on Summary and keeps one after leaving and returning', async () => {
         const user = userEvent.setup()
         render(
-            <GenerationBriefForm
-                value={completeBrief}
-                onChange={vi.fn()}
-                onComplete={vi.fn()}
-                platformPreset="instagram_post"
-                brandId="brand-1"
-                brandName="Acme"
-            />,
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <GenerationBriefForm
+                    value={completeBrief}
+                    onChange={vi.fn()}
+                    onComplete={vi.fn()}
+                    platformPreset="instagram_post"
+                    brandId="brand-1"
+                    brandName="Acme"
+                />
+            </NextIntlClientProvider>,
         )
 
         const nextButton = () => screen.getByRole('button', { name: /^Next$/i })

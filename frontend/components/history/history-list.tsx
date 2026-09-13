@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl';
 import { Loader2 } from 'lucide-react'
 import type { GenerationHistoryItem } from '@/types'
 import type { DeleteGenerationOutcome } from '@/hooks/use-delete-generation'
@@ -31,6 +32,8 @@ export function HistoryList({
   filtered = false,
   onDelete,
 }: HistoryListProps) {
+  const t = useTranslations('components.history.history-list');
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -55,7 +58,7 @@ export function HistoryList({
         onClick={onLoadMore}
         disabled={loadingMore}
       >
-        {loadingMore ? 'Loading…' : 'Load more'}
+        {loadingMore ? t('loading') : t('load_more')}
       </Button>
     </div>
   ) : null
@@ -65,8 +68,8 @@ export function HistoryList({
       <div className="flex flex-col items-center justify-center gap-6 py-20 text-center">
         <p className="text-muted-foreground">
           {filtered
-            ? 'No history items match the selected filters.'
-            : 'No generation history yet. Create your first image on Generate.'}
+            ? t('no_history_match_filters')
+            : t('no_history_yet')}
         </p>
         {loadMore}
       </div>

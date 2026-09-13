@@ -59,8 +59,8 @@ const config: Config = {
       fontFamily: {
         display: ['var(--font-display)', 'ui-serif', 'Georgia', 'serif'],
         sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        ruqaa: ['"Aref Ruqaa"', 'serif'],
-        readex: ['"Readex Pro"', 'sans-serif'],
+        ruqaa: ['var(--font-display)', 'var(--font-sans)', 'sans-serif'],
+        readex: ['var(--font-sans)', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'ui-monospace', 'Menlo', 'monospace'],
       },
       fontSize: {

@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Instrument_Serif, Hanken_Grotesk, Noto_Naskh_Arabic } from "next/font/google";
+import { Noto_Naskh_Arabic, Poppins } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 
 
-const display = Instrument_Serif({
+const display = Poppins({
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
+  weight: ["500", "600", "700"],
   variable: "--font-display",
   display: "swap",
 });
 
-const sans = Hanken_Grotesk({
+const sans = Poppins({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -27,6 +27,7 @@ const arabic = Noto_Naskh_Arabic({
   variable: "--font-arabic",
   display: "swap",
 });
+
 
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
