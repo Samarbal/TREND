@@ -47,7 +47,10 @@
     "body2": "The branding journey that usually takes weeks of meetings and revisions becomes a smart, streamlined pipeline completed in a single session.",
     "tag3": "03 — Decisions",
     "title3": "Decisions backed by data",
-    "body3": "Competitor reports, market trends, and real SWOT analysis before you spend a single dollar on marketing or design."
+    "body3": "Competitor reports, market trends, and real SWOT analysis before you spend a single dollar on marketing or design.",
+    "tag4": "04 — Creativity",
+    "title4": "A unique visual identity",
+    "body4": "Custom color, font, and voice recommendations for your brand, inspired by your target market."
   },
   "studio": {
     "badge": "Content Studio",
@@ -446,7 +449,10 @@
     "history": {
       "delete-generation-dialog": {
         "delete_generation": "Delete Generation",
-        "this_will_permanently_delete": "This will permanently delete this generation and its stored image. This action cannot be undone."
+        "this_will_permanently_delete": "This will permanently delete this generation and its stored image. This action cannot be undone.",
+        "cancel": "Cancel",
+        "deleting": "Deleting…",
+        "delete": "Delete"
       },
       "history-detail": {
         "model": "Model",
@@ -497,7 +503,14 @@
         "cancel": "Cancel"
       },
       "key-card": {
-        "active": "Active"
+        "active": "Active",
+        "valid": "Valid",
+        "invalid": "Invalid",
+        "checked": "checked",
+        "validating": "Validating…",
+        "validate": "Validate",
+        "activate": "Activate",
+        "delete": "Delete"
       },
       "provider-tabs": {
         "provider": "Provider",

@@ -37,15 +37,15 @@ export function KeyCard({ keyData, onValidate, onActivate, onDelete, isValidatin
       {keyData.is_valid !== null && (
         <div className="text-[12px]">
           {keyData.is_valid ? (
-            <span className="text-success">✓ Valid</span>
+            <span className="text-success">✓ {t('valid')}</span>
           ) : (
             <span className="text-destructive">
-              Invalid{keyData.last_validation_error ? `: ${keyData.last_validation_error}` : ''}
+              {t('invalid')}{keyData.last_validation_error ? `: ${keyData.last_validation_error}` : ''}
             </span>
           )}
           {keyData.last_validated_at && (
             <span className="ml-2 text-muted-foreground">
-              checked {new Date(keyData.last_validated_at).toLocaleDateString()}
+              {t('checked')} {new Date(keyData.last_validated_at).toLocaleDateString()}
             </span>
           )}
         </div>
@@ -60,7 +60,7 @@ export function KeyCard({ keyData, onValidate, onActivate, onDelete, isValidatin
             onClick={() => onValidate(keyData.id)}
             disabled={isValidating}
           >
-            {isValidating ? 'Validating…' : 'Validate'}
+            {isValidating ? t('validating') : t('validate')}
           </Button>
         )}
         {onActivate && !keyData.is_active && (
@@ -70,7 +70,7 @@ export function KeyCard({ keyData, onValidate, onActivate, onDelete, isValidatin
             size="sm"
             onClick={() => onActivate(keyData.id)}
           >
-            Activate
+            {t('activate')}
           </Button>
         )}
         {onDelete && (
@@ -81,7 +81,7 @@ export function KeyCard({ keyData, onValidate, onActivate, onDelete, isValidatin
             onClick={() => onDelete(keyData.id)}
             className="text-destructive hover:bg-destructive/10 hover:text-destructive"
           >
-            Delete
+            {t('delete')}
           </Button>
         )}
       </div>

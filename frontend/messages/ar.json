@@ -449,7 +449,10 @@
     "history": {
       "delete-generation-dialog": {
         "delete_generation": "حذف التوليد",
-        "this_will_permanently_delete": "سيؤدي هذا إلى حذف هذا التوليد وصورته المخزنة نهائيًا. لا يمكن التراجع عن هذا الإجراء."
+        "this_will_permanently_delete": "سيؤدي هذا إلى حذف هذا التوليد وصورته المخزنة نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "deleting": "جارٍ الحذف…",
+        "delete": "حذف"
       },
       "history-detail": {
         "model": "النموذج",
@@ -500,7 +503,14 @@
         "cancel": "إلغاء"
       },
       "key-card": {
-        "active": "نشط"
+        "active": "نشط",
+        "valid": "صالح",
+        "invalid": "غير صالح",
+        "checked": "تم التحقق",
+        "validating": "جارٍ التحقق…",
+        "validate": "تحقق",
+        "activate": "تفعيل",
+        "delete": "حذف"
       },
       "provider-tabs": {
         "provider": "المزوّد",

@@ -43,14 +43,14 @@ export function DeleteGenerationDialog({
             onClick={() => onOpenChange(false)}
             disabled={loading}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             variant="destructive"
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? 'Deleting…' : 'Delete'}
+            {loading ? t('deleting') : t('delete')}
           </Button>
         </DialogFooter>
       </DialogContent>
