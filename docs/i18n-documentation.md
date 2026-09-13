@@ -1,5 +1,69 @@
 # Internationalization (i18n) and RTL/LTR
 
+
+## 8. API Error Codes and Frontend Translation
+
+API error responses use a stable machine-readable `error.code` rather than a localized message as the integration contract. The backend returns the error code, the original diagnostic message, and, when available, a `request_id` for tracing. For example:
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "language must be one of: ar, en",
+    "request_id": "..."
+  }
+}
+```
+
+The backend must not select Arabic or English presentation text. It should preserve the appropriate error code for the condition, such as `VALIDATION_ERROR`, `NOT_FOUND`, or a provider-specific error code, and may include the raw message for logs and fallback behavior. The frontend parses the response in `frontend/lib/api.ts`, keeps the code on `ApiError.code`, and is responsible for resolving the user-facing localized message from the active language dictionary.
+
+When adding a new API error, follow this sequence:
+
+1. Add or reuse a stable uppercase error code in the backend response.
+2. Keep the code independent of the user-facing language; never use translated text as the code.
+3. Add the matching key to both `frontend/public/locales/en.json` and `frontend/public/locales/ar.json`.
+4. Render the translated frontend message, while retaining `request_id` for support and debugging.
+
+This separation keeps API behavior stable for clients and allows the frontend to switch between Arabic and English without requiring backend changes.
+# Internationalization (i18n) & RTL/LTR Documentation
+
+## 1. Overview & Architecture
+
+The internationalization (i18n) system in **TRENDY AI** provides full bilingual support for **English (`en`)** and **Arabic (`ar`)**, including automatic layout flipping between **LTR (Left-to-Right)** and **RTL (Right-to-Left)**.
+
+### Architectural Highlights
+- **Zero Additional Dependencies**: Built directly on React Context and Next.js 14 App Router without third-party libraries (no `next-intl` or `react-i18next`).
+- **No Route Mutation**: Avoids route prefixing (`/en/...`, `/ar/...`), preserving existing route structures, Supabase auth redirects, and dashboard routing.
+- **Client Persistence**: Persists user choice in `localStorage` under the key `trendy-lang`, instantly restored upon revisit.
+- **Dynamic DOM Sync**: Updates `document.documentElement.lang` and `document.documentElement.dir` synchronously.
+- **Tailwind v3 Native RTL**: Leverages Tailwind's logical utilities (`start`, `end`, `border-e`, `text-start`) and `rtl:` variants without external CSS plugins.
+
+---
+
+## 2. Directory Structure
+
+```text
+frontend/
+├── app/
+│   ├── layout.tsx                    # Wraps tree in LanguageProvider; loads Arabic font
+│   └── globals.css                   # RTL font and LTR input resets
+├── lib/
+│   └── i18n/
+│       ├── LanguageContext.tsx       # React Context provider & useLanguage() hook
+│       └── translations.ts           # Safe dot-notation translation resolver
+├── public/
+│   └── locales/
+│       ├── en.json                   # English dictionary
+│       └── ar.json                   # Arabic dictionary
+└── components/
+    ├── Header.tsx                    # Landing page header with language switcher
+    ├── layout/
+    │   ├── app-shell.tsx             # Responsive dashboard layout (LTR & RTL drawer)
+    │   └── app-sidebar.tsx           # Dashboard sidebar with nav translations & toggle
+    └── account/
+        └── profile-form.tsx          # Account settings with language selection dropdown
+```
+
 ## 1. Overview
 
 TREND supports English (`en`) and Arabic (`ar`) through [`next-intl`](https://next-intl.dev/). The application uses the same message dictionaries for server and client rendering, and sets the document language and direction from the active locale.

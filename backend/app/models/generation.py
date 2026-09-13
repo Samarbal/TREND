@@ -53,6 +53,7 @@ class GenerationResponse(BaseModel):
     provider: ProviderEnum
     model: str
     platform_preset: PlatformPresetEnum
+    language: TextLanguageEnum
     width: int
     height: int
     logo_mode: LogoModeEnum
@@ -76,6 +77,7 @@ class GenerationHistoryItem(BaseModel):
     provider: ProviderEnum
     model: str
     platform_preset: PlatformPresetEnum
+    language: TextLanguageEnum
     width: int
     height: int
     logo_mode: LogoModeEnum
@@ -98,6 +100,7 @@ class GenerationDetailResponse(BaseModel):
     provider: ProviderEnum
     model: str
     platform_preset: PlatformPresetEnum
+    language: TextLanguageEnum
     width: int
     height: int
     logo_mode: LogoModeEnum

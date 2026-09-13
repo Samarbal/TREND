@@ -100,7 +100,7 @@ def _get_brand_kit_context(brand_id: UUID, brand_name: str) -> BrandContext | No
     client = get_service_client()
     result = (
         client.table("brand_kits")
-        .select("tagline, tone, audience, colors, avoid_words, status")
+        .select("tagline, tone, audience, colors, avoid_words, statusو language")
         .eq("brand_id", str(brand_id))
         .maybe_single()
         .execute()
@@ -154,6 +154,7 @@ def _build_response(row: dict, brand_name: str) -> GenerationResponse:
         provider=row["provider"],
         model=row["model"],
         platform_preset=row["platform_preset"],
+        language=row.get("language", "ar"),
         width=row["width"],
         height=row["height"],
         logo_mode=row["logo_mode"],
@@ -236,6 +237,7 @@ def _build_history_item(row: dict) -> GenerationHistoryItem:
         provider=row["provider"],
         model=row["model"],
         platform_preset=row["platform_preset"],
+        language=row.get("language", "ar"),
         width=row["width"],
         height=row["height"],
         logo_mode=row["logo_mode"],
@@ -255,6 +257,7 @@ def _build_detail_response(row: dict, brand_name: str) -> GenerationDetailRespon
         provider=row["provider"],
         model=row["model"],
         platform_preset=row["platform_preset"],
+        language=row.get("language", "ar"),
         width=row["width"],
         height=row["height"],
         logo_mode=row["logo_mode"],
@@ -308,6 +311,7 @@ async def generate_image(
             "id": str(generation_id),
             "brand_id": str(brand_id),
             "prompt": body.brief.core_idea,
+            "language": body.brief.language.value,
             "provider": body.provider.value,
             "model": resolved_model,
             "platform_preset": body.platform_preset.value,
@@ -440,6 +444,7 @@ async def generate_image(
             row = {
                 "id": str(generation_id),
                 "prompt": body.brief.core_idea,
+                "language": body.brief.language.value,
                 "provider": body.provider.value,
                 "model": resolved_model,
                 "platform_preset": body.platform_preset.value,
