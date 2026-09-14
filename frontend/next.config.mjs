@@ -3,6 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const backendUrl = process.env.NEXT_SERVER_API_URL || 'http://127.0.0.1:8000';
 const remotePatterns = [];
 
 if (supabaseUrl) {
@@ -28,10 +29,10 @@ const nextConfig = {
       afterFiles: [],
       fallback: [
         {
-          // Build-time destination. Standalone does not re-read next.config at
-          // start, so this must match the container default BACKEND_PORT (8000).
+          // Build-time destination. Set NEXT_SERVER_API_URL to the Render URL
+          // in Vercel; local Docker keeps the localhost fallback.
           source: '/api/:path*',
-          destination: 'http://127.0.0.1:8000/:path*',
+          destination: `${backendUrl}/:path*`,
         },
       ],
     };
