@@ -16,16 +16,29 @@ interface BriefAudienceStepProps {
 }
 
 const LOCATION_SUGGESTION_KEYS = [
-    'location_amman_jordan',
-    'location_irbid_jordan',
-    'location_zarqa_jordan',
-    'location_dubai_uae',
-    'location_riyadh_saudi_arabia',
-    'location_jeddah_saudi_arabia',
-    'location_doha_qatar',
-    'location_cairo_egypt',
-    'location_beirut_lebanon',
-    'location_remote_online',
+    'location_palestine',
+    'location_jordan',
+    'location_egypt',
+    'location_saudi_arabia',
+    'location_uae',
+    'location_qatar',
+    'location_lebanon',
+    'location_syria',
+    'location_iraq',
+    'location_kuwait',
+    'location_bahrain',
+    'location_oman',
+    'location_morocco',
+    'location_algeria',
+    'location_tunisia',
+    'location_libya',
+    'location_sudan',
+    'location_yemen',
+    'location_united_states',
+    'location_united_kingdom',
+    'location_turkey',
+    'location_germany',
+    'location_france',
 ] as const
 
 const AGE_RANGES = [
@@ -41,7 +54,6 @@ const GENDER_OPTIONS = [
     { value: 'all', label: 'Everyone' },
     { value: 'women', label: 'Women' },
     { value: 'men', label: 'Men' },
-    { value: 'non_binary', label: 'Non-binary people' },
 ]
 
 export function BriefAudienceStep({
@@ -50,8 +62,8 @@ export function BriefAudienceStep({
     errors,
     disabled = false,
 }: BriefAudienceStepProps) {
-  const t = useTranslations('components.generation.brief-audience-step');
-  const tOpt = useTranslations('options');
+    const t = useTranslations('components.generation.brief-audience-step');
+    const tOpt = useTranslations('options');
     const availableSegments = AUDIENCE_SEGMENTS.filter(
         (segment) => segment.value !== 'custom',
     )
@@ -98,10 +110,10 @@ export function BriefAudienceStep({
                             disabled={disabled || unavailable}
                             onClick={() => toggleSegment(segment.value)}
                             className={`rounded-lg border px-3 py-3 text-left text-[13px] transition-colors ${selected
-                                    ? 'border-brand bg-brand-weaker'
-                                    : unavailable
-                                        ? 'cursor-not-allowed border-border bg-muted/40 opacity-50'
-                                        : 'border-border bg-card hover:border-brand-border'
+                                ? 'border-brand bg-brand-weaker'
+                                : unavailable
+                                    ? 'cursor-not-allowed border-border bg-muted/40 opacity-50'
+                                    : 'border-border bg-card hover:border-brand-border'
                                 }`}
                         >
                             {tOpt(`audience_${segment.value}`)}
@@ -132,7 +144,7 @@ export function BriefAudienceStep({
                             update({ location: event.target.value || null })
                         }
                         disabled={disabled}
-                        placeholder={t('eg_amman_jordan')}
+                        placeholder={t('eg_palestine_jordan_egypt')}
                     />
                     <datalist id="audience-location-suggestions">
                         {LOCATION_SUGGESTION_KEYS.map((key) => (
