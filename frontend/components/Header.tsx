@@ -11,9 +11,10 @@ export default function Header() {
 
   const NAV_LINKS = [
     { href: "#hero", label: t("nav.about") },
-    { href: "#studio", label: t("nav.studio") },
-    { href: "#trial", label: t("nav.trial") },
+    { href: "#why", label: t("nav.why") },
     { href: "#audiences", label: t("nav.audiences") },
+    { href: "#trial", label: t("nav.trial") },
+    { href: "#studio", label: t("nav.studio") },
     { href: "#footer", label: t("nav.contact") },
   ];
 
@@ -28,7 +29,7 @@ export default function Header() {
             height={36}
             className="h-9 w-9 object-contain"
           />
-          <span className="font-display text-[24px] font-semibold">Trendy</span>
+          <span className="font-logo text-[24px] font-semibold">Trendy</span>
         </div>
 
         <nav className="hidden md:flex gap-8 text-sm font-semibold text-brand-headline">

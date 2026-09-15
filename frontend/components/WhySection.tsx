@@ -25,7 +25,7 @@ export default function WhySection() {
   ];
 
   return (
-    <section className="py-24 bg-brand-headline text-brand-bg relative border-y border-brand-accent/20">
+    <section className="py-24 bg-brand-headline text-brand-bg relative border-y border-brand-accent/20" id="why">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal className="max-w-2xl mb-14">
           <div className="inline-flex items-center gap-2 bg-brand-bg/10 border border-brand-bg/20 text-brand-bg font-bold text-xs px-4 py-1.5 rounded-full mb-5 font-readex">
