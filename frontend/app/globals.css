@@ -233,3 +233,14 @@
   display: inline-block;
   transform: scaleX(-1);
 }
+
+/* Font family variables — self-hosted via @fontsource (npm), not next/font/google.
+   Avoids depending on a live connection to Google Fonts at build/runtime. */
+:root {
+  --font-display: 'Poppins', ui-serif, Georgia, serif;
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', ui-sans-serif, system-ui, sans-serif;
+  --font-logo: 'El Messiri', 'Noto Naskh Arabic', serif;
+  --font-heading: 'El Messiri', 'Noto Naskh Arabic', serif;
+  --font-readex: 'Tajawal', 'Noto Naskh Arabic', sans-serif;
+}

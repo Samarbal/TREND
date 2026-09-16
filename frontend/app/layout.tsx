@@ -1,33 +1,28 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Noto_Naskh_Arabic, Poppins } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
+
+// خطوط محلية عبر npm — ما بتحتاج أي اتصال بـ Google وقت التشغيل
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
+import "@fontsource/poppins/400.css";
+import "@fontsource/noto-naskh-arabic/400.css";
+import "@fontsource/noto-naskh-arabic/500.css";
+import "@fontsource/noto-naskh-arabic/600.css";
+import "@fontsource/noto-naskh-arabic/700.css";
+import "@fontsource/el-messiri/400.css";
+import "@fontsource/el-messiri/500.css";
+import "@fontsource/el-messiri/600.css";
+import "@fontsource/el-messiri/700.css";
+import "@fontsource/tajawal/300.css";
+import "@fontsource/tajawal/400.css";
+import "@fontsource/tajawal/500.css";
+import "@fontsource/tajawal/700.css";
+
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-
-
-const display = Poppins({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const sans = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const arabic = Noto_Naskh_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-arabic",
-  display: "swap",
-});
-
 
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
@@ -57,7 +52,7 @@ export default async function RootLayout({
       lang={locale}
       dir={dir}
       suppressHydrationWarning
-      className={`${display.variable} ${sans.variable} ${arabic.variable} ${geistMono.variable}`}
+      className={geistMono.variable}
     >
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
@@ -68,4 +63,3 @@ export default async function RootLayout({
     </html>
   );
 }
-

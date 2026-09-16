@@ -46,7 +46,7 @@ const config: Config = {
         // Landing page theme tokens copied from trendy-nextjs.
         'brand-bg': '#F2EAD3',
         'brand-headline': '#1A1A1A',
-        'brand-primary': '#8B1E1B',
+        'brand-primary': '#7A1521',
         'brand-accent': '#C49A55',
         'brand-ink': '#2d2a26',
         'brand-cream': '#f9f6f0',
@@ -59,8 +59,13 @@ const config: Config = {
       fontFamily: {
         display: ['var(--font-display)', 'ui-serif', 'Georgia', 'serif'],
         sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        ruqaa: ['var(--font-display)', 'var(--font-sans)', 'sans-serif'],
-        readex: ['var(--font-sans)', 'sans-serif'],
+        // Landing-page display headings — Markazi Text (Arabic + Latin),
+        // separate from the sitewide RTL body font (--font-arabic) below.
+        ruqaa: ['var(--font-heading)', 'var(--font-arabic)', 'serif'],
+        // Decorative wordmark ("تريندي" / "Trendy") — calligraphic Ruqaa style.
+        logo: ['var(--font-logo)', 'var(--font-arabic)', 'serif'],
+        // Landing-page body/UI text — Readex Pro (Arabic + Latin).
+        readex: ['var(--font-readex)', 'var(--font-arabic)', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'ui-monospace', 'Menlo', 'monospace'],
       },
       fontSize: {
