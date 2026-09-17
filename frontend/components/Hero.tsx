@@ -31,9 +31,8 @@ export default function Hero() {
         {SLIDES.map((slide, i) => (
           <div
             key={slide.src}
-            className={`absolute inset-0 transition-opacity duration-[1500ms] ease-out ${
-              i === active ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 transition-opacity duration-[1500ms] ease-out ${i === active ? "opacity-100" : "opacity-0"
+              }`}
           >
             <Image
               src={slide.src}
@@ -64,7 +63,7 @@ export default function Hero() {
         </p>
         <a
           href="#idea-to-brand"
-          className="inline-flex items-center gap-2 rounded-full bg-brand-primary px-8 py-3.5 text-base font-bold text-white shadow-vintage transition-all duration-200 hover:-translate-y-1 hover:shadow-xl font-readex"
+          className="inline-flex items-center gap-2 rounded-full bg-brand-primary px-8 py-3.5 text-base font-bold text-white shadow-vintage transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:bg-white font-readex"
         >
           {t("cta")}
           <span aria-hidden="true">↓</span>
@@ -80,9 +79,8 @@ export default function Hero() {
               aria-selected={i === active}
               aria-label={`${i + 1}`}
               onClick={() => setActive(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === active ? "w-8 bg-brand-accent" : "w-1.5 bg-white/40 hover:bg-white/70"
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-brand-accent" : "w-1.5 bg-white/40 hover:bg-white/70"
+                }`}
             />
           ))}
         </div>

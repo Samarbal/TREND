@@ -454,6 +454,29 @@
         "describe_what_you_see_for": "صِف ما تريد رؤيته لـ {brandName}.",
         "painting_your_image": "جارٍ رسم صورتك…",
         "generated_image": "الصورة المولَّدة"
+      },
+      "caption-panel": {
+        "caption": "الكابشن",
+        "optional_helper": "اختياري — ولّد نصًا صديقًا لمحركات البحث لهذه الصورة دون إعادة توليدها.",
+        "generate_caption": "توليد كابشن",
+        "view_caption": "عرض الكابشن",
+        "generating": "جارٍ الكتابة…",
+        "regenerate": "إعادة التوليد",
+        "language_ar": "عربي",
+        "language_en": "إنجليزي",
+        "trend_used": "تم استخدام ترند",
+        "trend_not_used": "لم يُستخدم ترند",
+        "hook_label": "الافتتاحية (اختياري)",
+        "hook_placeholder": "جملة افتتاحية قصيرة…",
+        "caption_label": "الكابشن",
+        "hashtags_label": "الهاشتاغات",
+        "add_hashtag_placeholder": "أضف هاشتاغ",
+        "add": "إضافة",
+        "remove_hashtag": "حذف الهاشتاغ",
+        "keywords_label": "الكلمات المفتاحية:",
+        "copy": "نسخ",
+        "copied": "تم النسخ",
+        "not_published_disclaimer": "هذا الكابشن مسودة يمكنك تعديلها ونسخها. TRENDY AI لا تنشرها في أي مكان."
       }
     },
     "history": {

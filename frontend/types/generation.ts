@@ -43,6 +43,8 @@ export type VoiceTone =
     | 'urgent'
     | 'custom'
 
+export type TextLanguage = 'en' | 'ar'
+
 export interface TargetAudienceBrief {
     /** One or two audience segments selected by the user. */
     segments: string[]
