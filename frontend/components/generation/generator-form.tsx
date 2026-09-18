@@ -22,6 +22,7 @@ import {
   GenerationBriefForm,
 } from '@/components/generation/generation-brief-form'
 import type { GenerationBrief } from '@/types/generation'
+import { CaptionPanel } from '@/components/generation/caption-panel'
 
 interface GeneratorFormProps {
   brandId: string
@@ -119,7 +120,6 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
 
   const result = state.status === 'success' ? state.result : null
   const canDownload = Boolean(result?.image_url && result?.download_filename)
-
   return (
     <div className="grid gap-[22px] xl:grid-cols-[minmax(380px,460px)_1fr] xl:items-start">
       <form
@@ -213,6 +213,14 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         </div>
 
         {downloadError && <p className="text-[12px] text-destructive">{downloadError}</p>}
+        {result && (
+          <CaptionPanel
+            key={result.id}
+            brandId={brandId}
+            generationId={result.id}
+            language={result.language}
+          />
+        )}
       </div>
     </div>
   )

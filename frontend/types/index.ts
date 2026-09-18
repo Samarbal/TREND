@@ -136,6 +136,7 @@ export interface GenerationResponse {
   provider: Provider
   model: string
   platform_preset: PlatformPreset
+  language: TextLanguage
   width: number
   height: number
   logo_mode: LogoMode
@@ -216,4 +217,27 @@ export interface AdminBrandsPage {
   page: number
   per_page: number
   total: number
+}
+export type TextLanguage = 'ar' | 'en'
+export type CaptionTone = string
+
+export interface CaptionPreferences {
+  tone?: CaptionTone | null
+  include_cta?: boolean
+  include_emojis?: boolean
+  max_hashtags?: number
+  extra_notes?: string | null
+}
+
+export interface CaptionRequest {
+  preferences?: CaptionPreferences
+}
+
+export interface CaptionResponse {
+  language: 'ar' | 'en'
+  caption: string
+  hook: string | null
+  hashtags: string[]
+  keywords: string[]
+  trend_used: boolean
 }

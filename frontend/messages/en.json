@@ -454,6 +454,29 @@
         "describe_what_you_see_for": "Describe what you see for {brandName}.",
         "painting_your_image": "Painting your image…",
         "generated_image": "Generated image"
+      },
+      "caption-panel": {
+        "caption": "Caption",
+        "optional_helper": "Optional — generate SEO-friendly copy for this image without recreating it.",
+        "generate_caption": "Generate caption",
+        "view_caption": "View caption",
+        "generating": "Writing…",
+        "regenerate": "Regenerate",
+        "language_ar": "Arabic",
+        "language_en": "English",
+        "trend_used": "Trend used",
+        "trend_not_used": "No trend used",
+        "hook_label": "Hook (optional)",
+        "hook_placeholder": "A short opening line…",
+        "caption_label": "Caption",
+        "hashtags_label": "Hashtags",
+        "add_hashtag_placeholder": "Add a hashtag",
+        "add": "Add",
+        "remove_hashtag": "Remove hashtag",
+        "keywords_label": "Keywords:",
+        "copy": "Copy",
+        "copied": "Copied",
+        "not_published_disclaimer": "This caption is a draft for you to edit and copy. TRENDY AI does not publish it anywhere."
       }
     },
     "history": {

@@ -43,12 +43,12 @@ export default function TrialSection() {
           </p>
         </Reveal>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           <Reveal className="flex flex-col gap-5  mt-2 font-readex text-brand-ink">
             {TRIAL_STEPS.map((step) => (
               <div
                 key={step.n}
-                className="flex items-start gap-4 rounded-[28px] bg-[#FDFBF7] border border-brand-accent/15 p-6"
+                className="flex items-center justify-center gap-4 rounded-[28px] bg-[#FDFBF7] border border-brand-accent/15 p-6"
               >
                 <div className="w-8 h-8 rounded-full bg-brand-headline text-white flex items-center justify-center text-sm font-ruqaa font-bold shrink-0">
                   {step.n}
@@ -64,8 +64,7 @@ export default function TrialSection() {
           </Reveal>
 
           <Reveal className="relative">
-            <div className="absolute -top-4 left-6 z-10 inline-flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-headline font-bold text-xs px-4 py-1.5 rounded-full font-readex shadow-sm">
-              <i className="w-2 h-2 rounded-full bg-brand-primary block" />
+            <div className="absolute -top-4 left-6 z-10 inline-flex items-center gap-2 bg-[#D4B996] border border-brand-accent/30 text-brand-headline font-bold text-xs px-4 py-1.5 rounded-full font-readex shadow-sm">
               {t("trial.quickBadge")}
             </div>
 
