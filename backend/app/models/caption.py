@@ -1,7 +1,11 @@
 """Validated request and response contracts for caption generation.
 
 This module deliberately contains no provider or persistence logic. It defines
-the boundary between the caption API and the future caption-generation service.
+the boundary between the caption API and the caption-generation service.
+
+Generation-level context (language, platform, image, brief, and brand context)
+is inherited by the service from the referenced generation. The client may
+send caption-specific preferences only.
 """
 
 from pydantic import (
@@ -13,7 +17,7 @@ from pydantic import (
     field_validator,
 )
 
-from app.models.generation import PlatformPresetEnum, TextLanguageEnum
+from app.models.generation import TextLanguageEnum
 
 
 CAPTION_MAX_LENGTH = 2200
@@ -72,13 +76,14 @@ class CaptionPreferences(BaseModel):
 
 
 class CaptionRequest(BaseModel):
-    """Input contract for a future caption-generation endpoint."""
+    """Optional caption preferences for an existing successful generation.
+
+    The endpoint derives language, platform, brief, image, and brand context
+    from ``generation_id``. Those fields intentionally do not belong here so
+    the client cannot create a context mismatch with the generated image.
+    """
 
     model_config = ConfigDict(extra="forbid")
-
-    language: TextLanguageEnum
-
-    platform_preset: PlatformPresetEnum
 
     preferences: CaptionPreferences | None = None
 
