@@ -120,7 +120,6 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
 
   const result = state.status === 'success' ? state.result : null
   const canDownload = Boolean(result?.image_url && result?.download_filename)
-  const language = result?.language ?? 'en'
   return (
     <div className="grid gap-[22px] xl:grid-cols-[minmax(380px,460px)_1fr] xl:items-start">
       <form
@@ -214,14 +213,14 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         </div>
 
         {downloadError && <p className="text-[12px] text-destructive">{downloadError}</p>}
-        <CaptionPanel
-          key={result?.id ?? 'pending'}
-          brandId={brandId}
-          generationId={result?.id ?? null}
-          language={result?.language ?? language}
-          platformPreset={preset}
-          enabled={!!result}
-        />
+        {result && (
+          <CaptionPanel
+            key={result.id}
+            brandId={brandId}
+            generationId={result.id}
+            language={result.language}
+          />
+        )}
       </div>
     </div>
   )

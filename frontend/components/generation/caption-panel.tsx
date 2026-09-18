@@ -16,14 +16,12 @@ import {
 } from '@/components/ui/dialog'
 import { ErrorMessage } from '@/components/generation/error-message'
 import { useCaption } from '@/hooks/use-caption'
-import type { CaptionPreferences, PlatformPreset, TextLanguage } from '@/types'
+import type { CaptionPreferences, TextLanguage } from '@/types'
 
 interface CaptionPanelProps {
     brandId: string
-    generationId: string | null
+    generationId: string
     language: TextLanguage
-    platformPreset: PlatformPreset
-    enabled: boolean
 }
 
 interface CaptionDraft {
@@ -48,11 +46,9 @@ export function CaptionPanel({
     brandId,
     generationId,
     language,
-    platformPreset,
-    enabled,
 }: CaptionPanelProps) {
     const t = useTranslations('components.generation.caption-panel')
-    const { state, generateCaption, reset } = useCaption(brandId, generationId ?? '')
+    const { state, generateCaption, reset } = useCaption(brandId, generationId)
 
     const [open, setOpen] = useState(false)
     const [draft, setDraft] = useState<CaptionDraft | null>(null)
@@ -84,7 +80,7 @@ export function CaptionPanel({
 
     async function requestCaption(preferences?: CaptionPreferences) {
         setCopied(false)
-        await generateCaption({ language, platform_preset: platformPreset, preferences })
+        await generateCaption({ preferences })
     }
 
     function updateDraft(patch: Partial<CaptionDraft>) {
@@ -129,10 +125,8 @@ export function CaptionPanel({
             <Button
                 type="button"
                 variant="secondary"
-                className={`w-full transition-opacity ${enabled ? 'opacity-100' : 'opacity-40 pointer-events-none'
-                    }`}
-                disabled={!enabled}
-                onClick={() => enabled && setOpen(true)}
+                className="w-full"
+                onClick={() => setOpen(true)}
             >
                 {hasCaption ? <Check className="h-4 w-4" /> : <MessageSquareText className="h-4 w-4" />}
                 {hasCaption ? t('view_caption') : t('generate_caption')}
