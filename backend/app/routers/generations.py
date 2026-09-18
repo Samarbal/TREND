@@ -7,23 +7,30 @@ from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import ValidationError
+from pydantic import ValidationError
 from storage3.exceptions import StorageException
 
 from app.config import settings
 from app.core.auth import User, get_current_user
 from app.core.supabase import get_service_client
 from app.core.vault import read_secret
+from app.models.caption import CaptionRequest, CaptionResponse, CaptionPreferences
 from app.models.generation import (
     GenerateRequest,
+    GenerationBrief,
     GenerationDetailResponse,
     GenerationHistoryItem,
     GenerationHistoryPage,
     GenerationHistoryStatusEnum,
     GenerationResponse,
     LogoModeEnum,
+    PlatformPresetEnum,
     ProviderEnum,
+    TextLanguageEnum,
 )
 from app.services.error_mapping import classify_provider_error
+from app.services.caption_generator import CaptionOutputError, generate_caption
 from app.services.postprocess import resize_to_preset
 from app.services.presets import (
     MODEL_FOR_PROVIDER,
@@ -272,6 +279,105 @@ def _build_detail_response(row: dict, brand_name: str) -> GenerationDetailRespon
     )
 
 
+@router.post(
+    "/generations/{generation_id}/caption",
+    response_model=CaptionResponse,
+)
+async def create_caption(
+    brand_id: UUID,
+    generation_id: UUID,
+    body: CaptionRequest | None = None,
+    current_user: User = Depends(get_current_user),
+) -> CaptionResponse:
+    """Generate a caption for an existing successful image generation.
+
+    Language, platform, prompt, and brand context are inherited from the
+    generation. The optional body contains caption preferences only.
+    """
+    brand = _get_brand_or_404(brand_id, current_user.id)
+    client = get_service_client()
+    generation = _find_generation_or_404(client, brand_id, generation_id)
+
+    if generation.get("status") != "succeeded":
+        raise _error_response(
+            409,
+            "GENERATION_NOT_READY",
+            "Caption generation requires a successful image generation.",
+        )
+
+    try:
+        language = TextLanguageEnum(generation.get("language", "ar"))
+        platform = PlatformPresetEnum(generation["platform_preset"])
+    except (KeyError, ValueError) as exc:
+        raise _error_response(
+            500,
+            "GENERATION_CONTEXT_INVALID",
+            "The generation context is invalid for caption generation.",
+        ) from exc
+
+    preferences = body.preferences if body and body.preferences else CaptionPreferences()
+    active_key = _get_active_key_or_400(brand_id, generation["provider"])
+    api_key = read_secret(active_key["vault_secret_id"])
+    if not api_key:
+        raise _error_response(502, "CAPTION_PROVIDER_KEY_UNAVAILABLE", "Caption provider is unavailable.")
+
+    brief = None
+    if generation.get("brief"):
+        try:
+            brief = GenerationBrief.model_validate(generation["brief"])
+        except ValidationError as exc:
+            raise _error_response(
+                500,
+                "GENERATION_CONTEXT_INVALID",
+                "The generation questionnaire context is invalid for caption generation.",
+            ) from exc
+
+    brand_context = _get_brand_kit_context(brand_id, brand["name"])
+    try:
+        result = await asyncio.wait_for(
+            generate_caption(
+                provider=generation["provider"],
+                api_key=api_key,
+                language=language,
+                platform=platform,
+                generation_prompt=generation.get("prompt", ""),
+                brief=brief,
+                brand_context=brand_context,
+                preferences=preferences,
+            ),
+            timeout=60.0,
+        )
+    except CaptionOutputError as exc:
+        logger.info(
+            "caption failed code=%s generation_id=%s brand_id=%s",
+            exc.code,
+            generation_id,
+            brand_id,
+        )
+        status_code = 504 if exc.code == "CAPTION_MODEL_TIMEOUT" else 502
+        raise _error_response(status_code, exc.code, exc.user_message) from exc
+    except Exception as exc:
+        logger.exception(
+            "caption pipeline unexpected error generation_id=%s brand_id=%s",
+            generation_id,
+            brand_id,
+        )
+        raise _error_response(
+            502,
+            "CAPTION_PROVIDER_ERROR",
+            "Caption generation failed. The image is still available.",
+        ) from exc
+
+    logger.info(
+        "caption success generation_id=%s brand_id=%s language=%s platform=%s",
+        generation_id,
+        brand_id,
+        language.value,
+        platform.value,
+    )
+    return result
+
+
 @router.post("/generate", response_model=GenerationResponse)
 async def generate_image(
     brand_id: UUID,
@@ -311,6 +417,7 @@ async def generate_image(
             "id": str(generation_id),
             "brand_id": str(brand_id),
             "prompt": body.brief.core_idea,
+            "brief": body.brief.model_dump(mode="json"),
             "language": body.brief.language.value,
             "provider": body.provider.value,
             "model": resolved_model,
