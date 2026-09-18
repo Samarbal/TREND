@@ -8,11 +8,9 @@ from app.models.caption import (
 )
 
 
-def test_caption_request_accepts_arabic_request_with_preferences():
+def test_caption_request_accepts_preferences_only():
     request = CaptionRequest.model_validate(
         {
-            "language": "ar",
-            "platform_preset": "instagram_post",
             "preferences": {
                 "tone": "  friendly  ",
                 "include_cta": True,
@@ -23,42 +21,25 @@ def test_caption_request_accepts_arabic_request_with_preferences():
         }
     )
 
-    assert request.language.value == "ar"
-    assert request.platform_preset.value == "instagram_post"
-
     assert request.preferences is not None
     assert request.preferences.tone == "friendly"
     assert request.preferences.extra_notes == "ركز على العرض الحالي"
 
 
-def test_caption_request_accepts_english_request_without_preferences():
+def test_caption_request_accepts_empty_request():
     request = CaptionRequest.model_validate(
-        {
-            "language": "en",
-            "platform_preset": "linkedin_post",
-        }
+        {}
     )
 
-    assert request.language.value == "en"
     assert request.preferences is None
 
 
-@pytest.mark.parametrize(
-    "language",
-    [
-        "Arabic",
-        "English",
-        "fr",
-        "",
-        None,
-    ],
-)
-def test_caption_request_rejects_unsupported_language(language):
+@pytest.mark.parametrize("field", ["language", "platform_preset"])
+def test_caption_request_rejects_inherited_generation_fields(field):
     with pytest.raises(ValidationError):
         CaptionRequest.model_validate(
             {
-                "language": language,
-                "platform_preset": "instagram_post",
+                field: "ar" if field == "language" else "instagram_post",
             }
         )
 
@@ -67,8 +48,6 @@ def test_caption_request_rejects_unknown_fields():
     with pytest.raises(ValidationError):
         CaptionRequest.model_validate(
             {
-                "language": "ar",
-                "platform_preset": "instagram_post",
                 "trend_used": True,
             }
         )
