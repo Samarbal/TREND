@@ -213,14 +213,13 @@ export function GeneratorForm({ brandId, brandName, brandHasLogo }: GeneratorFor
         </div>
 
         {downloadError && <p className="text-[12px] text-destructive">{downloadError}</p>}
-        {result && (
-          <CaptionPanel
-            key={result.id}
-            brandId={brandId}
-            generationId={result.id}
-            language={result.language}
-          />
-        )}
+        <CaptionPanel
+          key={result?.id ?? 'pending'}
+          brandId={brandId}
+          generationId={result?.id ?? null}
+          language={result?.language ?? 'en'}
+          enabled={!!result}
+        />
       </div>
     </div>
   )
