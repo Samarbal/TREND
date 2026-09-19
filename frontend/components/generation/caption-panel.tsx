@@ -20,8 +20,9 @@ import type { CaptionPreferences, TextLanguage } from '@/types'
 
 interface CaptionPanelProps {
     brandId: string
-    generationId: string
+    generationId: string | null
     language: TextLanguage
+    enabled: boolean
 }
 
 interface CaptionDraft {
@@ -46,9 +47,10 @@ export function CaptionPanel({
     brandId,
     generationId,
     language,
+    enabled,
 }: CaptionPanelProps) {
     const t = useTranslations('components.generation.caption-panel')
-    const { state, generateCaption, reset } = useCaption(brandId, generationId)
+    const { state, generateCaption, reset } = useCaption(brandId, generationId ?? '')
 
     const [open, setOpen] = useState(false)
     const [draft, setDraft] = useState<CaptionDraft | null>(null)
@@ -79,6 +81,7 @@ export function CaptionPanel({
     const hasCaption = draft !== null
 
     async function requestCaption(preferences?: CaptionPreferences) {
+        if (!enabled || !generationId) return
         setCopied(false)
         await generateCaption({ preferences })
     }
@@ -125,8 +128,9 @@ export function CaptionPanel({
             <Button
                 type="button"
                 variant="secondary"
-                className="w-full"
-                onClick={() => setOpen(true)}
+                className={`w-full transition-opacity ${enabled ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}
+                disabled={!enabled}
+                onClick={() => enabled && setOpen(true)}
             >
                 {hasCaption ? <Check className="h-4 w-4" /> : <MessageSquareText className="h-4 w-4" />}
                 {hasCaption ? t('view_caption') : t('generate_caption')}
