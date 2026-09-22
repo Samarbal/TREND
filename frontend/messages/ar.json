@@ -139,7 +139,8 @@
     "logout": "تسجيل الخروج",
     "workspace": "مساحة العمل",
     "createBrand": "إنشاء علامة تجارية",
-    "you": "أنت"
+    "you": "أنت",
+    "allBrandsShort": "كل العلامات"
   },
   "account": {
     "title": "الحساب",
@@ -302,6 +303,14 @@
           "brands": "العلامات التجارية",
           "create_brand": "إنشاء علامة تجارية",
           "loading": "جارٍ التحميل…",
+                    "search_placeholder": "بحث عن علامة تجارية...",
+          "all_statuses": "كل الحالات",
+          "filter_in_progress": "قيد التنفيذ",
+          "filter_completed": "مكتملة",
+          "filter_pending": "في الانتظار",
+          "sort_newest": "الأحدث أولاً",
+          "sort_oldest": "الأقدم أولاً",
+          "no_results": "لا توجد علامات مطابقة للبحث.",
           "studio_summary": "{count, plural, =1 {استوديو واحد. كل استوديو يتذكر مجموعته الخاصة من الهوية والمفاتيح والسجل.} other {# استوديوهات. كل استوديو يتذكر مجموعته الخاصة من الهوية والمفاتيح والسجل.}}",
           "no_studios_yet": "لا توجد استوديوهات بعد.",
           "create_your_first_brand": "أنشئ علامتك التجارية الأولى لدخول الاستوديو.",
@@ -349,17 +358,54 @@
       }
     },
     "brand": {
+            "brand-stats": {
+        "total_brands": "إجمالي العلامات",
+        "in_progress": "قيد التنفيذ",
+        "completed": "مكتملة",
+        "pending": "في الانتظار"
+      },
+      "brands-table": {
+        "col_brand": "العلامة التجارية",
+        "col_actions": "الإجراءات",
+        "col_status": "الحالة",
+        "col_created": "تاريخ الإنشاء",
+        "sort_newest_hint": "مرتّبة من الأحدث. اضغط للترتيب من الأقدم",
+        "sort_oldest_hint": "مرتّبة من الأقدم. اضغط للترتيب من الأحدث",
+        "action_open": "فتح العلامة",
+        "action_edit": "تعديل",
+        "action_delete": "حذف",
+        "status_complete": "مكتمل",
+        "status_in_progress": "قيد التنفيذ",
+        "status_pending": "في الانتظار",
+        "prev": "السابق",
+        "next": "التالي",
+        "showing": "{count, plural, =1 {عرض {from} من علامة تجارية واحدة} other {عرض {from}-{to} من {total} علامات تجارية}}"
+      },
       "brand-card": {
         "current": "الحالية"
       },
-      "create-brand-modal": {
+        "create-brand-modal": {
         "enter_brand_name": "أدخل اسم العلامة التجارية",
         "create_brand": "إنشاء علامة تجارية",
         "name_a_studio_you": "سمِّ استوديوك. يمكنك إضافة الهوية والمفاتيح والشعار لاحقًا.",
         "brand_name": "اسم العلامة التجارية",
-        "cancel": "إلغاء"
+        "cancel": "إلغاء",
+        "step_of": "الخطوة {current} من {total}",
+        "details_title": "تفاصيل العلامة",
+        "primary_color_title": "اللون الأساسي",
+        "name_label": "اسم العلامة",
+        "name_placeholder": "مثال: نور، وثاق، trend",
+        "pick_color": "اختر اللون الأساسي",
+        "next": "التالي",
+        "back": "السابق",
+        "create": "إنشاء",
+        "creating": "جارٍ الإنشاء…",
+        "create_failed": "تعذّر إنشاء العلامة التجارية"
       },
       "delete-brand-dialog": {
+       "delete_title": "حذف العلامة التجارية",
+        "confirm_text": "هل تريد حذف \"{name}\" بشكل نهائي؟ لا يمكن التراجع.",
+        "confirm_delete": "تأكيد الحذف",
         "type_brand_name_to": "اكتب اسم العلامة التجارية للتأكيد",
         "this_removes_the_brand": "يؤدي هذا إلى حذف العلامة التجارية وهويتها ومفاتيحها وسجلها نهائيًا. لا يمكن التراجع.",
         "type": "اكتب",
@@ -601,7 +647,20 @@
           "colors_word": "علامتك.",
           "colors_help": "حتى ثلاثة ألوان. أول لون هو اللون المميز يلي TRENDY AI بيستخدمه بمساحة العمل.",
           "text_white": "أبيض",
-          "text_ink": "غامق"
+          "text_ink": "غامق",
+        "curated_palette": "باليتات مقترحة سريعة",
+        "color_maroon": "عنابي",
+        "color_pink": "وردي",
+        "color_purple": "بنفسجي",
+        "color_blue": "أزرق",
+        "color_navy": "كحلي",
+        "color_cyan": "سماوي",
+        "color_gray": "رمادي",
+        "color_sky": "أزرق فاتح",
+        "color_green": "أخضر",
+        "color_gold": "ذهبي",
+        "color_orange": "برتقالي",
+        "color_red": "أحمر"
         },
         "step-review": {
           "tagline": "الشعار النصي",
@@ -666,7 +725,8 @@
     "layout": {
       "app-shell": {
         "close_menu": "إغلاق القائمة",
-        "open_menu": "فتح القائمة"
+        "open_menu": "فتح القائمة",
+        "breadcrumb_brands": "العلامات التجارية"
       }
     }
   },

@@ -1,12 +1,13 @@
 'use client'
 import { useTranslations } from 'next-intl';
-import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { PanelLeft } from 'lucide-react'
 import { BrandWorkspace } from '@/components/brand/brand-workspace'
 import { CreateBrandModal } from '@/components/brand/create-brand-modal'
 import { AppSidebar } from '@/components/layout/app-sidebar'
+import LanguageSwitcher from '@/components/language-switcher'
 import { useBrands } from '@/hooks/use-brands'
 import { useProfile } from '@/hooks/use-profile'
 import { cn } from '@/lib/utils'
@@ -38,6 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const wearBrand = Boolean(currentBrandId) && !isNeutralRoute(pathname)
   const accent = currentBrandId ? accents[currentBrandId] : undefined
+  const crumbBrand = brands.find((b) => b.id === currentBrandId)
 
   useEffect(() => {
     setNavOpen(false)
@@ -64,7 +66,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   const shell = (
-    <div className="grid h-screen grid-cols-1 overflow-hidden bg-background md:grid-cols-[248px_1fr]">
+    <div className="grid h-screen grid-cols-1 overflow-hidden bg-background md:grid-cols-[224px_1fr]">
       {navOpen && (
         <button
           type="button"
@@ -76,7 +78,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div
         ref={drawerRef}
         className={cn(
-          'z-40 h-full w-[248px] bg-background max-md:fixed max-md:inset-y-0 max-md:start-0 max-md:shadow-lg max-md:transition-transform max-md:duration-fast max-md:ease-out md:static md:translate-x-0 md:transform-none',
+          'z-40 h-full w-[224px] bg-brand-cream max-md:fixed max-md:inset-y-0 max-md:start-0 max-md:shadow-lg max-md:transition-transform max-md:duration-fast max-md:ease-out md:static md:translate-x-0 md:transform-none',
           navOpen
             ? 'max-md:translate-x-0'
             : 'max-md:-translate-x-full rtl:max-md:translate-x-full',
@@ -91,28 +93,42 @@ export function AppShell({ children }: { children: ReactNode }) {
         />
       </div>
       <div className="flex min-w-0 flex-col overflow-hidden">
-        <header className="flex h-12 shrink-0 items-center gap-2 border-b px-3 md:hidden">
+        <header className="flex h-[60px] shrink-0 items-center gap-2 border-b border-brand-accent/30 bg-brand-cream px-3 md:px-[52px]">
           <button
             type="button"
             onClick={() => setNavOpen(true)}
             aria-label={t('open_menu')}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent md:hidden"
           >
             <PanelLeft className="h-4 w-4" />
           </button>
-          <div className="flex items-center gap-2">
-            <Image
-              src="/trendy_logo.png"
-              alt="TRENDY AI"
-              width={30}
-              height={30}
-              className="h-7 w-7 object-contain"
-            />
-            <span className="font-display text-[22px] leading-none text-brand-headline">
-              TRENDY AI
-            </span>
-          </div>
+          <span className="font-logo text-[20px] font-semibold leading-none text-brand-headline md:hidden">
+            TRENDY AI
+          </span>
 
+          {/* مسار التنقل + مبدّل اللغة على طرف الشريط (مثل الفيجما) */}
+          <div className="ms-auto">
+            <div dir="ltr" className="flex items-center gap-[10px] font-readex">
+              <nav
+                aria-label="breadcrumb"
+                className="hidden items-center gap-[5px] text-[13px] md:flex"
+              >
+                <Link
+                  href="/brands"
+                  className="font-medium text-brand-headline/80 no-underline hover:underline"
+                >
+                  {t('breadcrumb_brands')}
+                </Link>
+                {crumbBrand && (
+                  <>
+                    <span className="text-brand-headline/40">/</span>
+                    <span className="text-brand-headline/50">{crumbBrand.name}</span>
+                  </>
+                )}
+              </nav>
+              <LanguageSwitcher variant="compact" />
+            </div>
+          </div>
         </header>
         <main className="min-w-0 flex-1 overflow-y-auto px-4 py-5 md:px-[30px] md:py-6">
           {children}
