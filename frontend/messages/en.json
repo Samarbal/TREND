@@ -139,7 +139,8 @@
     "logout": "Log out",
     "workspace": "Workspace",
     "createBrand": "Create brand",
-    "you": "You"
+    "you": "You",
+    "allBrandsShort": "All brands"
   },
   "account": {
     "title": "Account",
@@ -302,6 +303,14 @@
           "brands": "Brands",
           "create_brand": "Create brand",
           "loading": "Loading…",
+          "search_placeholder": "Search brands...",
+          "all_statuses": "All statuses",
+          "filter_in_progress": "In progress",
+          "filter_completed": "Completed",
+          "filter_pending": "Pending",
+          "sort_newest": "Newest first",
+          "sort_oldest": "Oldest first",
+          "no_results": "No brands match your search.",
           "studio_summary": "{count, plural, =1 {1 studio. Each one remembers its own kit, keys, and history.} other {# studios. Each one remembers its own kit, keys, and history.}}",
           "no_studios_yet": "No studios yet.",
           "create_your_first_brand": "Create your first brand to walk into the studio.",
@@ -349,17 +358,54 @@
       }
     },
     "brand": {
+      "brand-stats": {
+        "total_brands": "Total brands",
+        "in_progress": "In progress",
+        "completed": "Completed",
+        "pending": "Pending"
+      },
+      "brands-table": {
+        "col_brand": "Brand",
+        "col_actions": "Actions",
+        "col_status": "Status",
+        "col_created": "Created",
+        "sort_newest_hint": "Sorted newest first. Click to sort oldest first",
+        "sort_oldest_hint": "Sorted oldest first. Click to sort newest first",
+        "action_open": "Open brand",
+        "action_edit": "Edit",
+        "action_delete": "Delete",
+        "status_complete": "Complete",
+        "status_in_progress": "In progress",
+        "status_pending": "Pending",
+        "prev": "Previous",
+        "next": "Next",
+               "showing": "{count, plural, =1 {Showing {from} of 1 brand} other {Showing {from}-{to} of {total} brands}}"
+      },
       "brand-card": {
         "current": "Current"
       },
-      "create-brand-modal": {
+        "create-brand-modal": {
         "enter_brand_name": "Enter brand name",
         "create_brand": "Create brand",
-        "name_a_studio_you": "Name a studio. You can add a kit, keys, and a logo after.",
+        "name_a_studio_you": "Name your studio. You can add identity, keys and logo later.",
         "brand_name": "Brand name",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "step_of": "Step {current} of {total}",
+        "details_title": "Brand details",
+        "primary_color_title": "Primary color",
+        "name_label": "Brand name",
+        "name_placeholder": "e.g. Nour, Wathaq, trend",
+        "pick_color": "Pick the primary color",
+        "next": "Next",
+        "back": "Back",
+        "create": "Create",
+        "creating": "Creating…",
+        "create_failed": "Failed to create brand"
       },
       "delete-brand-dialog": {
+        "delete_title": "Delete brand",
+        "confirm_text": "Delete \"{name}\" permanently? This can't be undone.",
+        "confirm_delete": "Confirm delete",
         "type_brand_name_to": "Type brand name to confirm",
         "this_removes_the_brand": "This removes the brand, its kit, keys, and history. This cannot be undone.",
         "type": "Type",
@@ -601,7 +647,20 @@
           "colors_word": "colors",
           "colors_help": "Up to three. The first one is the accent TRENDY AI wears in this workspace.",
           "text_white": "white",
-          "text_ink": "ink"
+          "text_ink": "ink",
+         "curated_palette": "Curated quick palette",
+        "color_maroon": "Maroon",
+        "color_pink": "Pink",
+        "color_purple": "Purple",
+        "color_blue": "Blue",
+        "color_navy": "Navy",
+        "color_cyan": "Cyan",
+        "color_gray": "Gray",
+        "color_sky": "Sky blue",
+        "color_green": "Green",
+        "color_gold": "Gold",
+        "color_orange": "Orange",
+        "color_red": "Red"
         },
         "step-review": {
           "tagline": "Tagline",
@@ -666,7 +725,8 @@
     "layout": {
       "app-shell": {
         "close_menu": "Close menu",
-        "open_menu": "Open menu"
+        "open_menu": "Open menu",
+        "breadcrumb_brands": "Brands"
       }
     }
   },
