@@ -178,9 +178,9 @@
     "featureKit": "هويتك وألوانك ونبرتك — محفوظة",
     "featureImages": "كل صورة بأبعاد المنصة المناسبة",
     "featureKeys": "استخدم مفتاح OpenAI أو Gemini الخاص بك",
-    "loginTitle": "تسجيل الدخول",
-    "loginDescription": " أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى الاستوديو الخاص بك.",
-    "email": "البريد الإلكتروني",
+    "loginTitle": "مرحبًا بعودتك",
+    "loginDescription": "حوّل أفكارك إلى محتوى متناسق مع علامتك التجارية، عبر استوديو مصمم لاحتياجاتك.",
+    "email": "بريد العمل الإلكتروني",
     "emailPlaceholder": "you@example.com",
     "password": "كلمة المرور",
     "showPassword": "إظهار كلمة المرور",
@@ -199,11 +199,18 @@
     "confirmationSent": "أرسلنا رابط تأكيد إلى",
     "activateAccount": "اضغط على الرابط لتفعيل حسابك.",
     "backToLogin": "العودة إلى تسجيل الدخول",
-    "createAccount": "إنشاء حساب",
-    "signupDescription": "أدخل بريدك الإلكتروني وكلمة المرور للبدء.",
+    "createAccount": "إنشاء الحساب",
+    "signupDescription": "ابدأ اليوم بتحويل أفكارك إلى محتوى متناسق مع علامتك التجارية.",
     "passwordHint": "6 أحرف على الأقل.",
     "creatingAccount": "جارٍ إنشاء الحساب…",
-    "hasAccount": "لديك حساب بالفعل؟"
+    "hasAccount": "لديك حساب بالفعل؟",
+    "loginEyebrow": "شريكك في النمو الشخصي",
+    "signupEyebrow": "شريكك في النمو الشخصي",
+    "signupTitle": "أنشئ حسابك",
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "مثلًا: سارة منصور",
+    "passwordPlaceholder": "أنشئ كلمة مرور قوية",
+    "existingAccount": "يوجد حساب مرتبط بهذا البريد الإلكتروني. سجّل الدخول بدلًا من ذلك."
   },
   "common": {
     "next": "التالي",
@@ -303,7 +310,7 @@
           "brands": "العلامات التجارية",
           "create_brand": "إنشاء علامة تجارية",
           "loading": "جارٍ التحميل…",
-                    "search_placeholder": "بحث عن علامة تجارية...",
+          "search_placeholder": "بحث عن علامة تجارية...",
           "all_statuses": "كل الحالات",
           "filter_in_progress": "قيد التنفيذ",
           "filter_completed": "مكتملة",
@@ -354,11 +361,18 @@
     },
     "auth": {
       "auth-shell": {
-        "text": "ترندي"
+        "text": "ترندي",
+        "brandArabic": "ترندي",
+        "visualTitleBefore": "انمُ بخطوة",
+        "visualTitleAccent": "أوضح وأفضل.",
+        "visualSubtitle": "حوّل أفكارك إلى محتوى، وافهم ما ينجح، وابنِ خطة نمو مخصصة تناسب ملفك.",
+        "terms": "شروط الخدمة",
+        "privacy": "سياسة الخصوصية",
+        "copyright": "© 2026 شركة ترندي للتقنيات. جميع الحقوق محفوظة."
       }
     },
     "brand": {
-            "brand-stats": {
+      "brand-stats": {
         "total_brands": "إجمالي العلامات",
         "in_progress": "قيد التنفيذ",
         "completed": "مكتملة",
@@ -384,7 +398,7 @@
       "brand-card": {
         "current": "الحالية"
       },
-        "create-brand-modal": {
+      "create-brand-modal": {
         "enter_brand_name": "أدخل اسم العلامة التجارية",
         "create_brand": "إنشاء علامة تجارية",
         "name_a_studio_you": "سمِّ استوديوك. يمكنك إضافة الهوية والمفاتيح والشعار لاحقًا.",
@@ -403,7 +417,7 @@
         "create_failed": "تعذّر إنشاء العلامة التجارية"
       },
       "delete-brand-dialog": {
-       "delete_title": "حذف العلامة التجارية",
+        "delete_title": "حذف العلامة التجارية",
         "confirm_text": "هل تريد حذف \"{name}\" بشكل نهائي؟ لا يمكن التراجع.",
         "confirm_delete": "تأكيد الحذف",
         "type_brand_name_to": "اكتب اسم العلامة التجارية للتأكيد",
@@ -648,19 +662,19 @@
           "colors_help": "حتى ثلاثة ألوان. أول لون هو اللون المميز يلي TRENDY AI بيستخدمه بمساحة العمل.",
           "text_white": "أبيض",
           "text_ink": "غامق",
-        "curated_palette": "باليتات مقترحة سريعة",
-        "color_maroon": "عنابي",
-        "color_pink": "وردي",
-        "color_purple": "بنفسجي",
-        "color_blue": "أزرق",
-        "color_navy": "كحلي",
-        "color_cyan": "سماوي",
-        "color_gray": "رمادي",
-        "color_sky": "أزرق فاتح",
-        "color_green": "أخضر",
-        "color_gold": "ذهبي",
-        "color_orange": "برتقالي",
-        "color_red": "أحمر"
+          "curated_palette": "باليتات مقترحة سريعة",
+          "color_maroon": "عنابي",
+          "color_pink": "وردي",
+          "color_purple": "بنفسجي",
+          "color_blue": "أزرق",
+          "color_navy": "كحلي",
+          "color_cyan": "سماوي",
+          "color_gray": "رمادي",
+          "color_sky": "أزرق فاتح",
+          "color_green": "أخضر",
+          "color_gold": "ذهبي",
+          "color_orange": "برتقالي",
+          "color_red": "أحمر"
         },
         "step-review": {
           "tagline": "الشعار النصي",

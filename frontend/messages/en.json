@@ -178,15 +178,15 @@
     "featureKit": "Your kit, colors, and tone — remembered",
     "featureImages": "Every image, sized for the platform",
     "featureKeys": "Bring your own OpenAI or Gemini key",
-    "loginTitle": "Log in",
-    "loginDescription": "Enter your email and password to access your studio.",
-    "email": "Email",
+    "loginTitle": "Welcome back",
+    "loginDescription": "Turn ideas into on-brand content with a studio built around your brand.",
+    "email": "Work email",
     "emailPlaceholder": "you@example.com",
     "password": "Password",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "loggingIn": "Logging in…",
-    "noAccount": "Don’t have an account?",
+    "noAccount": "Don't have an account?",
     "signUp": "Sign up",
     "signupSuccessHeroBefore": "Your studio is",
     "signupSuccessHeroAccent": "almost open.",
@@ -199,11 +199,18 @@
     "confirmationSent": "We sent a confirmation link to",
     "activateAccount": "Click the link to activate your account.",
     "backToLogin": "Back to login",
-    "createAccount": "Create an account",
-    "signupDescription": "Enter your email and password to get started.",
+    "createAccount": "Create account",
+    "signupDescription": "Start turning ideas into on-brand content today.",
     "passwordHint": "At least 6 characters.",
     "creatingAccount": "Creating account…",
-    "hasAccount": "Already have an account?"
+    "hasAccount": "Already have an account?",
+    "loginEyebrow": "Your personal growth partner",
+    "signupEyebrow": "Your personal growth partner",
+    "signupTitle": "Create your account",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "e.g. Sarah Mansour",
+    "passwordPlaceholder": "Create a strong password",
+    "existingAccount": "An account with this email already exists. Please sign in instead."
   },
   "common": {
     "next": "Next",
@@ -354,7 +361,14 @@
     },
     "auth": {
       "auth-shell": {
-        "text": "ترندي"
+        "text": "ترندي",
+        "brandArabic": "ترندي",
+        "visualTitleBefore": "Grow with a clearer",
+        "visualTitleAccent": "next move.",
+        "visualSubtitle": "Turn ideas into content, understand what works, and build a personalized growth plan tailored to your profile.",
+        "terms": "Terms of Service",
+        "privacy": "Privacy Policy",
+        "copyright": "© 2026 Trendy Technologies Inc. All rights reserved."
       }
     },
     "brand": {
@@ -379,12 +393,12 @@
         "status_pending": "Pending",
         "prev": "Previous",
         "next": "Next",
-               "showing": "{count, plural, =1 {Showing {from} of 1 brand} other {Showing {from}-{to} of {total} brands}}"
+        "showing": "{count, plural, =1 {Showing {from} of 1 brand} other {Showing {from}-{to} of {total} brands}}"
       },
       "brand-card": {
         "current": "Current"
       },
-        "create-brand-modal": {
+      "create-brand-modal": {
         "enter_brand_name": "Enter brand name",
         "create_brand": "Create brand",
         "name_a_studio_you": "Name your studio. You can add identity, keys and logo later.",
@@ -648,19 +662,19 @@
           "colors_help": "Up to three. The first one is the accent TRENDY AI wears in this workspace.",
           "text_white": "white",
           "text_ink": "ink",
-         "curated_palette": "Curated quick palette",
-        "color_maroon": "Maroon",
-        "color_pink": "Pink",
-        "color_purple": "Purple",
-        "color_blue": "Blue",
-        "color_navy": "Navy",
-        "color_cyan": "Cyan",
-        "color_gray": "Gray",
-        "color_sky": "Sky blue",
-        "color_green": "Green",
-        "color_gold": "Gold",
-        "color_orange": "Orange",
-        "color_red": "Red"
+          "curated_palette": "Curated quick palette",
+          "color_maroon": "Maroon",
+          "color_pink": "Pink",
+          "color_purple": "Purple",
+          "color_blue": "Blue",
+          "color_navy": "Navy",
+          "color_cyan": "Cyan",
+          "color_gray": "Gray",
+          "color_sky": "Sky blue",
+          "color_green": "Green",
+          "color_gold": "Gold",
+          "color_orange": "Orange",
+          "color_red": "Red"
         },
         "step-review": {
           "tagline": "Tagline",
