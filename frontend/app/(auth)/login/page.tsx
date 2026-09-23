@@ -34,7 +34,7 @@ export default function LoginPage() {
   return (
     <AuthShell eyebrow={t('loginEyebrow')} title={t('loginTitle')} subtitle={t('loginDescription')}>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <div role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+        {error && <div role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-[#7A1521]">{error}</div>}
         <div>
           <label htmlFor="email" className="mb-2 block text-[12px] font-bold uppercase tracking-[0.04em] text-[#424242]">{t('email')}</label>
           <div className="relative">
@@ -51,7 +51,7 @@ export default function LoginPage() {
             </button>
           </div>
         </div>
-        <button type="submit" disabled={loading} className="auth-submit flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#7A1521] text-[15px] font-semibold text-white transition hover:bg-[#741537] disabled:cursor-not-allowed disabled:opacity-60">
+        <button type="submit" disabled={loading} className="auth-submit flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#7A1521] text-[15px] font-semibold text-white transition hover:bg-[#9c2a37] disabled:cursor-not-allowed disabled:opacity-60">
           {loading ? t('loggingIn') : t('loginTitle')} <ArrowUpRight className="h-[17px] w-[17px]" strokeWidth={2} />
         </button>
         <p className="pt-1 text-center text-[13px] text-[#888]">{t('noAccount')}{' '}<Link href="/signup" className="font-semibold text-[#7A1521] hover:underline">{t('signUp')}</Link></p>

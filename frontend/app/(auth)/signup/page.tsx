@@ -63,7 +63,7 @@ export default function SignUpPage() {
             </button>
           </div>
         </div>
-        <button type="submit" disabled={loading} className="auth-submit flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#7A1521] text-[15px] font-semibold text-white transition hover:bg-[#741537] disabled:cursor-not-allowed disabled:opacity-60">
+        <button type="submit" disabled={loading} className="auth-submit flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#7A1521] text-[15px] font-semibold text-white transition hover:bg-[#9c2a37] disabled:cursor-not-allowed disabled:opacity-60">
           {loading ? t('creatingAccount') : t('createAccount')} <ArrowUpRight className="h-[17px] w-[17px]" strokeWidth={2} />
         </button>
         <p className="pt-1 text-center text-[13px] text-[#888]">{t('hasAccount')}{' '}<Link href="/login" className="font-semibold text-[#7A1521] hover:underline">{t('loginTitle')}</Link></p>
