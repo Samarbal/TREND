@@ -11,10 +11,11 @@ class Settings(BaseSettings):
     ADMIN_EMAILS: str = ""
     HOST: str = "127.0.0.1"
     PORT: int = 8000
-    CORS_ORIGINS: str = "http://localhost:3001,http://127.0.0.1:3001,http://localhost,http://localhost:3000"
+    CORS_ORIGINS: str = (
+        "http://localhost:3001,http://127.0.0.1:3001,http://localhost,http://localhost:3000"
+    )
 
-<<<<<<< Updated upstream
-=======
+    # Managed Generation Settings
     MANAGED_GENERATION_ENABLED: bool = False
 
     MANAGED_IMAGE_PROVIDER: str = "openai"
@@ -25,13 +26,11 @@ class Settings(BaseSettings):
     MANAGED_TEXT_MODEL: str = ""
     MANAGED_TEXT_API_KEY: str = ""
 
->>>>>>> Stashed changes
-
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=True,
-        
+        extra="ignore", 
     )
 
 
