@@ -13,6 +13,19 @@ class Settings(BaseSettings):
     PORT: int = 8000
     CORS_ORIGINS: str = "http://localhost:3001,http://127.0.0.1:3001,http://localhost,http://localhost:3000"
 
+<<<<<<< Updated upstream
+=======
+    MANAGED_GENERATION_ENABLED: bool = False
+
+    MANAGED_IMAGE_PROVIDER: str = "openai"
+    MANAGED_IMAGE_MODEL: str = ""
+    MANAGED_IMAGE_API_KEY: str = ""
+
+    MANAGED_TEXT_PROVIDER: str = "openai"
+    MANAGED_TEXT_MODEL: str = ""
+    MANAGED_TEXT_API_KEY: str = ""
+
+>>>>>>> Stashed changes
 
     model_config = SettingsConfigDict(
         env_file=".env",
