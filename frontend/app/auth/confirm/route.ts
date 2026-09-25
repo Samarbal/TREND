@@ -14,15 +14,17 @@ export async function GET(request: NextRequest) {
     | null
 
   const redirectTo = request.nextUrl.clone()
+  const next = searchParams.get('next')
 
   if (token_hash && type) {
     const supabase = await createClient()
     const { error } = await supabase.auth.verifyOtp({ type, token_hash })
 
     if (!error) {
-      redirectTo.pathname = '/brands'
+      redirectTo.pathname = type === 'recovery' && next?.startsWith('/') ? next : '/brands'
       redirectTo.searchParams.delete('token_hash')
       redirectTo.searchParams.delete('type')
+      redirectTo.searchParams.delete('next')
       return NextResponse.redirect(redirectTo)
     }
   }
@@ -31,5 +33,6 @@ export async function GET(request: NextRequest) {
   redirectTo.pathname = '/login'
   redirectTo.searchParams.delete('token_hash')
   redirectTo.searchParams.delete('type')
+  redirectTo.searchParams.delete('next')
   return NextResponse.redirect(redirectTo)
 }

@@ -17,16 +17,18 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setError(null)
     setLoading(true)
-    const { error } = await createClient().auth.signInWithPassword({ email, password })
+    const { error: signInError } = await createClient().auth.signInWithPassword({ email, password })
     setLoading(false)
-    if (error) {
-      setError(error.message)
+
+    if (signInError) {
+      setError(signInError.message)
       return
     }
+
     router.push('/brands')
     router.refresh()
   }
@@ -38,14 +40,17 @@ export default function LoginPage() {
         <div>
           <label htmlFor="email" className="mb-2 block text-[12px] font-bold uppercase tracking-[0.04em] text-[#424242]">{t('email')}</label>
           <div className="relative">
-            <input id="email" type="email" placeholder={t('emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" dir="ltr" className="auth-input h-12 w-full rounded-xl border px-4 pe-11 text-sm outline-none transition placeholder:text-[#b1b1b1]" />
+            <input id="email" type="email" placeholder={t('emailPlaceholder')} value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" dir="ltr" className="auth-input h-12 w-full rounded-xl border px-4 pe-11 text-sm outline-none transition placeholder:text-[#b1b1b1]" />
             <Mail className="pointer-events-none absolute end-4 top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-[#999]" strokeWidth={1.5} />
           </div>
         </div>
         <div>
-          <label htmlFor="password" className="mb-2 block text-[12px] font-bold uppercase tracking-[0.04em] text-[#424242]">{t('password')}</label>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <label htmlFor="password" className="block text-[12px] font-bold uppercase tracking-[0.04em] text-[#424242]">{t('password')}</label>
+            <Link href="/forgot-password" className="text-[12px] font-semibold text-[#7A1521] hover:underline">{t('forgotPassword')}</Link>
+          </div>
           <div className="relative">
-            <input id="password" type={showPassword ? 'text' : 'password'} placeholder={t('passwordPlaceholder')} value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" className="auth-input h-12 w-full rounded-xl border px-4 pe-11 text-sm outline-none transition placeholder:text-[#b1b1b1]" />
+            <input id="password" type={showPassword ? 'text' : 'password'} placeholder={t('passwordPlaceholder')} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" className="auth-input h-12 w-full rounded-xl border px-4 pe-11 text-sm outline-none transition placeholder:text-[#b1b1b1]" />
             <button type="button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? t('hidePassword') : t('showPassword')} className="absolute end-3 top-1/2 -translate-y-1/2 rounded p-1 text-[#999] hover:text-[#7A1521]">
               {showPassword ? <EyeOff className="h-[17px] w-[17px]" strokeWidth={1.5} /> : <Eye className="h-[17px] w-[17px]" strokeWidth={1.5} />}
             </button>
