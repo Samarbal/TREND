@@ -44,7 +44,7 @@ export function AppSidebar({
         { href: `/${workspaceId}/kit`, label: t('dashboard.brandKit'), icon: Palette, match: 'prefix' as const },
         { href: `/${workspaceId}/history`, label: t('dashboard.history'), icon: Clock, match: 'prefix' as const },
         { href: `/${workspaceId}`, label: t('dashboard.generate'), icon: Star, match: 'exact' as const },
-        { href: `/${workspaceId}/keys`, label: t('dashboard.keys'), icon: Key, match: 'prefix' as const },
+        // { href: `/${workspaceId}/keys`, label: t('dashboard.keys'), icon: Key, match: 'prefix' as const },
         { href: `/${workspaceId}/settings`, label: t('dashboard.settings'), icon: Settings, match: 'prefix' as const },
       ]
     : []
