@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Clock, Key, LogOut, Palette, Plus, Settings, Sliders, Star, User } from 'lucide-react'
+import { Clock, LogOut, Palette, Plus, Settings, Sliders, Star, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { normalizeHex, TRENDY_AI_ACCENT } from '@/components/brand/brand-workspace'
 import { Badge } from '@/components/ui/badge'
